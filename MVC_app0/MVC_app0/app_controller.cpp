@@ -38,6 +38,12 @@ void AppModel::GetEvent() {
 			mouseClicked = false;
 			isObjectSelect = false;
 		}
+		if (Keyboard::isKeyPressed(Keyboard::Left)) {
+			appState->state = appState->undo;
+		}
+		else if (Keyboard::isKeyPressed(Keyboard::Right)) {
+			appState->state = appState->redo;
+		}
 	}
 }
 

@@ -1,5 +1,4 @@
 #include "app_model.h"
-#include <vld.h>
 
 AppModel::AppModel() {
 	window = make_unique<RenderWindow>(VideoMode(DEFAULT_WINDOW_SIZE.x,
@@ -13,19 +12,23 @@ AppModel::AppModel() {
 	Run();
 };
 
-void DeleteObject(vector<AppObjects*> &objects, vector<AppObjects*>::iterator &it) {
-	(*it)->RemoveObservers();
-	AppObjects *b = *it;
+void DeleteObject(vector<AppObjects*> &objects, vector<AppObjects*>::iterator &it, UndoRedo &appState, Frame &frame) {
+	appState.state = appState.appointState;
+	appState.ProcessEvent(objects);
 	it = objects.erase(it);
-	delete b;
+	frame.ResetFrame({ 0,0 }, { -10, -10 });
 }
 
 AppModel::~AppModel() {
 	for (it = objects.begin(); it != objects.end();) {
-		DeleteObject(objects, it);
+		(*it)->RemoveObservers();
+		AppObjects *b = *it;
+		it = objects.erase(it);
+		delete b;
 	}
 	objects.clear();
 	delete frame;
+	delete appState;
 }
 
 void AppModel::SetObjectEvent(AppObjects &object) {
@@ -53,18 +56,31 @@ int AppModel::ActSelectObject(vector<AppObjects*>::iterator &it, AppObjects *&se
 		return 1;
 	}
 	if ((isObjectDelete) && (*it == selectObject)) {
-		DeleteObject(objects, it);
+		DeleteObject(objects, it, *appState, *frame);
 		return 1;
 	}
 	return 0;
+}
+
+
+void AppModel::AppStateEvent(int const countElements) {
+	if (objects.size() != countElements) {
+		appState->state = appState->appointState;
+	}
+	appState->ProcessEvent(objects);
+	objects = appState->GetAppState();
 }
 
 void AppModel::Run() {
 	AppObjects *selectObject = nullptr;
 	frame = new Frame({ 0,0 }, { -10, -10 }, "frame");
 	AppointSpecificObserver(frame);
+	InitUndoRedo();
+	int countElements = objects.size();
 	while (window->isOpen()) {
+		appState->state = appState->none;
 		GetEvent();
+		countElements = objects.size();
 		window->clear(DEFAULT_FORM_COLOR);
 		for (it = objects.begin(); it != objects.end(); it++) {
 			SetObjectEvent(**it);
@@ -75,5 +91,6 @@ void AppModel::Run() {
 		}
 		frame->NotifyUpdate(*window);
 		window->display();
+		AppStateEvent(countElements);
 	}
 }

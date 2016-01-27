@@ -87,6 +87,7 @@
     <ClCompile Include="app_objects.cpp" />
     <ClCompile Include="rectangle.cpp" />
     <ClCompile Include="triangle.cpp" />
+    <ClCompile Include="UndoRedo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application_buttons.h" />
@@ -102,6 +103,7 @@
     <ClInclude Include="rectangle.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="triangle.h" />
+    <ClInclude Include="UndoRedo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

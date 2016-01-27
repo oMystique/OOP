@@ -89,3 +89,10 @@ void AppModel::CreateNewFigure(AppObjects &object) {
 	}
 	object.isSelect = false;
 }
+
+
+void AppModel::InitUndoRedo() {
+	appState = new UndoRedo();
+	appState->appointState;
+	appState->ProcessEvent(objects);
+}
