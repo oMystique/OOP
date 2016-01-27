@@ -10,6 +10,9 @@ public:
 private:
 	void CreateText();
 	void SetTextPosition();
+	Vector2f GetSize() override;
+	Vector2f GetPos()  override;
+	void ResetFrame(Vector2f const tSize, Vector2f const tPos) override;
 private:
 	String buttonName;
 	Font font;

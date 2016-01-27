@@ -19,7 +19,7 @@ private:
 	vector<AppObjects*> objects;
 	ContextSettings settings;
 	vector<AppObjects*>::iterator it;
-
+	Frame *frame = nullptr;
 	bool mouseClicked;
 	bool isObjectSelect;
 	bool isObjectDelete;

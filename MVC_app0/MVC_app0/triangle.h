@@ -7,9 +7,13 @@ public:
 public:
 	void Draw(RenderWindow &window) override;
 	void ProcessEvent(Vector2f const mousePos) override;
+	Vector2f GetSize() override;
+	Vector2f GetPos() override;
+	void ResetFrame(Vector2f const tSize, Vector2f const tPos) override;
 private:
 	void CreateFigure();
 	void SetFigurePosition();
+	void ResetPoints();
 private:
 	ConvexShape figure;
 };

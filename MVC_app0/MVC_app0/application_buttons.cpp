@@ -22,3 +22,15 @@ void ApplicationButton::CreateText() {
 void ApplicationButton::SetTextPosition() {
 	text.setPosition(pos.x + 1, pos.y + 1);
 }
+
+
+Vector2f ApplicationButton::GetSize() {
+	return { NULL, NULL };
+}
+Vector2f ApplicationButton::GetPos() {
+	return { NULL, NULL };
+}
+
+
+void ApplicationButton::ResetFrame(Vector2f const tSize, Vector2f const tPos) {
+}

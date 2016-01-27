@@ -5,6 +5,10 @@
 AppController::AppController(AppObjects *cObject):object(cObject) {
 }
 
+AppController::~AppController() {
+	delete object;
+}
+
 Vector2f GetMouseCoords(RenderWindow const &window) {
 	Vector2i pixelPos = Mouse::getPosition(window);
 	return window.mapPixelToCoords(pixelPos);

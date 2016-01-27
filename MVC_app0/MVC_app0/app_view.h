@@ -4,6 +4,7 @@
 class AppView: public Observer {
 public:
 	AppView(AppObjects *cObject);
+	~AppView();
 	void Update(Observable *observable, RenderWindow &window);
 private:
 	void DrawElements(Observable *observable, RenderWindow &window);

@@ -4,6 +4,10 @@
 AppView::AppView(AppObjects *cObject) : object(cObject) {
 };
 
+AppView::~AppView() {
+	delete object;
+}
+
 void AppView::Update(Observable *observable, RenderWindow &window) {
 	DrawElements(observable, window);
 }
@@ -32,11 +36,9 @@ void Frame::Draw(RenderWindow &window) {
 void TriangleFigure::Draw(RenderWindow &window) {
 	window.draw(figure);
 }
-
 void RectangleFigure::Draw(RenderWindow &window) {
 	window.draw(figure);
 }
-
 void CircleFigure::Draw(RenderWindow &window) {
 	window.draw(figure);
 }

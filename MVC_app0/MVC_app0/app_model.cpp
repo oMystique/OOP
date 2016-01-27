@@ -1,5 +1,5 @@
 #include "app_model.h"
-
+#include <vld.h>
 
 AppModel::AppModel() {
 	window = make_unique<RenderWindow>(VideoMode(DEFAULT_WINDOW_SIZE.x,
@@ -25,6 +25,7 @@ AppModel::~AppModel() {
 		DeleteObject(objects, it);
 	}
 	objects.clear();
+	delete frame;
 }
 
 void AppModel::SetObjectEvent(AppObjects &object) {
@@ -37,10 +38,13 @@ void AppModel::SetObjectEvent(AppObjects &object) {
 }
 
 int AppModel::ActSelectObject(vector<AppObjects*>::iterator &it, AppObjects *&selectObject) {
+	frame->mouseClicked = mouseClicked;
 	if (((*it)->isSelect) && ((*it)->name == ACTION_FIGURE_STRING)) {
 		mouseClicked = false;
 		isObjectSelect = true;
 		selectObject = *it;
+		frame->ResetFrame((*it)->GetSize(), (*it)->GetPos());
+		frame->SetEditObject(*it);
 	}
 	else if (((*it)->isSelect) && 
 			!((*it)->name == ACTION_FIGURE_STRING) &&
@@ -57,6 +61,8 @@ int AppModel::ActSelectObject(vector<AppObjects*>::iterator &it, AppObjects *&se
 
 void AppModel::Run() {
 	AppObjects *selectObject = nullptr;
+	frame = new Frame({ 0,0 }, { -10, -10 }, "frame");
+	AppointSpecificObserver(frame);
 	while (window->isOpen()) {
 		GetEvent();
 		window->clear(DEFAULT_FORM_COLOR);
@@ -67,6 +73,7 @@ void AppModel::Run() {
 				break;
 			}
 		}
+		frame->NotifyUpdate(*window);
 		window->display();
 	}
 }
