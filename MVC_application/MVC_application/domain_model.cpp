@@ -1,6 +1,5 @@
 #include "domain_model.h"
-#include "view.h"
-#include <ostream>
+#include "abstract_view.h"
 
 CDomainModel::~CDomainModel() {
 	m_figures.clear();

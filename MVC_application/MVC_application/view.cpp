@@ -29,10 +29,11 @@ void CView::Draw() {
 	for (auto &element : m_interfaceElements) {
 		element->Draw(*m_window);
 	}
-	vector<CFiguresGraphic*>::iterator it;
+	vector<unique_ptr<CFiguresGraphic>>::iterator it;
 	for (it = m_figures.begin(); it != m_figures.end();) {
 		if ((*it)->isDeleted) {
 			m_figures.erase(it);
+			selectFigure.release();
 			break;
 		}
 		else {
@@ -99,34 +100,21 @@ bool CView::ClickEventIsLegitimate(CFiguresGraphic *figure) {
 
 FloatRect CView::UpdateFigure(Vector2f const size, Vector2f const pos, unsigned int const index) {
 	m_figures[index]->ResetFigure(size, pos);
-	if (selectFigure == nullptr) {
-		selectFigure = m_figures[index];
-	}
 	if ((m_state == "Delete") && (m_figures[index] == selectFigure)) {
 		m_figures[index]->isDeleted = true;
 		return { NULL, NULL, NULL, NULL };
 	}
-	else if (ClickEventIsLegitimate(m_figures[index])) {
+	else if (ClickEventIsLegitimate(m_figures[index].get())) {
+		if (selectFigure == nullptr) {
+			selectFigure.reset(m_figures[index].get());
+		}
 		if (selectFigure == m_figures[index]) {
 			return { GetMousePos(*m_window).x, GetMousePos(*m_window).y, size.x, size.y };
 		}
 		else if (selectFigure != m_figures[index] && (!selectFigure->GetRect().contains(GetMousePos(*m_window)))) {
-			selectFigure = m_figures[index];
+			selectFigure.release();
+			selectFigure.reset(m_figures[index].get());
 		}
 	}
 	return { pos.x, pos.y, size.x, size.y };
-}
-
-CAbstractView::CAbstractView(CDomainModel *domainModel) {
-	CFigureController *controller = new CFigureController(domainModel);
-	AddFigureObserver(controller);
-};
-
-CAbstractView::~CAbstractView() {
-	delete view;
-}
-
-void CAbstractView::Update(CFigureObservable *observable, Vector2f const size, Vector2f const pos, unsigned int const index) {
-	FloatRect rect = view->UpdateFigure(size, pos, index);
-	NotifyUpdate( { rect.width, rect.height }, { rect.left, rect.top }, index);
 }

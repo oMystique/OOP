@@ -4,11 +4,8 @@
 #include "application_buttons.h"
 #include <memory>
 #include "figures_graphic.h"
-#include "figure_observable.h"
-#include "figure_observer.h"
 
 class CModel;
-class CDomainModel;
 class CView : public Observer, Observable {
 public:
 	CView(CModel *model);
@@ -26,20 +23,11 @@ private:
 	bool ClickEventIsLegitimate(CFiguresGraphic *figure);
 	void AppPollEvent();
 private:
-	unique_ptr<RenderWindow> m_window;
+	unique_ptr<RenderWindow> m_window = nullptr;
+	unique_ptr<CFiguresGraphic> selectFigure = nullptr;
 	vector<unique_ptr<CInterfaceElements>> m_interfaceElements;
-	vector<CFiguresGraphic*> m_figures;
-	CFiguresGraphic* selectFigure = nullptr;
+	vector<unique_ptr<CFiguresGraphic>> m_figures;
 	ContextSettings m_settings;
 	bool mouseClicked;
 	String m_state;
-};
-
-
-class CAbstractView: public CFigureObserver, CFigureObservable {
-public:
-	CAbstractView(CDomainModel *domainModel);
-	~CAbstractView();
-	void Update(CFigureObservable *observable, Vector2f const size, Vector2f const pos, unsigned int const index) override;
-	CView *view = nullptr;
 };

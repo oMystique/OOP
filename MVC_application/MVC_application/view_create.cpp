@@ -35,12 +35,12 @@ void CView::CreateInterfaceForms() {
 
 void CView::CreateGraphicFigure(String const type) {
 	if (type == TRIANGLE_BUTTON_STRING) {
-		m_figures.push_back(new CTriangleFigure());
+		m_figures.push_back(make_unique<CTriangleFigure>());
 	}
 	else if (type == CIRCLE_BUTTON_STRING) {
-		m_figures.push_back(new CCircleFigure());
+		m_figures.push_back(make_unique<CCircleFigure>());
 	}
 	else if (type == RECTANGLE_BUTTON_STRING) {
-		m_figures.push_back(new CRectangleFigure());
+		m_figures.push_back(make_unique<CRectangleFigure>());
 	}
 }

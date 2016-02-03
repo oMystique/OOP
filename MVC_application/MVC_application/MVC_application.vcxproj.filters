@@ -119,6 +119,9 @@
     <ClCompile Include="view_create.cpp">
       <Filter>Source Files\VIEW</Filter>
     </ClCompile>
+    <ClCompile Include="abstract_view.cpp">
+      <Filter>Source Files\VIEW</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources.h">
@@ -171,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="figure_observable.h">
       <Filter>Header Files\A_OBSERVER</Filter>
+    </ClInclude>
+    <ClInclude Include="abstract_view.h">
+      <Filter>Header Files\VIEW</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

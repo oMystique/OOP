@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="abstract_view.cpp" />
     <ClCompile Include="application_button.cpp" />
     <ClCompile Include="application_form.cpp" />
     <ClCompile Include="a_figures.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="view_create.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="abstract_view.h" />
     <ClInclude Include="application_buttons.h" />
     <ClInclude Include="application_forms.h" />
     <ClInclude Include="controllers.h" />
