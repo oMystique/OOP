@@ -1,5 +1,6 @@
 #include "domain_model.h"
 #include "abstract_view.h"
+#include <algorithm> 
 
 CDomainModel::~CDomainModel() {
 	m_figures.clear();
@@ -15,10 +16,12 @@ void CDomainModel::Update(Observable *observable, String const command) {
 }
 
 void CDomainModel::UpdateFigures() {
-	unsigned int i = 0;
-	for (auto &figure : m_figures) {
+	unsigned int i = m_figures.size();
+	vector<shared_ptr<CLogicFigures>> figures = m_figures;
+	reverse(figures.begin(), figures.end());
+	for (auto &figure : figures) {
+		i--;
 		figure->NotifyUpdate(figure->GetSize(), figure->GetPos(), i);
-		i++;
 	}
 }
 
