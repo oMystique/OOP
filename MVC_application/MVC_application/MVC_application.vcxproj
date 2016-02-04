@@ -71,9 +71,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>.\SFML32\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>.\SFML32\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>.\SFML64\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>.\SFML64\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -159,6 +163,7 @@
     <ClCompile Include="domain_model.cpp" />
     <ClCompile Include="figure_logic.cpp" />
     <ClCompile Include="figure_observable.cpp" />
+    <ClCompile Include="frame.cpp" />
     <ClCompile Include="interface_element.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="model.cpp" />
@@ -179,6 +184,7 @@
     <ClInclude Include="figures_logic.h" />
     <ClInclude Include="figure_observable.h" />
     <ClInclude Include="figure_observer.h" />
+    <ClInclude Include="frame.h" />
     <ClInclude Include="interface_elements.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="observable.h" />

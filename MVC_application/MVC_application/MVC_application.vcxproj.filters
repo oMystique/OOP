@@ -122,6 +122,9 @@
     <ClCompile Include="abstract_view.cpp">
       <Filter>Source Files\VIEW</Filter>
     </ClCompile>
+    <ClCompile Include="frame.cpp">
+      <Filter>Source Files\VIEW\VIEW_SHAPES</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources.h">
@@ -177,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="abstract_view.h">
       <Filter>Header Files\VIEW</Filter>
+    </ClInclude>
+    <ClInclude Include="frame.h">
+      <Filter>Header Files\VIEW\VIEW_SHAPES</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

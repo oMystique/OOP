@@ -1,8 +1,7 @@
 #include "model.h"
-#include "controllers.h"
 
 int main()
 {
-	CModel *model = new CModel();
+	unique_ptr<CModel> model = make_unique<CModel>();
 	return 0;
 }

@@ -7,6 +7,7 @@ CView::CView(CModel *model): Observable(model) {
 	m_window = make_unique<RenderWindow>(VideoMode(DEFAULT_WINDOW_SIZE.x,
 		DEFAULT_WINDOW_SIZE.y),
 		APPLICATION_TITLE);
+	m_frame = make_unique<CFrame>();
 	m_settings.antialiasingLevel = 8;
 	CBaseController *controller = new CBaseController(model);
 	AddObserver(controller);
@@ -33,7 +34,8 @@ void CView::Draw() {
 	for (it = m_figures.begin(); it != m_figures.end();) {
 		if ((*it)->isDeleted) {
 			m_figures.erase(it);
-			selectFigure.release();
+			m_selectFigure.release();
+			m_frame->ResetFigure({ NULL, NULL }, { NULL - GET_HALF,  NULL - GET_HALF});
 			break;
 		}
 		else {
@@ -41,6 +43,7 @@ void CView::Draw() {
 			it++;
 		}
 	}
+	m_frame->Draw(*m_window);
 	m_window->display();
 }
 
@@ -79,6 +82,10 @@ void CView::ProcessEvent() {
 	m_state = "";
 	AppPollEvent();
 	CheckButtonEvents();
+	if (m_selectFigure != nullptr) {
+		m_frame->ResetFigure({ m_selectFigure->GetRect().width, m_selectFigure->GetRect().height },
+		{ m_selectFigure->GetRect().left, m_selectFigure->GetRect().top });
+	}
 	NotifyUpdate(m_state);
 }
 
@@ -100,20 +107,20 @@ bool CView::ClickEventIsLegitimate(CFiguresGraphic *figure) {
 
 FloatRect CView::UpdateFigure(Vector2f const size, Vector2f const pos, unsigned int const index) {
 	m_figures[index]->ResetFigure(size, pos);
-	if ((m_state == "Delete") && (m_figures[index] == selectFigure)) {
+	if ((m_state == "Delete") && (m_figures[index] == m_selectFigure)) {
 		m_figures[index]->isDeleted = true;
 		return { NULL, NULL, NULL, NULL };
 	}
 	else if (ClickEventIsLegitimate(m_figures[index].get())) {
-		if (selectFigure == nullptr) {
-			selectFigure.reset(m_figures[index].get());
+		if (m_selectFigure == nullptr) {
+			m_selectFigure.reset(m_figures[index].get());
 		}
-		if (selectFigure == m_figures[index]) {
+		if (m_selectFigure == m_figures[index]) {
 			return { GetMousePos(*m_window).x, GetMousePos(*m_window).y, size.x, size.y };
 		}
-		else if (selectFigure != m_figures[index] && (!selectFigure->GetRect().contains(GetMousePos(*m_window)))) {
-			selectFigure.release();
-			selectFigure.reset(m_figures[index].get());
+		else if (m_selectFigure != m_figures[index] && (!m_selectFigure->GetRect().contains(GetMousePos(*m_window)))) {
+			m_selectFigure.release();
+			m_selectFigure.reset(m_figures[index].get());
 		}
 	}
 	return { pos.x, pos.y, size.x, size.y };

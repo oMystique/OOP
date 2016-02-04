@@ -4,6 +4,7 @@
 #include "application_buttons.h"
 #include <memory>
 #include "figures_graphic.h"
+#include "frame.h"
 
 class CModel;
 class CView : public Observer, Observable {
@@ -24,7 +25,8 @@ private:
 	void AppPollEvent();
 private:
 	unique_ptr<RenderWindow> m_window = nullptr;
-	unique_ptr<CFiguresGraphic> selectFigure = nullptr;
+	unique_ptr<CFiguresGraphic> m_selectFigure = nullptr;
+	unique_ptr<CFrame> m_frame = nullptr;
 	vector<unique_ptr<CInterfaceElements>> m_interfaceElements;
 	vector<unique_ptr<CFiguresGraphic>> m_figures;
 	ContextSettings m_settings;

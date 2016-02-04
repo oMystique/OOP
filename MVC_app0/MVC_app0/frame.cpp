@@ -77,7 +77,7 @@ void Frame::SetEditObject(AppObjects *&appObject) {
 
 void Frame::SetFrameOrigin(Vector2f const mousePos) {
 	if (topLeftPoint.getGlobalBounds().contains(mousePos)) {
-		temp = { 0.f, 0.f };
+		temp = { 0.f, 0.f };	
 	}
 	else if (topRightPoint.getGlobalBounds().contains(mousePos)) {
 		temp = { -frameRect.getGlobalBounds().width, 0.f };

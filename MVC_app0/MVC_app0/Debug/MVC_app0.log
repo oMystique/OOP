@@ -1,0 +1,45 @@
+﻿Сборка начата 04.02.2016 13:48:30.
+     1>Проект "C:\Users\Алексей\Desktop\ISpring\OOP\MVC_app0\MVC_app0\MVC_app0.vcxproj" в узле 2 (целевые объекты Build).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /IC:\SFML\include /I"C:\Program Files (x86)\Visual Leak Detector\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt application_buttons.cpp application_forms.cpp app_controller.cpp app_model.cpp app_view.cpp circle.cpp controller_button.cpp controller_figure.cpp frame.cpp init_appModel.cpp main.cpp observable.cpp app_objects.cpp rectangle.cpp triangle.cpp UndoRedo.cpp
+         UndoRedo.cpp
+     1>c:\users\алексей\desktop\ispring\oop\mvc_app0\mvc_app0\undoredo.cpp(21): warning C4018: <: несоответствие типов со знаком и без знака
+         triangle.cpp
+         rectangle.cpp
+         app_objects.cpp
+         observable.cpp
+         main.cpp
+         init_appModel.cpp
+         frame.cpp
+         controller_figure.cpp
+         controller_button.cpp
+         circle.cpp
+         app_view.cpp
+         app_model.cpp
+         app_controller.cpp
+         application_forms.cpp
+         application_buttons.cpp
+         Создание кода...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Алексей\Desktop\ISpring\OOP\MVC_app0\Debug\MVC_app0.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\SFML\lib /LIBPATH:"C:\Program Files (x86)\Visual Leak Detector\lib\Win32" "sfml-audio-d.lib" "sfml-graphics-d.lib" "sfml-network-d.lib" "sfml-system-d.lib" "sfml-window-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Алексей\Desktop\ISpring\OOP\MVC_app0\Debug\MVC_app0.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Алексей\Desktop\ISpring\OOP\MVC_app0\Debug\MVC_app0.lib" /MACHINE:X86 Debug\application_buttons.obj
+         Debug\application_forms.obj
+         Debug\app_controller.obj
+         Debug\app_model.obj
+         Debug\app_view.obj
+         Debug\circle.obj
+         Debug\controller_button.obj
+         Debug\controller_figure.obj
+         Debug\frame.obj
+         Debug\init_appModel.obj
+         Debug\main.obj
+         Debug\observable.obj
+         Debug\app_objects.obj
+         Debug\rectangle.obj
+         Debug\triangle.obj
+         Debug\UndoRedo.obj
+         MVC_app0.vcxproj -> C:\Users\Алексей\Desktop\ISpring\OOP\MVC_app0\Debug\MVC_app0.exe
+     1>Сборка проекта "C:\Users\Алексей\Desktop\ISpring\OOP\MVC_app0\MVC_app0\MVC_app0.vcxproj" завершена (целевые объекты Build).
+
+Сборка успешно завершена.
+
+Затраченное время: 00:00:19.72
