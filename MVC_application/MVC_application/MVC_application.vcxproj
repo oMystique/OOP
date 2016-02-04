@@ -185,7 +185,7 @@
     <ClInclude Include="figure_observable.h" />
     <ClInclude Include="figure_observer.h" />
     <ClInclude Include="frame.h" />
-    <ClInclude Include="interface_elements.h" />
+    <ClInclude Include="interface_element.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="observable.h" />
     <ClInclude Include="observer.h" />

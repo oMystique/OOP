@@ -34,6 +34,6 @@ void CApplicationButton::ProcessEvent(Vector2f const mousePos) {
 	}
 }
 
-FloatRect CApplicationButton::GetRect() {
+FloatRect CApplicationButton::GetRect() const {
 	return m_formRect.getGlobalBounds();
 }

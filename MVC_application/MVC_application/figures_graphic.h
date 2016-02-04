@@ -4,10 +4,11 @@
 class CFiguresGraphic {
 public:
 	CFiguresGraphic();
+	virtual ~CFiguresGraphic() = default;
 public:
-	virtual void Draw(RenderWindow &window) = 0;
+	virtual void Draw(RenderWindow &window) const = 0;
 	virtual void ResetFigure(Vector2f const size, Vector2f const pos) = 0;
-	virtual FloatRect GetRect() = 0;
+	virtual FloatRect GetRect() const = 0;
 public:
 	bool isDeleted;
 private:

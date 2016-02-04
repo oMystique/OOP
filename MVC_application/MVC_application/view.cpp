@@ -3,15 +3,16 @@
 #include "figures_logic.h"
 #include "domain_model.h"
 
-CView::CView(CModel *model): Observable(model) {
+CView::CView(CModel *model) {
 	m_window = make_unique<RenderWindow>(VideoMode(DEFAULT_WINDOW_SIZE.x,
 		DEFAULT_WINDOW_SIZE.y),
 		APPLICATION_TITLE);
 	m_frame = make_unique<CFrame>();
+	m_frame->ResetFigure({ NULL, NULL }, { NULL - FRAME_POINT_RADIUS,  NULL - FRAME_POINT_RADIUS });
 	m_settings.antialiasingLevel = 8;
 	CBaseController *controller = new CBaseController(model);
 	AddObserver(controller);
-	mouseClicked = false;
+	m_mouseClicked = false;
 	Run();
 }
 
@@ -35,7 +36,7 @@ void CView::Draw() {
 		if ((*it)->isDeleted) {
 			m_figures.erase(it);
 			m_selectFigure.release();
-			m_frame->ResetFigure({ NULL, NULL }, { NULL - GET_HALF,  NULL - GET_HALF});
+			m_frame->ResetFigure({ NULL, NULL }, { NULL - FRAME_POINT_RADIUS,  NULL - FRAME_POINT_RADIUS });
 			break;
 		}
 		else {
@@ -47,14 +48,18 @@ void CView::Draw() {
 	m_window->display();
 }
 
+bool CView::FigureButtonIsSelect(CInterfaceElement &element) const {
+	return ((element.GetRect().contains(GetMousePos(*m_window))) &&
+		m_mouseClicked && (element.GetName() != MENU_BUTTON_STRING));
+}
+
 void CView::CheckButtonEvents() {
 	for (auto &element : m_interfaceElements) {
 		element->ProcessEvent(GetMousePos(*m_window));
-		if ((element->GetRect().contains(GetMousePos(*m_window))) &&
-				mouseClicked && (element->GetName() != MENU_BUTTON_STRING)) {
+		if (FigureButtonIsSelect(*element)) {
 			m_state = "Create";
 			CreateGraphicFigure(element->GetName());
-			mouseClicked = false;
+			m_mouseClicked = false;
 			break;
 		}
 	}
@@ -70,10 +75,15 @@ void CView::AppPollEvent() {
 			m_state = "Delete";
 		}
 		if (Mouse::isButtonPressed(Mouse::Left)) {
-			mouseClicked = true;
+			if (m_frame->GetStartMousePos().x == NULL) {
+				m_frame->SetStartMousePos(GetMousePos(*m_window));
+			}
+			m_mouseClicked = true;
 		}
 		else {
-			mouseClicked = false;
+			m_mouseClicked = false;
+			m_isFrameAction = false;
+			m_frame->SetStartMousePos({ NULL, NULL });
 		}
 	}
 }
@@ -100,18 +110,22 @@ void CView::Update(Observable *observable, String const command) {
 	Draw();
 }
 
-bool CView::ClickEventIsLegitimate(CFiguresGraphic *figure) {
+bool CView::ClickEventIsLegitimate(CFiguresGraphic *figure) const {
 	return (figure->GetRect().contains(GetMousePos(*m_window)) &&
-		(mouseClicked) && GetIntersects(GetMousePos(*m_window), figure->GetRect()));
+		(m_mouseClicked) && GetIntersects(GetMousePos(*m_window), figure->GetRect()));
 }
 
 FloatRect CView::UpdateFigure(Vector2f const size, Vector2f const pos, unsigned int const index) {
 	m_figures[index]->ResetFigure(size, pos);
+	if ((m_selectFigure == m_figures[index]) && (m_mouseClicked) && (m_frame->IsAction(GetMousePos(*m_window)))) {
+		m_isFrameAction = true;
+		return { m_frame->FrameEvent(GetMousePos(*m_window), pos, size) };
+	}
 	if ((m_state == "Delete") && (m_figures[index] == m_selectFigure)) {
 		m_figures[index]->isDeleted = true;
 		return { NULL, NULL, NULL, NULL };
 	}
-	else if (ClickEventIsLegitimate(m_figures[index].get())) {
+	else if (ClickEventIsLegitimate(m_figures[index].get()) && (!m_isFrameAction)) {
 		if (m_selectFigure == nullptr) {
 			m_selectFigure.reset(m_figures[index].get());
 		}

@@ -23,7 +23,7 @@ static const Vector2f RECTANGLE_SIZE_CORRECTION = { 0.7f, 0.4f };
 //FLOAT_CONSTS:
 static const float RECTANGLE_BUTTON_POS_CORRECTION = 2.5f;
 static const float TEXT_SCALE = 0.47f;
-static const float FRAME_POINT_RADIUS = 4.f;
+static const float FRAME_POINT_RADIUS = 6.f;
 static const float GET_HALF = 2.f;
 static const float CIRCLE_RADIUS_CORRECTION = 3.5f;
 static const float TRIANGLE_SIZE_CORRECTION = 4.2f;

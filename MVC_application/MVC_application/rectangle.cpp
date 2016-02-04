@@ -19,10 +19,10 @@ void CRectangleFigure::SetFigurePosition(Vector2f const pos) {
 	m_figure.setPosition(pos.x, pos.y);
 }
 
-void CRectangleFigure::Draw(RenderWindow &window) {
+void CRectangleFigure::Draw(RenderWindow &window) const {
 	window.draw(m_figure);
 }
 
-FloatRect CRectangleFigure::GetRect() {
+FloatRect CRectangleFigure::GetRect() const {
 	return m_figure.getGlobalBounds();
 }

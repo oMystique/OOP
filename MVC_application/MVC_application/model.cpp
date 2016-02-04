@@ -2,13 +2,13 @@
 #include "view.h"
 #include "controllers.h"
 
-CModel::CModel(): Observable(nullptr) {
+CModel::CModel() {
 	m_isNotExit = true;
-	m_view = new CView(this);
-	AddObserver(m_view);
-	m_domainModel = new CDomainModel();
-	m_domainModel->view = m_view;
-	AddObserver(m_domainModel);
+	CView *view = new CView(this);
+	AddObserver(view);
+	CDomainModel *domainModel = new CDomainModel();
+	domainModel->view = view;
+	AddObserver(domainModel);
 	Run();
 }
 

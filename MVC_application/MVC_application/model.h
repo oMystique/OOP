@@ -9,8 +9,6 @@ public:
 private:
 	void Run();
 private:
-	CView *m_view = nullptr;
-	CDomainModel *m_domainModel = nullptr;
 	String m_state;
 	bool m_isNotExit;
 };

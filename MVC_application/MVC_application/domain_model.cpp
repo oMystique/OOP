@@ -16,7 +16,7 @@ void CDomainModel::Update(Observable *observable, String const command) {
 }
 
 void CDomainModel::UpdateFigures() {
-	unsigned int i = m_figures.size();
+	auto i = unsigned int(m_figures.size());
 	vector<shared_ptr<CLogicFigures>> figures = m_figures;
 	reverse(figures.begin(), figures.end());
 	for (auto &figure : figures) {

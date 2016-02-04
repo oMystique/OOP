@@ -1,7 +1,7 @@
 #include "observable.h"
 #include "observer.h"
 
-Observable::Observable(CModel *model) :notify(true) {
+Observable::Observable() :notify(true) {
 };
 
 Observable::~Observable() {

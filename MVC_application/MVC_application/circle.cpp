@@ -17,10 +17,10 @@ void CCircleFigure::SetFigurePosition(Vector2f const pos) {
 	m_figure.setPosition(pos.x, pos.y);
 }
 
-void CCircleFigure::Draw(RenderWindow &window) {
+void CCircleFigure::Draw(RenderWindow &window) const {
 	window.draw(m_figure);
 }
 
-FloatRect CCircleFigure::GetRect() {
+FloatRect CCircleFigure::GetRect() const {
 	return m_figure.getGlobalBounds();
 }

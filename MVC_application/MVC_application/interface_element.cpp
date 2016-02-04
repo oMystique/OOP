@@ -1,6 +1,6 @@
-#include "interface_elements.h"
+#include "interface_element.h"
 
-CInterfaceElements::CInterfaceElements(Vector2f const size,
+CInterfaceElement::CInterfaceElement(Vector2f const size,
 					Vector2f const pos,
 					String const name) :
 	m_size(size),
@@ -8,6 +8,6 @@ CInterfaceElements::CInterfaceElements(Vector2f const size,
 	m_name(name) {
 };
 
-String CInterfaceElements::GetName() {
+String CInterfaceElement::GetName() const{
 	return m_name;
 }

@@ -1,7 +1,7 @@
 #pragma once
-#include "interface_elements.h"
+#include "interface_element.h"
 
-class CApplicationForm : public CInterfaceElements {
+class CApplicationForm : public CInterfaceElement {
 public:
 	CApplicationForm(Vector2f const size, Vector2f const pos, String const name);
 public:
@@ -13,5 +13,5 @@ protected:
 	RectangleShape m_formRect;
 private:
 	void SetFormPosition();
-	FloatRect GetRect();
+	FloatRect GetRect() const override;
 };

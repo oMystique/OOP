@@ -2,7 +2,7 @@
 #include "model.h"
 
 
-CBaseController::CBaseController(CModel *model): Observable(model) {
+CBaseController::CBaseController(CModel *model) {
 	AddObserver(model);
 }
 

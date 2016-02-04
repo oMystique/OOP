@@ -20,10 +20,10 @@ void CTriangleFigure::SetFigurePosition(Vector2f const pos) {
 	m_figure.setPosition(pos.x, pos.y);
 }
 
-void CTriangleFigure::Draw(RenderWindow &window) {
+void CTriangleFigure::Draw(RenderWindow &window) const {
 	window.draw(m_figure);
 }
 
-FloatRect CTriangleFigure::GetRect() {
+FloatRect CTriangleFigure::GetRect() const {
 	return m_figure.getGlobalBounds();
 }

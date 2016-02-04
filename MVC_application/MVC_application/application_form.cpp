@@ -3,7 +3,7 @@
 CApplicationForm::CApplicationForm(Vector2f const size,
 	Vector2f const pos,
 	String const name) :
-	CInterfaceElements(size, pos, name) {
+	CInterfaceElement(size, pos, name) {
 	CreateForm();
 }
 
@@ -26,6 +26,6 @@ void CApplicationForm::Draw(RenderWindow &window) const {
 	window.draw(m_formRect);
 }
 
-FloatRect CApplicationForm::GetRect() {
+FloatRect CApplicationForm::GetRect() const {
 	return { NULL, NULL, NULL, NULL };
 }

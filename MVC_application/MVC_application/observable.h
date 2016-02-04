@@ -5,8 +5,8 @@ class Observer;
 class CModel;
 class Observable {
 public:
-	Observable(CModel *model);
-	virtual ~Observable();
+	Observable();
+	~Observable();
 	void AddObserver(Observer *observer);
 	void RemoveObservers();
 	void NotifyUpdate(String const command);

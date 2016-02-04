@@ -142,9 +142,6 @@
     <ClInclude Include="application_buttons.h">
       <Filter>Header Files\VIEW\INTERFACE_ELEMENTS\BUTTONS</Filter>
     </ClInclude>
-    <ClInclude Include="interface_elements.h">
-      <Filter>Header Files\VIEW\INTERFACE_ELEMENTS</Filter>
-    </ClInclude>
     <ClInclude Include="view.h">
       <Filter>Header Files\VIEW</Filter>
     </ClInclude>
@@ -183,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="frame.h">
       <Filter>Header Files\VIEW\VIEW_SHAPES</Filter>
+    </ClInclude>
+    <ClInclude Include="interface_element.h">
+      <Filter>Header Files\VIEW\INTERFACE_ELEMENTS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
