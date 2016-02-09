@@ -13,5 +13,5 @@ replace.exe putin.txt output6_false.txt error error
 pause
 replace.exe input.txt output7_false.txt "" empty_search
 pause
-replace.exe input.txt output8_true.txt ма ""
+replace.exe input.txt output8_true.txt empty ""
 pause
