@@ -13,10 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{f1e5906b-f62a-4ad1-8b8a-ce920046d67c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\application">
+      <UniqueIdentifier>{5f7d16c9-f844-4e96-abe0-db7a96cee191}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mathematic.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="application.cpp">
+      <Filter>Source Files\application</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="mathematic.h">
+      <Filter>Source Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="application.h">
+      <Filter>Source Files\application</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

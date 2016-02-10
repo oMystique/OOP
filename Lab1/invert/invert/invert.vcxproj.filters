@@ -16,6 +16,9 @@
     <Filter Include="Source Files\matrix">
       <UniqueIdentifier>{3386bffe-052e-4f08-95b6-f4ca90f601a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\application">
+      <UniqueIdentifier>{3cbf3502-5e55-4a79-a3c0-7e7eff6a7098}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,10 +27,16 @@
     <ClCompile Include="matrix.cpp">
       <Filter>Source Files\matrix</Filter>
     </ClCompile>
+    <ClCompile Include="application.cpp">
+      <Filter>Source Files\application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="matrix.h">
       <Filter>Source Files\matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="application.h">
+      <Filter>Source Files\application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

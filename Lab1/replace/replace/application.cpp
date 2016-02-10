@@ -1,65 +1,90 @@
 #include "application.h"
 
-CApplication::CApplication(char *argv[]) :
-	m_searchString(argv[3]),
-	m_replaceString(argv[4]) {
-	if (argv[1] != argv[2]) {
-		m_inputFile.open(argv[1], std::ifstream::in);
-		m_outputFile.open(argv[2], std::ofstream::out);
-		CheckCorrectnessArgs();
-		ReplaceEvent();
-	}
+static const unsigned int COUNT_ARGS = 5;
+static const unsigned int MAX_FILE_SIZE_IN_GB = 2;
+
+void PrintBaseInstructions()
+{
+	std::cout << "       Run program on the commmand line with param-s:" << std::endl;
+	std::cout << "       replace.exe inputFile outputFile searchString replaceString" << std::endl;
+	std::cout << "Good luck. :)" << std::endl;
 }
 
-CApplication::~CApplication() {
-	m_inputFile.close();
-	m_outputFile.close();
-}
-
-void ExitProgram() {
-	system("pause");
-	exit(0);
-}
-
-unsigned __int64 CheckFileSize(std::ifstream &file)  {
+std::streamoff GetFileSizeInGygaBites(std::ifstream &file)
+{
 	std::streamoff currentSeek;
 	currentSeek = file.tellg();
 	file.seekg(0, file.end);
-	unsigned __int64 fileLength;
+	std::streamoff fileLength;
 	fileLength = file.tellg();
 	file.seekg(currentSeek);
 	return fileLength / int(pow(1024, 3));
 }
 
-void CApplication::CheckCorrectnessArgs() {
-	if ((!m_inputFile) || (!m_outputFile)) {
+bool IsOpenedFilesCorrect(std::ifstream &inputFile, std::ofstream &outputFile)
+{
+	if ((!inputFile) || (!outputFile))
+	{
 		std::cout << "ERROR: Don't opening input or output file." << std::endl;
-		ExitProgram();
+		return false;
 	}
-	else if (m_searchString == "") {
-		std::cout << "ERROR: The search string is empty." << std::endl;
-		ExitProgram();
-	}
-	if (CheckFileSize(m_inputFile) >= 2) {
+	if (GetFileSizeInGygaBites(inputFile) >= MAX_FILE_SIZE_IN_GB)
+	{
 		std::cout << "ERROR: Too many file size." << std::endl;
-		ExitProgram();
+		return false;
 	}
+	return true;
 }
 
-void CApplication::ReplaceEvent() {
-	std::string currentString;
-	char tempCharset[255];
-	std::cout << "*_Find string: " << m_searchString.c_str() << ", Replace string: " << m_replaceString.c_str() << std::endl;
-	while (!m_inputFile.eof()) {
-		m_inputFile.getline(tempCharset, 255);
-		currentString = tempCharset;
-		std::string::size_type pos = 0;
-		while ((pos = currentString.find(m_searchString, pos)) != std::string::npos) {
-			currentString.replace(pos, m_searchString.size(), m_replaceString);
-			pos+= m_replaceString.size();
-		}
-		m_outputFile << currentString.c_str() << std::endl;
-		currentString = "";
+void OpenFiles(char const *inputFileName, char const *outputFileName,
+			std::ifstream &inputFile, std::ofstream &outputFile)
+{
+	inputFile.open(inputFileName, std::ifstream::in);
+	outputFile.open(outputFileName, std::ofstream::out);
+}
+
+bool IsCountArgumentsCorrect(int const &argc)
+{
+	if (argc < COUNT_ARGS)
+	{
+		std::cout << "ERROR: Not enough arguments for the program." << std::endl;
+		PrintBaseInstructions();
+		return false;
 	}
-	std::cout << "*_Well. It's all. Have a nice day! :)" << std::endl << std::endl;
+	else if (argc > COUNT_ARGS)
+	{
+		std::cout << "ERROR: Too many arguments." << std::endl;
+		PrintBaseInstructions();
+		return false;
+	}
+	return true;
+}
+
+bool IsSearchStringNotEmpty(std::string const &searchString)
+{
+	if (searchString == "")
+	{
+		std::cout << "ERROR: The search string is empty." << std::endl;
+		return false;
+	}
+	return true;
+}
+
+bool IsArgumentsCorrect(int const &argc, char *argv[],
+					std::ifstream &inputFile, std::ofstream &outputFile)
+{
+	if (!IsCountArgumentsCorrect(argc))
+	{
+		return false;
+	}
+	else if (!IsSearchStringNotEmpty(argv[3]))
+	{
+		return false;
+	}
+	OpenFiles(argv[1], argv[2], inputFile, outputFile);
+	if (!IsOpenedFilesCorrect(inputFile, outputFile))
+	{
+		return false;
+	}
+	return true;
 }

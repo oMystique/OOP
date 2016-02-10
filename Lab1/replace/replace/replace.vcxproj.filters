@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{18c31abc-885d-454e-9f6d-bb672aa1c8a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Application\replace">
+      <UniqueIdentifier>{955fa0e7-03af-4c5a-8087-12def352ce37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,10 +27,16 @@
     <ClCompile Include="application.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
+    <ClCompile Include="replace.cpp">
+      <Filter>Source Files\Application\replace</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
       <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="replace.h">
+      <Filter>Source Files\Application\replace</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
