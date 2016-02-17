@@ -1,7 +1,4 @@
 #pragma once
-#include <string>
-#include <iostream>
-#include <fstream>
+#include "application.h"
 
-void ReplaceEvent(std::string const &searchString, std::string const &replaceString,
-	std::ifstream &inputFile, std::ofstream &outputFile);
+void CopyFileWithStringReplacing(char *argv[]);

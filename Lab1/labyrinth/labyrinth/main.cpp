@@ -1,10 +1,9 @@
-#include "replace.h"
+#include "labyrinth.h"
 
 int main(int argc, char *argv[])
 {
 	if (IsCountArgumentsCorrect(argc))
 	{
-		CopyFileWithStringReplacing(argv);
+		OperationWithFilesAndLabyrinth(argv);
 	}
-	return 0;
 }

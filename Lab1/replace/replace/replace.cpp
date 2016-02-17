@@ -1,30 +1,35 @@
 #include "replace.h"
 
-void ReplaceEvent(std::string const &searchString, std::string const &replaceString,
-				std::ifstream &inputFile, std::ofstream &outputFile)
+void CopyFileWithStringReplacing(char *argv[])
 {
-	std::string currentString;
-	std::string bufferString;
-	std::string::size_type pos;
-	std::cout << "*_Find string: " << searchString <<
-		", Replace string: " << replaceString << std::endl;
-	while (!inputFile.eof())
+	std::ifstream inputFile;
+	std::ofstream outputFile;
+	std::string searchString = argv[3];
+	OpenFiles(argv[1], argv[2], inputFile, outputFile);
+	if ((IsSearchStringNotEmpty(searchString)) && (IsOpenedFilesCorrect(inputFile, outputFile)))
 	{
-		std::getline(inputFile, currentString);
-		bufferString = "";
-		for (pos = 0; pos != currentString.size();)
+		std::string replaceString = argv[4];
+		std::string currentString;
+		std::string bufferString;
+		std::string::size_type pos;
+		while (!inputFile.eof())
 		{
-			if (currentString.substr(pos, searchString.size()) == searchString)
+			std::getline(inputFile, currentString);
+			bufferString = "";
+			for (pos = 0; pos != currentString.size();)
 			{
-				pos += searchString.size();
-				bufferString += replaceString;
+				if (currentString.substr(pos, searchString.size()) == searchString)
+				{
+					pos += searchString.size();
+					bufferString += replaceString;
+				}
+				else
+				{
+					bufferString += currentString[pos];
+					pos++;
+				}
 			}
-			else
-			{
-				bufferString += currentString[pos];
-				pos++;
-			}
+			outputFile << bufferString << std::endl;
 		}
-		outputFile << bufferString << std::endl;
 	}
 }
