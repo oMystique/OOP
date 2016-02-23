@@ -2,4 +2,4 @@
 #include "mathematic.h"
 
 
-bool IsArgumentsCorrect(int const &argc, char *argv[]);
+bool IsCountArgumentsCorrect(int const &argc);

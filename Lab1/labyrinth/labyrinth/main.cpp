@@ -4,6 +4,7 @@ int main(int argc, char *argv[])
 {
 	if (IsCountArgumentsCorrect(argc))
 	{
-		OperationWithFilesAndLabyrinth(argv);
+		return OperationWithFilesAndLabyrinth(argv);
 	}
+	return 1;
 }

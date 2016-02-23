@@ -2,9 +2,9 @@
 
 int main(int argc, char *argv[])
 {
-	if (IsArgumentsCorrect(argc, argv))
+	if (IsCountArgumentsCorrect(argc))
 	{
-		FindingRootsOperations(atof(argv[1]), atof(argv[2]), atof(argv[3]));
+		return FindingRootsOperations(atof(argv[1]), atof(argv[2]), atof(argv[3]));
 	}
-	return 0;
+	return 1;
 }

@@ -7,7 +7,7 @@ void PrintBaseInstructions()
 	std::cout << "Good luck. :)" << std::endl;
 }
 
-bool IsArgumentsCorrect(int const &argc, char *argv[])
+bool IsCountArgumentsCorrect(int const &argc)
 {
 	if (argc < COUNT_ARGS)
 	{
@@ -19,11 +19,6 @@ bool IsArgumentsCorrect(int const &argc, char *argv[])
 	{
 		std::cout << "ERROR: Too many arguments." << std::endl;
 		PrintBaseInstructions();
-		return false;
-	}
-	else if (atof(argv[1]) == 0)
-	{
-		std::cout << "ERROR: A parameter should not be set to 0." << std::endl;
 		return false;
 	}
 	return true;

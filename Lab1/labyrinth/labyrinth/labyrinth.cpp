@@ -1,161 +1,164 @@
 #include "labyrinth.h"
+#include <algorithm>
 #include <string>
 
-static const int MAX_LABYRINTH_SIZE = 100;
-static const int FINAL_POINT = 999;
-static const int WALL = 255;
-static const int START_POINT = 1;
-static const int FREE_WAY = -1;
+SLabyrinth::SLabyrinth()
+{
+	inputLabyrinthArray.resize(MAX_LABYRINTH_SIZE, std::vector<char>(MAX_LABYRINTH_SIZE));
+	finalCoordinateX = 0;
+	finalCoordinateY = 0;
+	countLines = 0;
+	countColumns = 0;
+}
 
 void FillingAnInputArrayOfData(std::ifstream &inputFile, 
-						std::vector<std::vector<char> > &inputLabyrinthArray,
-						int &countLines, int &countColumns)
+						SLabyrinth &labyrinth)
 {
 	std::string str;
-	while (!inputFile.eof()) {
+	while (!inputFile.eof())
+	{
 		std::getline(inputFile, str);
-		if (str.size() > 0) {
-			if (countColumns < static_cast<int>(str.size()))
+		if (str.size() > 0) 
+		{
+			if (labyrinth.countColumns < static_cast<int>(str.size()))
 			{
-				countColumns = static_cast<int>(str.size());
+				labyrinth.countColumns = static_cast<int>(str.size());
 			}
 			for (int i = 0; i != str.size(); i++)
 			{
-				inputLabyrinthArray[countLines][i] = str[i];
+				labyrinth.inputLabyrinthArray[labyrinth.countLines][i] = str[i];
 			}
-			countLines++;
+			labyrinth.countLines++;
 		}
 	}
 }
 
-void SaveLabyrinthOnFile(std::vector<std::vector<char> > &labyrinth,
-					int const &countLines, int const &countColumns,
+void SaveLabyrinthOnFile(SLabyrinth const &labyrinth,
 					std::ofstream &outputFile)
 {
-	for (int i = 0; i < countLines; i++)
+	for (int i = 0; i < labyrinth.countLines; i++)
 	{
-		for (int j = 0; j < countColumns; j++)
+		for (int j = 0; j < labyrinth.countColumns; j++)
 		{
-			outputFile << labyrinth[i][j];
+			outputFile << labyrinth.inputLabyrinthArray[i][j];
 		}
 		outputFile << std::endl;
 	}
 }
 
 bool CopyArrayFromCharToIntIsSuccesfully(std::vector<std::vector<int> > &intArray,
-					std::vector<std::vector<char> > const &charArray,
-					int const &countLines, int const &countColumns,
-					int &finalCoordinateX, int &finalCoordinateY)
+	SLabyrinth &labyrinth)
 {
 	bool startPointMet = false;
 	bool finalPointMet = false;
-	for (int i = 0; i < countLines; i++)
+	for (int i = 0; i < labyrinth.countLines; i++)
 	{
-		for (int j = 0; j < countColumns; j++)
+		for (int j = 0; j < labyrinth.countColumns; j++)
 		{
-			if (charArray[i][j] == '#')
+			char const &currentCharElement = labyrinth.inputLabyrinthArray[i][j];
+			int &currentIntElement = intArray[i][j];
+			if (currentCharElement == '#')
 			{
-				intArray[i][j] = WALL;
+				currentIntElement = WALL;
 			}
-			else if (charArray[i][j] == ' ')
+			else if (currentCharElement == ' ')
 			{
-				intArray[i][j] = FREE_WAY;
+				currentIntElement = FREE_WAY;
 			}
-			else if (charArray[i][j] == 'A')
+			else if (currentCharElement == 'A')
 			{
 				if (startPointMet) 
 				{
+					std::cout << "Found more than one starting points A." << std::endl;
 					return false;
 				}
 				startPointMet = true;
-				intArray[i][j] = START_POINT;
+				currentIntElement = START_POINT;
+				labyrinth.finalCoordinateX = i;
+				labyrinth.finalCoordinateY = j;
 			}
-			else if (charArray[i][j] == 'B') 
+			else if (currentCharElement == 'B')
 			{
-				finalCoordinateX = i;
-				finalCoordinateY = j;
 				if (finalPointMet) 
 				{
+					std::cout << "Found more than one final points B." << std::endl;
 					return false;
 				}
 				finalPointMet = true;
-				intArray[i][j] = FINAL_POINT;
+				currentIntElement = FINAL_POINT;
 			}
 		}
 	}
 	return (startPointMet && finalPointMet);
 }
 
-char StepWayToTop(int &x, int &y, std::vector<std::vector<int> > &workArray,
-		std::vector<std::vector<char> > &outputArray,
-		int const &countLines, int const &countColumns, bool &finalPointMet) 
+char StepWayToTop(SLabyrinth &labyrinth, std::vector<std::vector<int> > &workArray,
+	std::vector<std::vector<char> > &outputArray, bool &finalPointMet)
 {
-	if ((workArray[x][y] != FINAL_POINT) && (workArray[x][y] != START_POINT))
-	{
+	int &x = labyrinth.finalCoordinateX;
+	int &y = labyrinth.finalCoordinateY;
+	int const &currentElement = workArray[x][y];
+	int minElement = std::min((std::min(workArray[x + 1][y], workArray[x - 1][y])),
+		(std::min(workArray[x][y + 1], workArray[x][y - 1])));
+	if ((currentElement != FINAL_POINT) && (currentElement != START_POINT) && (currentElement != WALL))
+	{	
 		outputArray[x][y] = '.';
 	}
-	if (workArray[x][y] == START_POINT)
+	if (currentElement == FINAL_POINT)
 	{
 		finalPointMet = true;
 		return 0;
 	}
-	if (workArray[x][y] == WALL)
-	{
+	if (minElement > workArray[x][y]) {
 		return 0;
 	}
-
-	if ((workArray[x + 1][y] < workArray[x][y]) && (x + 1 <= countLines))
-	{ 
-		x++;                        
-		return 1;                   
-	}                             
-	if ((workArray[x - 1][y] < workArray[x][y]) && (x - 1 >= 0))
-	{ 
-		x--;                    
-		return 1;                   
-	}                               
-	if ((y + 1 <= countColumns) && (workArray[x][y + 1] < workArray[x][y]))
-	{ 
-		y++;                     
-		return 1;                  
-	}                               
+	if ((minElement == workArray[x + 1][y]) && (workArray[x + 1][y] < currentElement) && (x + 1 <= labyrinth.countLines))
+	{
+		x++;
+		return 1;
+	}
+	if ((minElement == workArray[x - 1][y]) && (workArray[x - 1][y] < currentElement) && (x - 1 >= 0))
+	{
+		x--;
+		return 1;
+	}
+	if ((y + 1 <= labyrinth.countColumns) && (minElement == workArray[x][y + 1]) && (workArray[x][y + 1] < currentElement))
+	{
+		y++;
+		return 1;
+	}
 	y--;
-	return 1;                    
+	return 1;
 }
 
-int WavePropagation(int const &number, std::vector<std::vector<int> > &workLabyrinthArray,
-		int const &countLines, int const &countColumns)
+void WorkingWithCell(int &currentLabyrinthElement, int &isOver,
+	int const &minBorder, int const &maxBorder, int const &nextValue) 
+{
+	if ((currentLabyrinthElement == FREE_WAY) && (minBorder < maxBorder))
+	{
+		currentLabyrinthElement = nextValue;
+		isOver = 1;
+	}
+}
+
+int WavePropagation(int const &number, std::vector<std::vector<int> > &waveArray,
+	SLabyrinth const &labyrinth)
 {                             
-	int flag = 0;        
-	for (int i = 0; i < countColumns; i++) 
+	int isOver = 0;
+	for (int i = 0; i < labyrinth.countColumns; i++) 
 	{    
-		for (int j = 0; j < countLines; j++)    
+		for (int j = 0; j < labyrinth.countLines; j++)    
 		{
-			if (workLabyrinthArray[j][i] == number) {
-				if ((workLabyrinthArray[j + 1][i] == FREE_WAY) && (j + 1 < countLines))
-				{    
-					workLabyrinthArray[j + 1][i] = number + 1;
-					flag = 1;                 
-				}
-				if ((workLabyrinthArray[j - 1][i] == FREE_WAY) && (j - 1 >= 0))
-				{
-					workLabyrinthArray[j - 1][i] = number + 1;
-					flag = 1;
-				}
-				if ((workLabyrinthArray[j][i + 1] == FREE_WAY) && (i + 1 < countColumns))
-				{
-					workLabyrinthArray[j][i + 1] = number + 1;
-					flag = 1;
-				}
-				if ((workLabyrinthArray[j][i - 1] == FREE_WAY) && (i - 1 >= 0))
-				{
-					workLabyrinthArray[j][i - 1] = number + 1;
-					flag = 1;
-				}
+			if (waveArray[j][i] == number) 
+			{
+				WorkingWithCell(waveArray[j + 1][i], isOver, j + 1, labyrinth.countLines, number + 1);
+				WorkingWithCell(waveArray[j - 1][i], isOver, -1, j - 1, number + 1);
+				WorkingWithCell(waveArray[j][i + 1], isOver, i + 1, labyrinth.countColumns, number + 1);
+				WorkingWithCell(waveArray[j][i - 1], isOver, -1, i - 1, number + 1);
 			}
 		}
 	}
-	return flag;
+	return isOver;
 }
 
 bool FilesIsCorrect(std::ifstream &inputFile, std::ofstream &outputFile,
@@ -169,46 +172,45 @@ bool FilesIsCorrect(std::ifstream &inputFile, std::ofstream &outputFile,
 	return true;
 }
 
-void OperationWithLabyrinth(std::vector<std::vector<char> > &inputLabyrinthArray,
-						int const &countLines, int const &countColumns) 
+int FindingWay(SLabyrinth &labyrinth)
 {
-	std::vector<std::vector<int> > workLabyrinthArray(countLines, std::vector<int>(countColumns));
-	int finalCoordinateX;
-	int finalCoordinateY;
-	if (CopyArrayFromCharToIntIsSuccesfully(workLabyrinthArray, inputLabyrinthArray,
-		countLines, countColumns, finalCoordinateX, finalCoordinateY))
+	std::vector<std::vector<int> > waveArray(labyrinth.countLines, std::vector<int>(labyrinth.countColumns));
+	if (CopyArrayFromCharToIntIsSuccesfully(waveArray, labyrinth))
 	{
-		int number = START_POINT;
-		while (WavePropagation(number, workLabyrinthArray, countLines, countColumns))
+		int number = 1;
+		while (WavePropagation(number, waveArray, labyrinth))
 		{
 			number++;
 		}
 		bool finalPointMet = false;
-		std::vector<std::vector<char> > outputLabyrinthArray = inputLabyrinthArray;
-		while (StepWayToTop(finalCoordinateX, finalCoordinateY, workLabyrinthArray,
-			outputLabyrinthArray, countLines, countColumns, finalPointMet))
+		std::vector<std::vector<char> > outputLabyrinthArray = labyrinth.inputLabyrinthArray;
+		while (StepWayToTop(labyrinth, waveArray,
+			outputLabyrinthArray, finalPointMet))
 		{
 		}
 		if (finalPointMet) {
-			inputLabyrinthArray = outputLabyrinthArray;
+			labyrinth.inputLabyrinthArray = outputLabyrinthArray;
 		}
+		return 1;
 	}
+	return 0;
 }
 
-void OperationWithFilesAndLabyrinth(char *argv[]) 
+int OperationWithFilesAndLabyrinth(char *argv[]) 
 {
 	std::ifstream inputLabyrinthFile;
 	std::ofstream outputLabyrinthFile;
-	if (!FilesIsCorrect(inputLabyrinthFile, outputLabyrinthFile, argv[1], argv[2])) 
+	if (!FilesIsCorrect(inputLabyrinthFile, outputLabyrinthFile, argv[1], argv[2]))
 	{
-		return;
+		return 1;
 	}
-	std::vector<std::vector<char> > inputLabyrinthArray(MAX_LABYRINTH_SIZE, std::vector<char>(MAX_LABYRINTH_SIZE));
-	int countLines = 0;
-	int countColumns = 0;
-	FillingAnInputArrayOfData(inputLabyrinthFile, inputLabyrinthArray, countLines, countColumns);
-	OperationWithLabyrinth(inputLabyrinthArray, countLines, countColumns);
-	SaveLabyrinthOnFile(inputLabyrinthArray, countLines, countColumns, outputLabyrinthFile);
+	SLabyrinth labyrinth;
+	FillingAnInputArrayOfData(inputLabyrinthFile, labyrinth);
+	if (FindingWay(labyrinth)) {
+		SaveLabyrinthOnFile(labyrinth, outputLabyrinthFile);
+		return 0;
+	}
+	return 1;
 }
 
 

@@ -1,6 +1,6 @@
 #include "replace.h"
 
-void CopyFileWithStringReplacing(char *argv[])
+int CopyFileWithStringReplacing(char *argv[])
 {
 	std::ifstream inputFile;
 	std::ofstream outputFile;
@@ -31,5 +31,7 @@ void CopyFileWithStringReplacing(char *argv[])
 			}
 			outputFile << bufferString << std::endl;
 		}
+		return 0;
 	}
+	return 1;
 }

@@ -1,0 +1,9 @@
+Test1 
+...OK 
+Test2 
+...OK 
+Test3 
+ERROR: Too many arguments.
+       Run program on the commmand line with param-s:
+       replace.exe inputFile outputFile searchString replaceString
+Good luck. :)

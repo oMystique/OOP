@@ -4,7 +4,7 @@ int main(int argc, char *argv[])
 {
 	if (IsCountArgumentsCorrect(argc))
 	{
-		CopyFileWithStringReplacing(argv);
+		return CopyFileWithStringReplacing(argv);
 	}
-	return 0;
+	return 1;
 }

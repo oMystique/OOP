@@ -24,17 +24,24 @@ void CalculateAndPrintRoots(double const &a, double const &b, double const &d)
 	}
 }
 
-void FindingRootsOperations(double a, double b, double c)
+int FindingRootsOperations(double a, double b, double c)
 {
 	double d;
 	d = CalculateDiscriminant(a, b, c);
-	if (d < 0)
+	if (a == 0)
+	{
+		std::cout << "ERROR: A parameter should not be set to 0." << std::endl;
+		return 1;
+	}
+	else if (d < 0)
 	{
 		std::cout << "*_Sorry, but discriminant is less than zero. There is no real root. ";
+		return 1;
 	}
 	else
 	{
 		CalculateAndPrintRoots(a, b, d);
 	}
+	return 0;
 }
 
