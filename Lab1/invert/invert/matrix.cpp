@@ -1,7 +1,13 @@
 #include "matrix.h"
 #include <iomanip>
 
-float FindAndCalculateConcreteMinor(int const &iPos, int const &jPos, std::vector<std::vector<float> > const &matrix) 
+float GetDegreeOfElement(int iPos, int jPos)
+{
+	return static_cast<float>(iPos + 1 + jPos + 1);
+}
+
+float FindAndCalculateConcreteMinor(int const &iPos, int const &jPos,
+	std::vector<std::vector<float> > const &matrix) 
 {
 	float minor[4];
 	int posMinor = 0;
@@ -16,7 +22,8 @@ float FindAndCalculateConcreteMinor(int const &iPos, int const &jPos, std::vecto
 			}
 		}
 	}
-	return (float(pow((-1), (iPos + 1 + jPos + 1))) * (minor[0] * minor[3] - minor[2] * minor[1]));
+	return (static_cast<float>(pow((-1), GetDegreeOfElement(iPos, jPos))) *
+		(minor[0] * minor[3] - minor[2] * minor[1]));
 }
 
 float CalculateDeterminant(std::vector<std::vector<float> > const &matrix)
@@ -36,7 +43,6 @@ bool IsCorrectDeterminant(float const &determinant)
 	}
 	return true;
 }
-
 
 void CalculateMatrixMinors(std::vector<std::vector<float> > const &matrix,
 				std::vector<std::vector<float> > &minorMatrix)
@@ -62,7 +68,8 @@ void TransposeMatrix(std::vector<std::vector<float> > &matrix,
 	}
 }
 
-void FinalCalculateAndPrintMatrix(std::vector<std::vector<float> > &matrix, float const &determinant)
+void FinalCalculateAndPrintMatrix(std::vector<std::vector<float> > &matrix,
+	float const &determinant)
 {
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
 	for (unsigned int i = 0; i < MATRIX_SIZE; i++)
@@ -75,16 +82,17 @@ void FinalCalculateAndPrintMatrix(std::vector<std::vector<float> > &matrix, floa
 	}
 }
 
-void InvertMatrix(std::vector<std::vector<float> > &matrix)
+bool InvertMatrix(std::vector<std::vector<float> > &matrix)
 {
 	float determinant;
 	std::vector<std::vector<float> > minorMatrix(MATRIX_SIZE, std::vector<float>(MATRIX_SIZE));
 	determinant = CalculateDeterminant(matrix);
 	if (!IsCorrectDeterminant(determinant)) 
 	{
-		return;
+		return false;
 	}
 	CalculateMatrixMinors(matrix, minorMatrix);
 	TransposeMatrix(matrix, minorMatrix);
 	FinalCalculateAndPrintMatrix(matrix, determinant);
+	return true;
 }

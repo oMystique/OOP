@@ -1,6 +1,5 @@
 #include "application.h"
 
-
 static const unsigned int COUNT_ARGS = 2;
 
 void PrintBaseInstructions()
@@ -10,17 +9,17 @@ void PrintBaseInstructions()
 	std::cout << "Good luck. :)" << std::endl;
 }
 
-bool IsOpenedFilesCorrect(std::ifstream &inputFile)
+bool IsOpenedFileCorrect(std::ifstream &inputFile)
 {
 	if (!inputFile)
 	{
-		std::cout << "ERROR: Don't opening input or output file." << std::endl;
+		std::cout << "ERROR: Don't opening input file." << std::endl;
 		return false;
 	}
 	return true;
 }
 
-void OpenFiles(char const *inputFileName, std::ifstream &inputFile)
+void OpenFile(char const *inputFileName, std::ifstream &inputFile)
 {
 	inputFile.open(inputFileName, std::ifstream::in);
 }
@@ -54,19 +53,15 @@ void FillingAnArrayOfData(std::ifstream &inputFile, std::vector<std::vector<floa
 	}
 }
 
-bool IsArgumentsCorrect(int const &argc, char *argv[], std::vector<std::vector<float> > &matrix)
+bool ParsingFileAndIvertMatrix(char *nameInputFile) 
 {
-	if (!IsCountArgumentsCorrect(argc))
-	{
-		return false;
-	}
 	std::ifstream inputFile;
-	OpenFiles(argv[1], inputFile);
-	if (!IsOpenedFilesCorrect(inputFile))
+	OpenFile(nameInputFile, inputFile);
+	if (IsOpenedFileCorrect(inputFile))
 	{
-		return false;
+		std::vector<std::vector<float> > matrix(MATRIX_SIZE, std::vector<float>(MATRIX_SIZE));
+		FillingAnArrayOfData(inputFile, matrix);
+		return InvertMatrix(matrix);
 	}
-	FillingAnArrayOfData(inputFile, matrix);
-	inputFile.close();
-	return true;
+	return false;
 }

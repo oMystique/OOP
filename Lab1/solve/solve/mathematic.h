@@ -6,5 +6,4 @@
 static const unsigned int COUNT_ARGS = 4;
 static const double GET_HALF = 2.f;
 
-
-int FindingRootsOperations(double a, double b, double c);
+bool FindingRootsOperations(double a, double b, double c);

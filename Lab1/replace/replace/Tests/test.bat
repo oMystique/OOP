@@ -1,5 +1,5 @@
-@echo off
-SET program="replace.exe"
+rem @echo off
+SET program="%1"
 if %program% == "" goto err
 
 echo Test1 > out.txt
@@ -14,7 +14,7 @@ if ERRORLEVEL 0 echo ...OK >> out.txt
 
 echo Test3 >> out.txt
 %program% input.txt output3.txt ma mama mamo4ka >> out.txt
-if ERRORLEVEL 1 goto testFailed
+if NOT ERRORLEVEL 1 goto testFailed
 if ERRORLEVEL 0 echo ...OK >> out.txt
 
 echo Test4 >> out.txt
@@ -24,12 +24,12 @@ if ERRORLEVEL 0 echo ...OK >> out.txt
 
 echo Test5 >> out.txt
 %program% input.txt output4_false.txt ma >> out.txt
-if ERRORLEVEL 1 goto testFailed
+if NOT ERRORLEVEL 1 goto testFailed
 if ERRORLEVEL 0 echo ...OK >> out.txt
 
 echo Test6 >> out.txt
 %program% input.txt input.txt output7_false.txt "" empty >> out.txt
-if ERRORLEVEL 1 goto testFailed
+if NOT ERRORLEVEL 1 goto testFailed
 if ERRORLEVEL 0 echo ...OK >> out.txt
 
 echo OK

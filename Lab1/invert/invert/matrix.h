@@ -5,4 +5,4 @@
 
 static const int MATRIX_SIZE = 3;
 
-void InvertMatrix(std::vector<std::vector<float> > &matrix);
+bool InvertMatrix(std::vector<std::vector<float> > &matrix);

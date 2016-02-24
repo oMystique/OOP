@@ -19,6 +19,9 @@
     <Filter Include="Source Files\application">
       <UniqueIdentifier>{3cbf3502-5e55-4a79-a3c0-7e7eff6a7098}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Tests">
+      <UniqueIdentifier>{3886f87c-b01c-44ca-b4ad-50998600bc02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -38,5 +41,27 @@
     <ClInclude Include="application.h">
       <Filter>Source Files\application</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Tests\matrix.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="Tests\matrix2.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="Tests\matrix3.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="Tests\matrix4.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+    <Text Include="Tests\matrix5.txt">
+      <Filter>Source Files\Tests</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tests\test.bat">
+      <Filter>Source Files\Tests</Filter>
+    </None>
   </ItemGroup>
 </Project>

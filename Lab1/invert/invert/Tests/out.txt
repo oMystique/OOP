@@ -1,0 +1,26 @@
+Test1 
+0.086 -0.063 0.127 
+0.189 -0.137 -0.034 
+-0.002 0.092 -0.031 
+...OK 
+Test2 
+1.000 -1.000 1.000 
+-38.000 41.000 -34.000 
+27.000 -29.000 24.000 
+...OK 
+Test3 
+*_Sorry, but the matrix determinant = 0
+*_The inverse matrix does not exist.
+...OK 
+Test4 
+1.000 -0.000 0.000 
+-0.000 1.000 -0.000 
+0.000 -0.000 1.000 
+...OK 
+Test5 
+*_Sorry, but the matrix determinant = 0
+*_The inverse matrix does not exist.
+...OK 
+Test6 
+ERROR: Don't opening input file.
+...OK 

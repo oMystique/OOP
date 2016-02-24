@@ -1,8 +1,0 @@
-Test1 
--5.4495 -0.5505
-Test2 
--1.0000 -3.0000
-Test3 
--1.0000
-Test4 
-*_Sorry, but discriminant is less than zero. There is no real root. 

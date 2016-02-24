@@ -60,31 +60,16 @@ bool IsCountArgumentsCorrect(int const &argc)
 	return true;
 }
 
-bool IsSearchStringNotEmpty(std::string const &searchString)
-{
-	if (searchString == "")
-	{
-		std::cout << "ERROR: The search string is empty." << std::endl;
-		return false;
-	}
-	return true;
-}
 
-bool IsArgumentsCorrect(int const &argc, char *argv[],
-					std::ifstream &inputFile, std::ofstream &outputFile)
+bool CopyFileWithStringReplacing(char *nameInputFile, char *nameOutputFile, std::string const &searchString, std::string replaceString)
 {
-	if (!IsCountArgumentsCorrect(argc))
+	std::ifstream inputFile;
+	std::ofstream outputFile;
+	OpenFiles(nameInputFile, nameOutputFile, inputFile, outputFile);
+	if ((IsSearchStringNotEmpty(searchString)) && (IsOpenedFilesCorrect(inputFile, outputFile)))
 	{
-		return false;
+		StringReplacing(searchString, replaceString, inputFile, outputFile);
+		return true;
 	}
-	else if (!IsSearchStringNotEmpty(argv[3]))
-	{
-		return false;
-	}
-	OpenFiles(argv[1], argv[2], inputFile, outputFile);
-	if (!IsOpenedFilesCorrect(inputFile, outputFile))
-	{
-		return false;
-	}
-	return true;
+	return false;
 }
