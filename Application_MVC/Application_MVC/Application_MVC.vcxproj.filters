@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{23b94661-ed69-49b9-83bd-e14fb0050472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View">
+      <UniqueIdentifier>{dcfe8309-1f11-4a2c-85b9-ee84d8a4dd94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controller">
+      <UniqueIdentifier>{f358a7c4-f4a4-4a17-b89e-8f7d56db1349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Observer">
+      <UniqueIdentifier>{5d6c0365-2c95-48d0-9ef1-e4ead584a5e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Interface">
+      <UniqueIdentifier>{cce55723-8823-4ce1-ad27-ca6a00dde128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Shapes">
+      <UniqueIdentifier>{301fce6b-e815-4a8b-9812-c22935201e1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Shapes\Circle">
+      <UniqueIdentifier>{b4fb21dd-e8a9-415a-9362-2b0e3144598a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Shapes\Rectangle">
+      <UniqueIdentifier>{989f632c-e319-4288-becd-288164a4a947}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Shapes\Triangle">
+      <UniqueIdentifier>{7cfd2754-22e0-4cd9-8734-0bb335d4ef98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Shapes\Frame">
+      <UniqueIdentifier>{fe9e0501-650b-457a-8d72-54ebb0863387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Interface\Button">
+      <UniqueIdentifier>{d090665e-ec7d-415f-8e17-04b72333feb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\Interface\Form">
+      <UniqueIdentifier>{6b18e952-f3ca-4990-988a-e84e7cfe4bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{415c95b7-ef08-4b26-b4ff-7f5960f7e407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Observer\ShapeObs">
+      <UniqueIdentifier>{3bbed04d-05e8-4fa0-8c4f-4f44363c7c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Observer\CommandObs">
+      <UniqueIdentifier>{10613699-950b-46fa-89b4-23d8b2095093}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model\DomainModel">
+      <UniqueIdentifier>{e7c5d5b5-6e98-4da9-9c70-439aff703dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model\ShapeLogic">
+      <UniqueIdentifier>{42621b46-4ea2-4b5c-926b-7f08f2f320a4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="view.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="controller.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="circle.cpp">
+      <Filter>Source Files\View\Shapes\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="rectangle.cpp">
+      <Filter>Source Files\View\Shapes\Rectangle</Filter>
+    </ClCompile>
+    <ClCompile Include="triangle.cpp">
+      <Filter>Source Files\View\Shapes\Triangle</Filter>
+    </ClCompile>
+    <ClCompile Include="frame.cpp">
+      <Filter>Source Files\View\Shapes\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="application_button.cpp">
+      <Filter>Source Files\View\Interface\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="application_form.cpp">
+      <Filter>Source Files\View\Interface\Form</Filter>
+    </ClCompile>
+    <ClCompile Include="interface_element.cpp">
+      <Filter>Source Files\View\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="application.cpp">
+      <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="commandObservable.cpp">
+      <Filter>Source Files\Observer\CommandObs</Filter>
+    </ClCompile>
+    <ClCompile Include="shapeObservable.cpp">
+      <Filter>Source Files\Observer\ShapeObs</Filter>
+    </ClCompile>
+    <ClCompile Include="figures_graphic.cpp">
+      <Filter>Source Files\View\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="domainModel.cpp">
+      <Filter>Source Files\Model\DomainModel</Filter>
+    </ClCompile>
+    <ClCompile Include="shapeLogic.cpp">
+      <Filter>Source Files\Model\ShapeLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="viewCreate.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="model.h">
+      <Filter>Source Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="view.h">
+      <Filter>Source Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="controller.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="circle.h">
+      <Filter>Source Files\View\Shapes\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="rectangle.h">
+      <Filter>Source Files\View\Shapes\Rectangle</Filter>
+    </ClInclude>
+    <ClInclude Include="triangle.h">
+      <Filter>Source Files\View\Shapes\Triangle</Filter>
+    </ClInclude>
+    <ClInclude Include="frame.h">
+      <Filter>Source Files\View\Shapes\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="application_buttons.h">
+      <Filter>Source Files\View\Interface\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="application_forms.h">
+      <Filter>Source Files\View\Interface\Form</Filter>
+    </ClInclude>
+    <ClInclude Include="interface_element.h">
+      <Filter>Source Files\View\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="resources.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="application.h">
+      <Filter>Source Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="commandObservable.h">
+      <Filter>Source Files\Observer\CommandObs</Filter>
+    </ClInclude>
+    <ClInclude Include="commandObserver.h">
+      <Filter>Source Files\Observer\CommandObs</Filter>
+    </ClInclude>
+    <ClInclude Include="shapeObserver.h">
+      <Filter>Source Files\Observer\ShapeObs</Filter>
+    </ClInclude>
+    <ClInclude Include="shapeObservable.h">
+      <Filter>Source Files\Observer\ShapeObs</Filter>
+    </ClInclude>
+    <ClInclude Include="figures_graphic.h">
+      <Filter>Source Files\View\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="domainModel.h">
+      <Filter>Source Files\Model\DomainModel</Filter>
+    </ClInclude>
+    <ClInclude Include="shapeLogic.h">
+      <Filter>Source Files\Model\ShapeLogic</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
