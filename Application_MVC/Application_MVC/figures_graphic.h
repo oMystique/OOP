@@ -1,5 +1,5 @@
 #pragma once
-#include "application_buttons.h"
+#include "resources.h"
 
 class CShapeGraphic 
 {

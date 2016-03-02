@@ -157,6 +157,7 @@
     <ClCompile Include="frame.cpp" />
     <ClCompile Include="interface_element.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="commandObservable.cpp" />
     <ClCompile Include="rectangle.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="figures_graphic.h" />
     <ClInclude Include="frame.h" />
     <ClInclude Include="interface_element.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="commandObservable.h" />
     <ClInclude Include="commandObserver.h" />

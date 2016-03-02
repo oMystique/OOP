@@ -1,5 +1,6 @@
 #pragma once
 #include "frame.h"
+#include "menu.h"
 
 class CView : public ICommandObserver, public CCommandObservable,
 			public IShapeObserver, public CShapeObservable
@@ -9,8 +10,6 @@ public:
 	void Update(CCommandObservable *observable, CommandType command) override;
 	void Update(CShapeObservable *observable, Vector2f const &size,
 		Vector2f const &pos, unsigned const &index) override;
-public:
-	bool m_isFrameAction;
 private:
 	FloatRect ShapeEvent(Vector2f const &size,
 		Vector2f const &pos, unsigned const &index);
@@ -27,18 +26,26 @@ private:
 	void ClickingLeftButtonEvent();
 	void ReleasingLeftButtonEvent();
 	void ChangeSelectedShape(int const &index);
-	bool ShapeWasChoosen(CShapeGraphic *figure) const;
-	bool FigureButtonIsSelect(CInterfaceElement &element) const;
+	void SetDiffBetweenShapePosAndMousePos(Vector2f const &pos);
+	void MainUserInterfaceEvents();
+	void ShapesDraw();
+	void MainUIDraw();
+	void MenuDraw();
+	bool ShapeWasChoosen(CShapeGraphic *figure, Vector2f const &pos) const;
+	bool ButtonIsSelect(CInterfaceElement &element) const;
 	bool SelectedPointForResizing(int const &index) const;
 	bool ShapeShouldBeRemoved(int const &index) const;
 	bool SelectedShapeIsNotSelected(int const &index) const;
 private:
-	unique_ptr<RenderWindow> m_window = nullptr;
-	unique_ptr<CShapeGraphic> m_selectedShape = nullptr;
-	unique_ptr<CFrame> m_frame = nullptr;
+	unique_ptr<RenderWindow> m_pWindow = nullptr;
+	unique_ptr<CShapeGraphic> m_pSelectedShape = nullptr;
+	unique_ptr<CFrame> m_pFrame = nullptr;
+	unique_ptr<CMenu> m_pMenu = nullptr;
 	vector<unique_ptr<CInterfaceElement>> m_interfaceElements;
 	vector<unique_ptr<CShapeGraphic>> m_shapes;
 	ContextSettings m_settings;
 	CommandType m_command;
 	bool m_mouseClicked;
+	bool m_isFrameAction;
+	Vector2f m_diffBetweenShapePosAndMousePos;
 };

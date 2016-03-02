@@ -64,6 +64,9 @@
     <Filter Include="Source Files\Model\ShapeLogic">
       <UniqueIdentifier>{42621b46-4ea2-4b5c-926b-7f08f2f320a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\View\Interface\Menu">
+      <UniqueIdentifier>{e895a578-532d-4042-9d46-2549d925922a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="viewCreate.cpp">
       <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>Source Files\View\Interface\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="shapeLogic.h">
       <Filter>Source Files\Model\ShapeLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Source Files\View\Interface\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ bool CModel::ApplicationWorks() const
 void CModel::UpdateShapes()
 {
 	auto shapesArray = m_domainModel->GetShapesArray();
-	auto index = shapesArray.size();
+	unsigned int index = shapesArray.size();
 	for (auto it = shapesArray.rbegin(); it != shapesArray.rend(); it++)
 	{
 		index--;

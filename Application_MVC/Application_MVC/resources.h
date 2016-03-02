@@ -18,6 +18,9 @@ static const Vector2f MENU_BUTTON_SIZE = { 40, 20 };
 static const Vector2f FIGURE_BUTTON_RECT = { 70, 66 };
 static const Vector2f ACT_FIGURE_RECT = { FIGURE_BUTTON_RECT.x * 3.f, FIGURE_BUTTON_RECT.y * 3.f };
 static const Vector2f RECTANGLE_SIZE_CORRECTION = { 0.7f, 0.4f };
+static const Vector2f MENU_WORKSPACE_POS = { 2.5f, 22.5f };
+static const Vector2f MENU_WORKSPACE_SIZE = { 120.f, 60.f };
+static const Vector2f MENU_SUBBUTTON_SIZE = { 120.f, 20.f };
 
 //FLOAT_CONSTS:
 static const float RECTANGLE_BUTTON_POS_CORRECTION = 2.5f;
@@ -36,6 +39,9 @@ static const String MENU_BUTTON_STRING = "Menu";
 static const String TEXT_FONT_PATH = "font.ttf";
 static const String NONE_TYPE_STRING = "";
 static const String ACTION_FIGURE_STRING = "actFigure";
+static const String OPEN_FROM_STRING = "OPEN FROM";
+static const String SAVE_AS_STRING = "SAVE AS";
+static const String EXIT_STRING = "EXIT";
 
 //COLOR_CONSTS:
 static const Color DEFAULT_FORM_COLOR = Color(245, 245, 245, 255);

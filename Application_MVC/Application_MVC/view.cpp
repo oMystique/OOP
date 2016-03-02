@@ -1,12 +1,13 @@
 #include "view.h"
 #include <iostream>
+
 CView::CView(): m_mouseClicked(false), 
-	m_frame(make_unique<CFrame>()),
-	m_window(make_unique<RenderWindow>(VideoMode(DEFAULT_WINDOW_SIZE.x,
+	m_pFrame(make_unique<CFrame>()),
+	m_pWindow(make_unique<RenderWindow>(VideoMode(DEFAULT_WINDOW_SIZE.x,
 	DEFAULT_WINDOW_SIZE.y),
 	APPLICATION_TITLE))
 {
-	m_frame->ResetFigure({ NULL, NULL }, { NULL - FRAME_POINT_RADIUS,  NULL - FRAME_POINT_RADIUS });
+	m_pFrame->ResetFigure({ NULL, NULL }, { NULL - FRAME_POINT_RADIUS,  NULL - FRAME_POINT_RADIUS });
 	m_settings.antialiasingLevel = 8;
 	CreatingApplicationWindow();
 }
@@ -17,58 +18,100 @@ Vector2f GetMousePos(RenderWindow &window)
 	return window.mapPixelToCoords(pixelPos);
 }
 
-void CView::Draw() 
+void CView::ShapesDraw()
 {
-	m_window->clear(Color(255, 255, 255, 255));
-	for (auto &element : m_interfaceElements)
-	{
-		element->Draw(*m_window);
-	}
 	for (auto it = m_shapes.begin(); it != m_shapes.end();)
 	{
-		if ((*it)->isDeleted) 
+		if ((*it)->isDeleted)
 		{
 			m_shapes.erase(it);
-			m_selectedShape.release();
-			m_frame->ResetFigure({ NULL, NULL }, { NULL - FRAME_POINT_RADIUS,  NULL - FRAME_POINT_RADIUS });
+			m_pSelectedShape.release();
+			m_pFrame->ResetFigure({ NULL, NULL }, { NULL - FRAME_POINT_RADIUS,  NULL - FRAME_POINT_RADIUS });
 			break;
 		}
 		else
 		{
-			(*it)->Draw(*m_window);
+			(*it)->Draw(*m_pWindow);
 			it++;
 		}
 	}
-	m_frame->Draw(*m_window);
-	m_window->display();
 }
 
-bool CView::FigureButtonIsSelect(CInterfaceElement &element) const
+void CView::MainUIDraw()
 {
-	return ((element.GetRect().contains(GetMousePos(*m_window))) &&
-		m_mouseClicked && (element.GetName() != MENU_BUTTON_STRING));
+	for (auto &element : m_interfaceElements)
+	{
+		element->Draw(*m_pWindow);
+	}
+}
+
+void CView::MenuDraw()
+{
+	if (m_pMenu)
+	{
+		m_pMenu->DrawMenu(*m_pWindow);
+	}
+}
+
+void CView::Draw() 
+{
+	m_pWindow->clear(Color(255, 255, 255, 255));
+	MainUIDraw();
+	ShapesDraw();
+	MenuDraw();
+	m_pFrame->Draw(*m_pWindow);
+	m_pWindow->display();
+}
+
+bool CView::ButtonIsSelect(CInterfaceElement &element) const
+{
+	return ((element.GetRect().contains(GetMousePos(*m_pWindow))) &&
+		m_mouseClicked);
+}
+
+void CView::MainUserInterfaceEvents()
+{
+	for (auto &element : m_interfaceElements)
+	{
+		element->ProcessEvent(GetMousePos(*m_pWindow));
+		if (ButtonIsSelect(*element))
+		{
+			if (element->GetName() != MENU_BUTTON_STRING)
+			{
+				m_command = CreateShape;
+				CreateGraphicShape(element->GetName());
+			}
+			else
+			{
+				m_pMenu = make_unique<CMenu>();
+			}
+			m_mouseClicked = false;
+		}
+	}
 }
 
 void CView::CheckButtonEvents()
 {
-	for (auto &element : m_interfaceElements)
+	if (!m_pMenu)
 	{
-		element->ProcessEvent(GetMousePos(*m_window));
-		if (FigureButtonIsSelect(*element))
-		{
-			m_command = CreateShape;
-			CreateGraphicShape(element->GetName());
-			m_mouseClicked = false;
-			break;
-		}
+		MainUserInterfaceEvents();
+	}
+	else
+	{
+		m_pMenu->MenuEvents(GetMousePos(*m_pWindow));
 	}
 }
 
 void CView::ClickingLeftButtonEvent()
 {
-	if (m_frame->GetStartMousePos().x == NULL)
+	if (m_pMenu && !m_pMenu->GetMenuWorkSpaceRect().contains(GetMousePos(*m_pWindow)))
 	{
-		m_frame->SetStartMousePos(GetMousePos(*m_window));
+		m_pMenu.release();
+		m_pMenu = nullptr;
+	}
+	else if (m_pFrame->GetStartMousePos().x == NULL)
+	{
+		m_pFrame->SetStartMousePos(GetMousePos(*m_pWindow));
 	}
 	m_mouseClicked = true;
 }
@@ -77,13 +120,14 @@ void CView::ReleasingLeftButtonEvent()
 {
 	m_mouseClicked = false;
 	m_isFrameAction = false;
-	m_frame->SetStartMousePos({ NULL, NULL });
+	m_diffBetweenShapePosAndMousePos = { NULL, NULL };
+	m_pFrame->SetStartMousePos({ NULL, NULL });
 }
 
 void CView::AppPollEvent() 
 {
 	Event event;
-	while (m_window->pollEvent(event))
+	while (m_pWindow->pollEvent(event))
 	{
 		if (event.type == Event::Closed)
 		{
@@ -109,10 +153,10 @@ void CView::ProcessEvent()
 	m_command = None;
 	AppPollEvent();
 	CheckButtonEvents();
-	if (m_selectedShape != nullptr) 
+	if (m_pSelectedShape != nullptr) 
 	{
-		m_frame->ResetFigure({ m_selectedShape->GetRect().width, m_selectedShape->GetRect().height },
-		{ m_selectedShape->GetRect().left, m_selectedShape->GetRect().top });
+		m_pFrame->ResetFigure({ m_pSelectedShape->GetRect().width, m_pSelectedShape->GetRect().height },
+		{ m_pSelectedShape->GetRect().left, m_pSelectedShape->GetRect().top });
 	}
 }
 
@@ -129,27 +173,27 @@ void CView::Update(CCommandObservable *observable, CommandType command)
 	NotifyCommandUpdate(m_command);
 }
 
-bool CView::ShapeWasChoosen(CShapeGraphic *figure) const
+bool CView::ShapeWasChoosen(CShapeGraphic *figure, Vector2f const &pos) const
 {
-	return (figure->GetRect().contains(GetMousePos(*m_window)) &&
-		(m_mouseClicked) && GetIntersects(GetMousePos(*m_window), figure->GetRect()));
+	return (figure->GetRect().contains(GetMousePos(*m_pWindow)) &&
+		(m_mouseClicked) && GetIntersects(pos, figure->GetRect()));
 }
 
 FloatRect CView::ResizingFrameChoosenPoint(Vector2f const &size, Vector2f const &pos)
 {
 	m_isFrameAction = true;
-	return { m_frame->FrameEvent(GetMousePos(*m_window), pos, size) };
+	return { m_pFrame->FrameEvent(GetMousePos(*m_pWindow), pos, size) };
 }
 
 bool CView::SelectedPointForResizing(int const &index) const
 {
-	return ((m_selectedShape == m_shapes[index]) && (m_mouseClicked)
-		&& (m_frame->IsAction(GetMousePos(*m_window))));
+	return ((m_pSelectedShape == m_shapes[index]) && (m_mouseClicked)
+		&& (m_pFrame->IsAction(GetMousePos(*m_pWindow))));
 }
 
 bool CView::ShapeShouldBeRemoved(int const &index) const
 {
-	return ((m_command == DeleteShape) && (m_shapes[index] == m_selectedShape));
+	return ((m_command == DeleteShape) && (m_shapes[index] == m_pSelectedShape));
 }
 
 FloatRect CView::RemoveShape(int const &index)
@@ -160,37 +204,47 @@ FloatRect CView::RemoveShape(int const &index)
 
 bool CView::SelectedShapeIsNotSelected(int const &index) const
 {
-	return (m_selectedShape != m_shapes[index] &&
-		(!m_selectedShape->GetRect().contains(GetMousePos(*m_window))));
+	return (m_pSelectedShape != m_shapes[index] &&
+		(!m_pSelectedShape->GetRect().contains(GetMousePos(*m_pWindow))));
 }
 
 void CView::ChangeSelectedShape(int const &index)
 {
-	m_selectedShape.release();
-	m_selectedShape.reset(m_shapes[index].get());
+	m_pSelectedShape.release();
+	m_pSelectedShape.reset(m_shapes[index].get());
+}
+
+void CView::SetDiffBetweenShapePosAndMousePos(Vector2f const &pos)
+{
+	if (m_diffBetweenShapePosAndMousePos.x == 0) {
+		m_diffBetweenShapePosAndMousePos = pos - GetMousePos(*m_pWindow);
+	}
 }
 
 FloatRect CView::ShapeEvent(Vector2f const &size,
 	Vector2f const &pos, unsigned const &index)
 {
-	m_shapes[index]->ResetFigure(size, pos); // m_index->temp avaliable
+	m_shapes[index]->ResetFigure(size, pos);
 	if (SelectedPointForResizing(index))
 	{
+		SetDiffBetweenShapePosAndMousePos(pos);
 		return ResizingFrameChoosenPoint(size, pos);
 	}
 	else if (ShapeShouldBeRemoved(index))
 	{
 		return RemoveShape(index);
 	}
-	else if (ShapeWasChoosen(m_shapes[index].get()) && (!m_isFrameAction))
+	else if (ShapeWasChoosen(m_shapes[index].get(), pos) && (!m_isFrameAction))
 	{
-		if (m_selectedShape == nullptr) 
+		if (!m_pSelectedShape) 
 		{
-			m_selectedShape.reset(m_shapes[index].get());
+			m_pSelectedShape.reset(m_shapes[index].get());
 		}
-		if (m_selectedShape == m_shapes[index])
+		if (m_pSelectedShape == m_shapes[index])
 		{
-			return { GetMousePos(*m_window).x, GetMousePos(*m_window).y, size.x, size.y };
+			SetDiffBetweenShapePosAndMousePos(pos);
+			return { GetMousePos(*m_pWindow).x + m_diffBetweenShapePosAndMousePos.x,
+				GetMousePos(*m_pWindow).y + m_diffBetweenShapePosAndMousePos.y, size.x, size.y };
 		}
 		else if (SelectedShapeIsNotSelected(index))
 		{

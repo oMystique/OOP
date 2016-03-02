@@ -92,10 +92,19 @@ void CFrame::SetDeltaParamether(Vector2f const &mousePos)
 	}
 }
 
-FloatRect CFrame::FrameEvent(Vector2f const &mousePos, Vector2f pos, Vector2f size)
+bool CFrame::CursosIsMovedEnough(Vector2f const &mousePos) const
 {
-	SetDeltaParamether(mousePos);
-	size += m_delta;
+	return (abs(m_oldMousePos.x - mousePos.x) > FRAME_POINT_RADIUS / GET_HALF) ||
+		(abs(m_oldMousePos.y - mousePos.y) > FRAME_POINT_RADIUS / GET_HALF);
+}
+
+FloatRect CFrame::FrameEvent(Vector2f const &mousePos, Vector2f const &pos, Vector2f size)
+{
+	if (CursosIsMovedEnough(mousePos))
+	{
+		SetDeltaParamether(mousePos);
+		size += m_delta;
+	}
 	return { pos.x, pos.y, size.x, size.y };
 }
 
