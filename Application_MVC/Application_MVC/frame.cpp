@@ -64,32 +64,45 @@ void CFrame::ResetFigure(Vector2f const size, Vector2f const pos)
 
 bool CFrame::IsAction(Vector2f const &mousePos) const
 {
-	return ((m_topLeftPoint.getGlobalBounds().contains(mousePos)) ||
-		(m_topRightPoint.getGlobalBounds().contains(mousePos)) ||
-		(m_botRightPoint.getGlobalBounds().contains(mousePos)) ||
-		(m_botLeftPoint.getGlobalBounds().contains(mousePos)));
+	return ((PointSelected(m_topLeftPoint, mousePos)) ||
+		(PointSelected(m_topRightPoint, mousePos)) ||
+		(PointSelected(m_botRightPoint, mousePos)) ||
+		(PointSelected(m_botLeftPoint, mousePos)));
+}
+
+bool CFrame::PointSelected(CircleShape const &shape, Vector2f const &mousePos) const
+{
+	return (shape.getGlobalBounds().contains(mousePos));
+}
+
+bool CFrame::BotPointsSelected(Vector2f const &mousePos) const
+{
+	return ((PointSelected(m_botRightPoint, mousePos)) ||
+		(PointSelected(m_botLeftPoint, mousePos)));
+}
+
+void CFrame::CorrectionDeltaWithPressingPos(Vector2f const &mousePos)
+{
+	if (BotPointsSelected(mousePos))
+	{
+		if (!(PointSelected(m_botLeftPoint, mousePos)))
+		{
+			m_delta.x = -m_delta.x;
+		}
+		m_delta.y = -m_delta.y;
+	}
+	else if (PointSelected(m_topRightPoint, mousePos))
+	{
+		m_delta.x = -m_delta.x;
+	}
 }
 
 void CFrame::SetDeltaParamether(Vector2f const &mousePos)
 {
 	m_delta = { m_oldMousePos - mousePos };
-	if (m_delta.x != m_delta.y)
-	{
-		m_delta.x = m_delta.y;
-	}
-	if ((m_botRightPoint.getGlobalBounds().contains(mousePos)) || (m_botLeftPoint.getGlobalBounds().contains(mousePos))) 
-	{
-		m_delta.x = -m_delta.x;
-		m_delta.y = -m_delta.y;
-	}
-	if (m_delta.x < 0)
-	{
-		m_delta = { -1.f, -1.f };
-	}
-	else 
-	{
-		m_delta = { 1.f, 1.f };
-	}
+	m_delta.x /= 10;
+	m_delta.y /= 10;
+	CorrectionDeltaWithPressingPos(mousePos);
 }
 
 bool CFrame::CursosIsMovedEnough(Vector2f const &mousePos) const
@@ -98,12 +111,13 @@ bool CFrame::CursosIsMovedEnough(Vector2f const &mousePos) const
 		(abs(m_oldMousePos.y - mousePos.y) > FRAME_POINT_RADIUS / GET_HALF);
 }
 
-FloatRect CFrame::FrameEvent(Vector2f const &mousePos, Vector2f const &pos, Vector2f size)
+FloatRect CFrame::FrameEvent(Vector2f const &mousePos, Vector2f pos, Vector2f size)
 {
 	if (CursosIsMovedEnough(mousePos))
 	{
 		SetDeltaParamether(mousePos);
 		size += m_delta;
+		//TODO: pos.
 	}
 	return { pos.x, pos.y, size.x, size.y };
 }

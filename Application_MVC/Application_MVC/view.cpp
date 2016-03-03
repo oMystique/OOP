@@ -132,6 +132,7 @@ void CView::AppPollEvent()
 		if (event.type == Event::Closed)
 		{
 			m_command = ExitProgram;
+			m_pSelectedShape.release();
 		}
 		else if (Keyboard::isKeyPressed(Keyboard::Delete))
 		{
