@@ -1,6 +1,6 @@
 #include "view.h"
 
-void CView::CreateInterfaceButtons()
+void CViewUI::CreateInterfaceButtons()
 {
 	m_interfaceElements.push_back(make_unique<CApplicationButton>(MENU_BUTTON_SIZE,
 		BORDER_FORM_DEFAULT_POS,
@@ -19,7 +19,7 @@ void CView::CreateInterfaceButtons()
 		RECTANGLE_BUTTON_STRING));
 }
 
-void CView::CreateInterfaceForms() 
+void CViewUI::CreateInterfaceForms() 
 {
 	m_interfaceElements.push_back(make_unique<CApplicationForm>(MAIN_FORM_SIZE,
 		MAIN_FORM_DEFAULT_POS, NONE_TYPE_STRING));
@@ -32,7 +32,7 @@ void CView::CreateInterfaceForms()
 		MENU_BUTTON_STRING));
 }
 
-void CView::CreateGraphicShape(String const &type)
+void CViewShapes::CreateGraphicShape(String const &type)
 {
 	if (type == TRIANGLE_BUTTON_STRING) 
 	{

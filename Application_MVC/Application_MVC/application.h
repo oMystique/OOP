@@ -6,7 +6,7 @@ class CApplication
 public:
 	CApplication();
 private:
-	void SetObservers();
+	void AddObservers();
 	void Run();
 private:
 	shared_ptr<CModel> m_model;

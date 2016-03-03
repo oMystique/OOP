@@ -67,6 +67,18 @@
     <Filter Include="Source Files\View\Interface\Menu">
       <UniqueIdentifier>{e895a578-532d-4042-9d46-2549d925922a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\View\CViews">
+      <UniqueIdentifier>{843ce010-8ecc-406a-934c-8a7b5ceeb0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\CViews\CView">
+      <UniqueIdentifier>{a1ecf4c7-2b2e-4055-8bbc-7d09c4470e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\CViews\CViewUI">
+      <UniqueIdentifier>{e290cc23-9d24-42e7-8a82-3a104e93e068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View\CViews\CViewShapes">
+      <UniqueIdentifier>{95efef4a-d9d3-45e0-8615-c9b9582736fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -74,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="model.cpp">
       <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="view.cpp">
-      <Filter>Source Files\View</Filter>
     </ClCompile>
     <ClCompile Include="controller.cpp">
       <Filter>Source Files\Controller</Filter>
@@ -120,19 +129,25 @@
     <ClCompile Include="shapeLogic.cpp">
       <Filter>Source Files\Model\ShapeLogic</Filter>
     </ClCompile>
-    <ClCompile Include="viewCreate.cpp">
-      <Filter>Source Files\View</Filter>
-    </ClCompile>
     <ClCompile Include="menu.cpp">
       <Filter>Source Files\View\Interface\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="view.cpp">
+      <Filter>Source Files\View\CViews\CView</Filter>
+    </ClCompile>
+    <ClCompile Include="viewUI.cpp">
+      <Filter>Source Files\View\CViews\CViewUI</Filter>
+    </ClCompile>
+    <ClCompile Include="viewShapes.cpp">
+      <Filter>Source Files\View\CViews\CViewShapes</Filter>
+    </ClCompile>
+    <ClCompile Include="viewCreate.cpp">
+      <Filter>Source Files\View\CViews\CView</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="model.h">
       <Filter>Source Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="view.h">
-      <Filter>Source Files\View</Filter>
     </ClInclude>
     <ClInclude Include="controller.h">
       <Filter>Source Files\Controller</Filter>
@@ -187,6 +202,15 @@
     </ClInclude>
     <ClInclude Include="menu.h">
       <Filter>Source Files\View\Interface\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="view.h">
+      <Filter>Source Files\View\CViews\CView</Filter>
+    </ClInclude>
+    <ClInclude Include="viewUI.h">
+      <Filter>Source Files\View\CViews\CViewUI</Filter>
+    </ClInclude>
+    <ClInclude Include="viewShapes.h">
+      <Filter>Source Files\View\CViews\CViewShapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

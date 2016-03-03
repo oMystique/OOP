@@ -6,7 +6,7 @@ void CShapeObservable::AddShapeObserver(IShapeObserver *observer)
 }
 
 void CShapeObservable::NotifyShapeUpdate(Vector2f const &size,
-	Vector2f const &pos, unsigned const &index)
+	Vector2f const &pos, unsigned index)
 {
 	for (auto &obs : m_observers)
 	{

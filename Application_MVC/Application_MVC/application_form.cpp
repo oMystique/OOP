@@ -33,5 +33,5 @@ void CApplicationForm::Draw(RenderWindow &window) const
 
 FloatRect CApplicationForm::GetRect() const 
 {
-	return { NULL, NULL, NULL, NULL };
+	return { OUTSTIDE_WORKSPACE_POS, OUTSTIDE_WORKSPACE_POS, OUTSTIDE_WORKSPACE_POS, OUTSTIDE_WORKSPACE_POS };
 }

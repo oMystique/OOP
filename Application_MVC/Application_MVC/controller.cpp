@@ -6,7 +6,7 @@ void CController::Update(CCommandObservable *observable, CommandType command)
 }
 
 void CController::Update(CShapeObservable *observable, Vector2f const &size,
-				Vector2f const &pos, unsigned const &index)
+				Vector2f const &pos, unsigned index)
 {
 	NotifyShapeUpdate(size, pos, index);
 }

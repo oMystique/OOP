@@ -7,5 +7,5 @@ class CController : public ICommandObserver, public CCommandObservable,
 {
 public:
 	void Update(CCommandObservable *observable, CommandType command) override;
-	void Update(CShapeObservable *observable, Vector2f const &size, Vector2f const &pos, unsigned const &index) override;
+	void Update(CShapeObservable *observable, Vector2f const &size, Vector2f const &pos, unsigned index) override;
 };

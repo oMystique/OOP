@@ -4,7 +4,7 @@ void CDomainModel::DeleteFigure()
 {
 	for (auto it = m_shapes.begin(); it != m_shapes.end();)
 	{
-		if ((*it)->GetPos().x == NULL)
+		if ((*it)->GetPos().x == OUTSTIDE_WORKSPACE_POS)
 		{
 			it = m_shapes.erase(it);
 			break;

@@ -5,11 +5,11 @@ CApplication::CApplication():
 	m_view(make_shared<CView>()),
 	m_controller(make_shared<CController>())
 {
-	SetObservers();
+	AddObservers();
 	Run();
 }
 
-void CApplication::SetObservers()
+void CApplication::AddObservers()
 {
 	m_view->AddCommandObserver(m_controller.get());
 	m_view->AddShapeObserver(m_controller.get());

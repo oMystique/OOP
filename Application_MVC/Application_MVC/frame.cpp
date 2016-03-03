@@ -13,8 +13,8 @@ CFrame::CFrame()
 	m_botLeftPoint.setFillColor(Color::Red);
 	m_botRightPoint.setRadius(FRAME_POINT_RADIUS);
 	m_botRightPoint.setFillColor(Color::Red);
-	m_delta = { NULL, NULL };
-	m_oldMousePos = { NULL, NULL };
+	m_delta = { OUTSTIDE_WORKSPACE_POS, OUTSTIDE_WORKSPACE_POS };
+	m_oldMousePos = { OUTSTIDE_WORKSPACE_POS, OUTSTIDE_WORKSPACE_POS };
 }
 
 void CFrame::Draw(RenderWindow &window) const

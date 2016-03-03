@@ -15,7 +15,7 @@ bool CModel::ApplicationWorks() const
 void CModel::UpdateShapes()
 {
 	auto shapesArray = m_domainModel->GetShapesArray();
-	unsigned index = shapesArray.size();
+	auto index = static_cast<unsigned>(shapesArray.size());
 	for (auto it = shapesArray.rbegin(); it != shapesArray.rend(); it++)
 	{
 		index--;
@@ -41,7 +41,7 @@ void CModel::Update(CCommandObservable *observable, CommandType command)
 }
 
 void CModel::Update(CShapeObservable *observable, Vector2f const &size,
-	Vector2f const &pos, unsigned const &index)
+	Vector2f const &pos, unsigned index)
 {
 	m_domainModel->GetShapesArray()[index]->SetNewParameters(size, pos);
 }

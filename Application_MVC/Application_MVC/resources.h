@@ -29,6 +29,7 @@ static const float FRAME_POINT_RADIUS = 6.f;
 static const float GET_HALF = 2.f;
 static const float CIRCLE_RADIUS_CORRECTION = 3.5f;
 static const float TRIANGLE_SIZE_CORRECTION = 4.2f;
+static const float OUTSTIDE_WORKSPACE_POS = 0.f;
 
 //STRING_CONSTS:
 static const String APPLICATION_TITLE = "Application";

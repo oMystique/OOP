@@ -1,6 +1,5 @@
 #pragma once
-#include "commandObservable.h"
-#include "shapeObservable.h"
+#include "resources.h"
 
 class CInterfaceElement 
 {

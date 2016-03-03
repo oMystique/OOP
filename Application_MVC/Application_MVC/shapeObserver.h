@@ -7,6 +7,6 @@ class IShapeObserver
 public:
 	virtual ~IShapeObserver() = default;
 	virtual void Update(CShapeObservable *observable, Vector2f const &size,
-					Vector2f const &pos, unsigned const &index) = 0;
+					Vector2f const &pos, unsigned index) = 0;
 };
 

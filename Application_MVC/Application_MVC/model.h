@@ -8,7 +8,7 @@ public:
 	CModel(shared_ptr<CDomainModel> domainModel);
 	void Update(CCommandObservable *observable, CommandType command) override;
 	void Update(CShapeObservable *observable, Vector2f const &size,
-		Vector2f const &pos, unsigned const &index) override;
+		Vector2f const &pos, unsigned index) override;
 	void UpdatingModel();
 	bool ApplicationWorks() const;
 private:

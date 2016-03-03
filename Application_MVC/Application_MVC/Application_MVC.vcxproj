@@ -166,6 +166,8 @@
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="view.cpp" />
     <ClCompile Include="viewCreate.cpp" />
+    <ClCompile Include="viewShapes.cpp" />
+    <ClCompile Include="viewUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -188,6 +190,8 @@
     <ClInclude Include="shapeObserver.h" />
     <ClInclude Include="triangle.h" />
     <ClInclude Include="view.h" />
+    <ClInclude Include="viewShapes.h" />
+    <ClInclude Include="viewUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
