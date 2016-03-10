@@ -8,7 +8,7 @@ BOOST_AUTO_TEST_SUITE(EncodeStringElementsToHtmlEntities)
 
 BOOST_AUTO_TEST_CASE(EncodeNotEmptyString)
 {
-	std::string testString = "&quotASDASDASDASD&quot &ap&ampos &&apos &qt &amp &lt &lT";
+	std::string testString = "&quot;ASDASDASDASD&quot; &ap&amp;os &&apos; &gt; &amp; &lt; &lT";
 	BOOST_CHECK_EQUAL(HTMLDecode(testString), "\"ASDASDASDASD\" &ap&os &' > & < &lT");
 };
 

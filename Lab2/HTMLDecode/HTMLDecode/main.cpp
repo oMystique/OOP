@@ -4,9 +4,9 @@
 
 using namespace std;
 
-std::string ReadingFromStream()
+string ReadingFromStream()
 {
-	return {(istreambuf_iterator<char>(std::cin)), istreambuf_iterator<char>()};
+	return {(istreambuf_iterator<char>(cin)), istreambuf_iterator<char>()};
 }
 
 int _tmain()
