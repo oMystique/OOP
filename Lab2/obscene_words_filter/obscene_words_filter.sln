@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "obscene_words_filter", "obscene_words_filter\obscene_words_filter.vcxproj", "{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Debug|x64.ActiveCfg = Debug|x64
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Debug|x64.Build.0 = Debug|x64
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Debug|x86.ActiveCfg = Debug|Win32
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Debug|x86.Build.0 = Debug|Win32
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Release|x64.ActiveCfg = Release|x64
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Release|x64.Build.0 = Release|x64
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Release|x86.ActiveCfg = Release|Win32
+		{D86CD04F-3C89-4DD0-BD1A-DC092BE6B3D9}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
