@@ -21,6 +21,6 @@ int main(int argc, char *argv[])
 
 	CDictionary dict(argv[1]);
 	dict.Execute();
-	return dict.WorkIsSuccesfull();
+	return dict.WorkIsNotSuccesfull();
 }
 

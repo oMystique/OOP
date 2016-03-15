@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <fstream>
+#include "dictionary.h"
 
 using namespace std;
 
@@ -10,18 +11,22 @@ CDictionary::CDictionary(string const &fileName) :
 	m_isError(false),
 	m_dictIsChanged(false)
 {
+	ParseFileInDictionary();
 }
 
-bool CDictionary::WorkIsSuccesfull()
+bool CDictionary::WorkIsNotSuccesfull()
 {
 	return m_isError;
 }
 
-bool CDictionary::AddWordInDictionary(string const &word)
+map<string, string> CDictionary::GetDictionary()
 {
-	string translate;
-	getline(cin, translate);
-	if (translate.size() > 0)
+	return m_dictionary;
+}
+
+bool CDictionary::AddWordInDictionary(string const &word, string const &translate)
+{
+	if ((!word.empty()) && (!translate.empty()))
 	{
 		m_dictionary.emplace(word, translate);
 		m_dictIsChanged = true;
@@ -48,23 +53,28 @@ bool CDictionary::DictionaryHasATranslation(string const &word)
 	return m_dictionary.find(word) != m_dictionary.end();
 }
 
+std::string CDictionary::GetTranslatedWord(std::string const &word)
+{
+	return m_dictionary.at(word);
+}
+
 void CDictionary::Execute()
 {
-	ParseFileInDictionary();
 	string inputString;
-
+	string translate;
 	while ((inputString != INPUT_STOPPER) && (!m_isError))
 	{
 		cout << "Type a word to translate. Or type ... to exit." << endl;
 		getline(cin, inputString);
 		if (DictionaryHasATranslation(inputString))
 		{
-			cout << m_dictionary.at(inputString) << endl;;
+			cout << GetTranslatedWord(inputString) << endl;
 		}
 		else if (inputString != INPUT_STOPPER)
 		{
 			cout << "In the dictionary this word is missing. Enter the translation." << endl;
-			if (!AddWordInDictionary(inputString))
+			getline(cin, translate);
+			if (!AddWordInDictionary(inputString, translate))
 			{
 				cout << "Word was ignored." << endl;
 			}

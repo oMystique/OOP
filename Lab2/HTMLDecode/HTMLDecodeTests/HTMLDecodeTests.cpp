@@ -4,15 +4,15 @@
 #include "stdafx.h"
 #include "../HTMLDecode/HTMLDecode.h"
 
-BOOST_AUTO_TEST_SUITE(EncodeStringElementsToHtmlEntities)
+BOOST_AUTO_TEST_SUITE(DecodeStringElementsToHtmlEntities)
 
-BOOST_AUTO_TEST_CASE(EncodeNotEmptyString)
+BOOST_AUTO_TEST_CASE(DecodeNotEmptyString)
 {
-	std::string testString = "&quot;ASDASDASDASD&quot; &ap&amp;os &&apos; &gt; &amp; &lt; &lT";
-	BOOST_CHECK_EQUAL(HTMLDecode(testString), "\"ASDASDASDASD\" &ap&os &' > & < &lT");
+	std::string testString = "&quot;ASDASDASDASD&quot; &ap&amp;os &&apos; &gt; &amp; &lt; &lT &amp;&amp;&amp;";
+	BOOST_CHECK_EQUAL(HTMLDecode(testString), "\"ASDASDASDASD\" &ap&os &' > & < &lT &&&");
 };
 
-BOOST_AUTO_TEST_CASE(EncodeEmptyString)
+BOOST_AUTO_TEST_CASE(DecodeEmptyString)
 {
 	std::string testString = "";
 	BOOST_CHECK_EQUAL(HTMLDecode(testString), "");
