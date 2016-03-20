@@ -9,43 +9,43 @@ BOOST_AUTO_TEST_SUITE(testSuiteDictionary)
 
 struct Fixture
 {
-	Fixture():
-		dictionary("input.txt")
+	Fixture()
 	{
+		m_dictionary.ParseFileInDictionary("input.txt");
 	}
 	~Fixture()
 	{
 	}
-	CDictionary dictionary;
+	CDictionary m_dictionary;
 };
 
 
 BOOST_FIXTURE_TEST_CASE(testParseFileInDictionary, Fixture)
 {
-	BOOST_CHECK_EQUAL(dictionary.WorkIsNotSuccesfull(), false);
+	BOOST_CHECK_EQUAL(m_dictionary.ParseFileInDictionary("input.txt"), false);
 }
 
 BOOST_FIXTURE_TEST_CASE(testAddWordInDictionary, Fixture)
 {
-	dictionary.AddWordInDictionary("rofl", "истеричный смех");
-	BOOST_CHECK_EQUAL("истеричный смех", dictionary.GetTranslatedWord("rofl"));
+	m_dictionary.AddWordInDictionary("rofl", "истеричный смех");
+	BOOST_CHECK_EQUAL("истеричный смех", m_dictionary.GetTranslatedWord("rofl"));
 }
 
 BOOST_FIXTURE_TEST_CASE(testAddEmptyWordInDictionary, Fixture)
 {
-	auto oldDict = dictionary.GetDictionary();
-	dictionary.AddWordInDictionary("", "истеричный смех");
-	BOOST_CHECK_EQUAL(oldDict == dictionary.GetDictionary(), true);
+	auto oldDict = m_dictionary.GetDictionary();
+	m_dictionary.AddWordInDictionary("", "истеричный смех");
+	BOOST_CHECK_EQUAL(oldDict == m_dictionary.GetDictionary(), true);
 }
 
 BOOST_FIXTURE_TEST_CASE(testGetTrueTranslating, Fixture)
 {
-	BOOST_CHECK_EQUAL(dictionary.DictionaryHasATranslation("world"), true);
+	BOOST_CHECK_EQUAL(m_dictionary.DictionaryHasATranslation("world"), true);
 }
 
 BOOST_FIXTURE_TEST_CASE(testGetFalseTranslating, Fixture)
 {
-	BOOST_CHECK_EQUAL(dictionary.DictionaryHasATranslation("Vladimir_Jirinovsky"), false);
+	BOOST_CHECK_EQUAL(m_dictionary.DictionaryHasATranslation("Vladimir_Jirinovsky"), false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

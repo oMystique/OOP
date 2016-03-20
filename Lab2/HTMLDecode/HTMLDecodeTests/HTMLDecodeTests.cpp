@@ -8,13 +8,13 @@ BOOST_AUTO_TEST_SUITE(DecodeStringElementsToHtmlEntities)
 
 BOOST_AUTO_TEST_CASE(DecodeNotEmptyString)
 {
-	std::string testString = "&quot;ASDASDASDASD&quot; &ap&amp;os &&apos; &gt; &amp; &lt; &lT &amp;&amp;&amp;";
+	boost::string_ref testString = "&quot;ASDASDASDASD&quot; &ap&amp;os &&apos; &gt; &amp; &lt; &lT &amp;&amp;&amp;";
 	BOOST_CHECK_EQUAL(HTMLDecode(testString), "\"ASDASDASDASD\" &ap&os &' > & < &lT &&&");
 };
 
 BOOST_AUTO_TEST_CASE(DecodeEmptyString)
 {
-	std::string testString = "";
+	boost::string_ref testString = "";
 	BOOST_CHECK_EQUAL(HTMLDecode(testString), "");
 };
 

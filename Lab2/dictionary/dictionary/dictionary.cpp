@@ -6,15 +6,8 @@ using namespace std;
 
 static const string INPUT_STOPPER = "...";
 
-CDictionary::CDictionary(string const &fileName) :
-	m_fileName(fileName),
-	m_isError(false),
-	m_dictIsChanged(false)
-{
-	ParseFileInDictionary();
-}
 
-bool CDictionary::WorkIsNotSuccesfull()
+bool CApplication::WorkIsNotSuccesfull()
 {
 	return m_isError;
 }
@@ -28,24 +21,25 @@ bool CDictionary::AddWordInDictionary(string const &word, string const &translat
 {
 	if ((!word.empty()) && (!translate.empty()))
 	{
-		m_dictionary.emplace(word, translate);
 		m_dictIsChanged = true;
+		m_dictionary.emplace(word, translate);
 		return true;
 	}
 	return false;
 }
 
-void CDictionary::SaveDictionaryInFile()
+bool CDictionary::SaveDictionaryInFile(string const &fileName)
 {
-	ofstream outputFile(m_fileName, ostream::out);
+	ofstream outputFile(fileName, ostream::out);
 	if (!outputFile.is_open())
 	{
-		m_isError = true;
+		return true;
 	}
 	for (auto &dict : m_dictionary)
 	{
 		outputFile << dict.first << ":" << dict.second << endl;
 	}
+	return false;
 }
 
 bool CDictionary::DictionaryHasATranslation(string const &word)
@@ -58,36 +52,48 @@ std::string CDictionary::GetTranslatedWord(std::string const &word)
 	return m_dictionary.at(word);
 }
 
-void CDictionary::Execute()
+bool CDictionary::DictIsChanged()
+{
+	return m_dictIsChanged;
+}
+
+CApplication::CApplication(string const &fileName):
+	m_fileName(fileName),
+	m_isError(false)
+{
+}
+
+void CApplication::Execute()
 {
 	string inputString;
 	string translate;
+	m_isError = m_dictionary.ParseFileInDictionary(m_fileName);
 	while ((inputString != INPUT_STOPPER) && (!m_isError))
 	{
 		cout << "Type a word to translate. Or type ... to exit." << endl;
 		getline(cin, inputString);
-		if (DictionaryHasATranslation(inputString))
+		if (m_dictionary.DictionaryHasATranslation(inputString))
 		{
-			cout << GetTranslatedWord(inputString) << endl;
+			cout << m_dictionary.GetTranslatedWord(inputString) << endl;
 		}
 		else if (inputString != INPUT_STOPPER)
 		{
 			cout << "In the dictionary this word is missing. Enter the translation." << endl;
 			getline(cin, translate);
-			if (!AddWordInDictionary(inputString, translate))
+			if (!m_dictionary.AddWordInDictionary(inputString, translate))
 			{
 				cout << "Word was ignored." << endl;
 			}
 		}
 	}
 
-	if (m_dictIsChanged)
+	if (m_dictionary.DictIsChanged())
 	{
 		cout << "Do you want to save changes to a file ? y/n" << endl;
 		getline(cin, inputString);
 		if (inputString == "y")
 		{
-			SaveDictionaryInFile();
+			m_isError = m_dictionary.SaveDictionaryInFile(m_fileName);
 		}
 	}
 
@@ -97,14 +103,13 @@ void CDictionary::Execute()
 	}
 }
 
-void CDictionary::ParseFileInDictionary()
+bool CDictionary::ParseFileInDictionary(string const &fileName)
 {
-	ifstream inputFile(m_fileName, ifstream::in);
+	ifstream inputFile(fileName, ifstream::in);
 	string bufferStr;
 	if (!inputFile.is_open())
 	{
-		m_isError = true;
-		return;
+		return true;
 	}
 	size_t separatorPos;
 	while (getline(inputFile, bufferStr))
@@ -112,4 +117,5 @@ void CDictionary::ParseFileInDictionary()
 		separatorPos = bufferStr.find_first_of(":");
 		m_dictionary.emplace(bufferStr.substr(0, separatorPos), bufferStr.substr(separatorPos + 1, bufferStr.size()));
 	}
+	return false;
 }

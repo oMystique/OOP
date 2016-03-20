@@ -1,6 +1,7 @@
 :...
 Word:слово
 cat:кошка
+chicken:курица
 red:красный
 word:слово
 world:мир

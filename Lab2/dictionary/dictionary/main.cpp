@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
 	SetConsoleOutputCP(1251);
 	SetConsoleCP(1251);
 
-	CDictionary dict(argv[1]);
-	dict.Execute();
-	return dict.WorkIsNotSuccesfull();
+	CApplication app(argv[1]);
+	app.Execute();
+	return app.WorkIsNotSuccesfull();
 }
 

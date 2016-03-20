@@ -11,7 +11,7 @@ using namespace std;
 
 const char ENCODED_CHAR_BEGINNING = '&';
 
-string HTMLDecode(string const &htmlString)
+string HTMLDecode(boost::string_ref const &htmlString)
 {
 	map<string, string> arrayOfCharactersToReplaced = 
 	{ 

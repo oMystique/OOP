@@ -1,4 +1,5 @@
 #pragma once
 #include <string>
+#include <boost/utility/string_ref.hpp>
 
-std::string HTMLDecode(std::string const &htmlString);
+std::string HTMLDecode(boost::string_ref const &htmlString);
