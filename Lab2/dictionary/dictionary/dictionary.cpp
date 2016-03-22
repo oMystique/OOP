@@ -6,15 +6,19 @@ using namespace std;
 
 static const string INPUT_STOPPER = "...";
 
-
-bool CApplication::WorkIsNotSuccesfull()
+bool CApplication::WorkIsNotSuccesfull()const
 {
 	return m_isError;
 }
 
-map<string, string> CDictionary::GetDictionary()
+map<string, string> CDictionary::GetDictionary()const
 {
 	return m_dictionary;
+}
+
+CDictionary::CDictionary() :
+	m_dictIsChanged(false)
+{
 }
 
 bool CDictionary::AddWordInDictionary(string const &word, string const &translate)
@@ -28,7 +32,7 @@ bool CDictionary::AddWordInDictionary(string const &word, string const &translat
 	return false;
 }
 
-bool CDictionary::SaveDictionaryInFile(string const &fileName)
+bool CDictionary::SaveDictionaryInFile(string const &fileName)const
 {
 	ofstream outputFile(fileName, ostream::out);
 	if (!outputFile.is_open())
@@ -42,17 +46,17 @@ bool CDictionary::SaveDictionaryInFile(string const &fileName)
 	return false;
 }
 
-bool CDictionary::DictionaryHasATranslation(string const &word)
+bool CDictionary::DictionaryHasATranslation(string const &word)const
 {
 	return m_dictionary.find(word) != m_dictionary.end();
 }
 
-std::string CDictionary::GetTranslatedWord(std::string const &word)
+std::string CDictionary::GetTranslatedWord(std::string const &word)const
 {
 	return m_dictionary.at(word);
 }
 
-bool CDictionary::DictIsChanged()
+bool CDictionary::DictIsChanged()const
 {
 	return m_dictIsChanged;
 }
@@ -61,6 +65,23 @@ CApplication::CApplication(string const &fileName):
 	m_fileName(fileName),
 	m_isError(false)
 {
+}
+
+bool CDictionary::ParseFileInDictionary(string const &fileName)
+{
+	ifstream inputFile(fileName, ifstream::in);
+	string bufferStr;
+	if (!inputFile.is_open())
+	{
+		return true;
+	}
+	size_t separatorPos;
+	while (getline(inputFile, bufferStr))
+	{
+		separatorPos = bufferStr.find_first_of(":");
+		m_dictionary.emplace(bufferStr.substr(0, separatorPos), bufferStr.substr(separatorPos + 1, bufferStr.size()));
+	}
+	return false;
 }
 
 void CApplication::Execute()
@@ -101,21 +122,4 @@ void CApplication::Execute()
 	{
 		cout << "Error reading or writing the file." << endl;
 	}
-}
-
-bool CDictionary::ParseFileInDictionary(string const &fileName)
-{
-	ifstream inputFile(fileName, ifstream::in);
-	string bufferStr;
-	if (!inputFile.is_open())
-	{
-		return true;
-	}
-	size_t separatorPos;
-	while (getline(inputFile, bufferStr))
-	{
-		separatorPos = bufferStr.find_first_of(":");
-		m_dictionary.emplace(bufferStr.substr(0, separatorPos), bufferStr.substr(separatorPos + 1, bufferStr.size()));
-	}
-	return false;
 }

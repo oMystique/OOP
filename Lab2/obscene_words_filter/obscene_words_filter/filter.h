@@ -10,7 +10,7 @@ public:
 	std::wstring FilteringOfInputString(std::wstring inputString);
 private:
 	std::set<std::wstring> ParseStringInSet(std::wstring str);
-	std::set<std::wstring> GetSetOfObsceneWordsOfString(std::set<std::wstring> const &wordsSet);
+	std::set<std::wstring> GetSetOfObsceneWordsOfString(std::set<std::wstring> const &wordsSet)const;
 	void CleanStringOfObsceneWords(std::wstring &outputString, std::set <std::wstring> obsceneWordsInString);
 private:
 	std::set<std::wstring> m_obsceneWords;
@@ -20,7 +20,7 @@ class CApplication
 {
 public:
 	CApplication(std::string const &fileName);
-	bool WorkIsSuccessfull();
+	bool WorkIsSuccessfull()const;
 	void Execute();
 private:
 	CObsceneWordsFilter m_filter;

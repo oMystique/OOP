@@ -43,7 +43,7 @@ void CObsceneWordsFilter::CleanStringOfObsceneWords(wstring &outputString, set <
 	}
 }
 
-std::set<std::wstring> CObsceneWordsFilter::GetSetOfObsceneWordsOfString(set<wstring> const &wordsSet)
+std::set<std::wstring> CObsceneWordsFilter::GetSetOfObsceneWordsOfString(set<wstring> const &wordsSet)const
 {
 	set<wstring> intersectsSet;
 	set_intersection(wordsSet.begin(), wordsSet.end(), m_obsceneWords.begin(),
@@ -76,7 +76,7 @@ bool CObsceneWordsFilter::ParsingFileInWordsSet(string const &fileName)
 	return false;
 }
 
-bool CApplication::WorkIsSuccessfull()
+bool CApplication::WorkIsSuccessfull()const
 {
 	return m_isError;
 }
