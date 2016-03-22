@@ -22,27 +22,17 @@ void SetProtocolType(string const &protocolStr, Protocol &protocol)
 	}
 }
 
-int GetPort(Protocol const &protocol)
-{
-	switch (protocol)
-	{
-	case Protocol::HTTP:
-		return 80;
-	case Protocol::HTTPS:
-		return 443;
-	case Protocol::FTP:
-		return 21;
-	}
-	return 0;
-}
-
 bool ParseURL(string const &url, Protocol &protocol, int &port, std::string &host, std::string &document)
 {
 	boost::regex ex("(http|https|ftp)://([^/ :]+):?([^/ ]*)/([^ ]*)");
 	boost::cmatch what;
 
-	if (regex_match(url.c_str(), what, ex))
+	auto checkingUrl = url;
+	boost::algorithm::to_lower(checkingUrl);
+
+	if (regex_match(checkingUrl.c_str(), what, ex))
 	{
+		checkingUrl = url;
 		auto protocolStr = string(what[1].first, what[1].second);
 		boost::algorithm::to_lower(protocolStr);
 		SetProtocolType(protocolStr, protocol);
@@ -53,13 +43,14 @@ bool ParseURL(string const &url, Protocol &protocol, int &port, std::string &hos
 		port = atoi(portStr.c_str());
 		if (port == 0)
 		{
-			port = GetPort(protocol);
+			port = static_cast<int>(protocol);
 		}
 
 		document = string(what[4].first, what[4].second);
 
 		return true;
 	}
+
 	return false;
 }
 

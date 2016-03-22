@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 
-class CDictionary final
+class CDictionary 
 {
 public:
 	CDictionary();

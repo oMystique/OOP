@@ -3,15 +3,15 @@
 #include <iostream>
 #include <string>
 
-class CObsceneWordsFilter final
+class CObsceneWordsFilter 
 {
 public:
 	bool ParsingFileInWordsSet(std::string const &fileName);
 	std::wstring FilteringOfInputString(std::wstring inputString);
 private:
+	void CleanStringOfObsceneWords(std::wstring &outputString, std::set <std::wstring> obsceneWordsInString);
 	std::set<std::wstring> ParseStringInSet(std::wstring str);
 	std::set<std::wstring> GetSetOfObsceneWordsOfString(std::set<std::wstring> const &wordsSet)const;
-	void CleanStringOfObsceneWords(std::wstring &outputString, std::set <std::wstring> obsceneWordsInString);
 private:
 	std::set<std::wstring> m_obsceneWords;
 };

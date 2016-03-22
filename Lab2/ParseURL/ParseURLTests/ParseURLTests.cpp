@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(ParseURL_try3)
 	Protocol protocol;
 	std::string host;
 	std::string document;
-	BOOST_CHECK_EQUAL(ParseURL("http://www.mysite.com/docs/document1.html?page=30&lang=en#title", protocol, port, host, document), true);
+	BOOST_CHECK_EQUAL(ParseURL("HTTP://www.mysite.com/docs/document1.html?page=30&lang=en#title", protocol, port, host, document), true);
 	BOOST_CHECK_EQUAL(port, 80);
 	BOOST_CHECK_EQUAL(document, "docs/document1.html?page=30&lang=en#title");
 };
