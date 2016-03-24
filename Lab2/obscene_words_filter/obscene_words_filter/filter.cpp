@@ -12,12 +12,9 @@ CApplication::CApplication(string const &fileName):
 {
 }
 
-bool IsNotAlphaSpace(wchar_t symbol) {
-	if (!iswalpha(symbol) && !iswspace(symbol))
-	{
-		return true;
-	}
-	return false;
+bool IsNotAlphaSpace(wchar_t symbol) 
+{
+	return (!iswalpha(symbol) && !iswspace(symbol));
 }
 
 set<wstring> CObsceneWordsFilter::ParseStringInSet(wstring str)
