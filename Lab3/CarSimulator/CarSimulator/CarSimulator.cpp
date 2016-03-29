@@ -11,58 +11,48 @@ using namespace std;
 CCar::CCar() :
 	m_gear(Gear::neutral),
 	m_speed(0),
-	m_engineIsTurnOn(false),
-	m_switchFromReverseToNeutral(false)
+	m_engineIsTurnOn(false)
 {
 }
 
-RangesVector CCar::GetRangeOfSpeeds(int gear)const
+RangesVector CCar::GetRangeOfSpeeds(Gear gear)const
 {
 	switch (gear)
 	{
-	case (static_cast<int>(Gear::reverse)) :
+	case (Gear::reverse) :
 		return{ 0, 20 };
-	case (static_cast<int>(Gear::neutral)) :
+
+	case (Gear::neutral) :
 		return{ 0, INT_MAX };
-	case (static_cast<int>(Gear::firstGear)) :
+
+	case (Gear::firstGear) :
 		return{ 0, 30 };
-	case (static_cast<int>(Gear::secondGear)) :
+
+	case (Gear::secondGear) :
 		return{ 20, 50 };
-	case (static_cast<int>(Gear::thirdGear)) :
+
+	case (Gear::thirdGear) :
 		return{ 30, 60 };
-	case (static_cast<int>(Gear::fourthGear)) :
+
+	case (Gear::fourthGear) :
 		return{ 40, 90 };
-	case (static_cast<int>(Gear::fifthGear)) :
+
+	case (Gear::fifthGear) :
 		return{ 50, 150 };
 	}
+
 	return{ 0, 0 };
 }
 
 
-bool CCar::SpeedInGearRange(int gear, int speed)const
+bool CCar::SpeedInGearRange(Gear gear, int speed)const
 {
 	return ((GetRangeOfSpeeds(gear).min <= speed) && (speed <= GetRangeOfSpeeds(gear).max));
 }
 
-void CCar::GetInfoAboutCar()const
+bool CCar::SwitchToReverseGearIsPossible()const
 {
-	if (m_engineIsTurnOn)
-	{
-		cout << "Engine is turn on." << endl;
-	}
-	else
-	{
-		cout << "Engine is turn off." << endl;
-	}
-	cout << GetDirection() << endl;
-	cout << "Speed: " << m_speed << endl;
-	cout << "Gear: " << static_cast<int>(m_gear) << endl;
-}
-
-bool CCar::SwitchToReverseGearIsPossible(int gear)const
-{
-	return ((gear == static_cast<int>(Gear::reverse)) &&
-		((((m_gear == Gear::neutral) || (m_gear == Gear::firstGear)) && (m_speed == 0)) ||
+	return (((((m_gear == Gear::neutral) || (m_gear == Gear::firstGear)) && (m_speed == 0)) ||
 			(m_gear == Gear::reverse)));
 }
 
@@ -71,29 +61,28 @@ bool CCar::SetGear(int gear)
 	auto gearType = static_cast<Gear>(gear);
 	if (m_engineIsTurnOn)
 	{
-		if (SwitchToReverseGearIsPossible(gear))
+		if ((gearType == Gear::reverse) 
+			&& SwitchToReverseGearIsPossible())
 		{
 			m_gear = Gear::reverse;
 			return true;
 		}
 		else if (m_gear == Gear::reverse)
 		{
-			if (gearType == (Gear::firstGear) && (m_speed == 0))
+			if ((gearType == Gear::firstGear)
+				&& (m_speed == 0))
 			{
 				m_gear = Gear::firstGear;
 				return true;
 			}
 			else if (gearType == Gear::neutral)
 			{
-				if (m_speed > 0)
-				{
-					m_switchFromReverseToNeutral = true;
-				}
 				m_gear = Gear::neutral;
 				return true;
 			}
 		}
-		else if (SpeedInGearRange(gear, m_speed) && (!m_switchFromReverseToNeutral))
+		else if (SpeedInGearRange(gearType, m_speed) 
+			&& (gearType != Gear::reverse))
 		{
 			m_gear = gearType;
 			return true;
@@ -110,35 +99,47 @@ bool CCar::SetSpeed(int speed)
 {
 	if (m_engineIsTurnOn)
 	{
-		if ((m_switchFromReverseToNeutral) && (speed == 0))
+		if (((m_gear == Gear::neutral) && (speed < abs(m_speed)))
+			|| (SpeedInGearRange(m_gear, speed) && (m_gear != Gear::neutral)))
 		{
-			m_switchFromReverseToNeutral = false;
-		}
-		if (((m_gear == Gear::neutral) && (speed < m_speed)) ||
-			(SpeedInGearRange(static_cast<int>(m_gear), speed) && (m_gear != Gear::neutral)))
-		{
-			m_speed = speed;
+			auto direction = DirectionMovement::movingForward;
+			if ((m_speed < 0) || (m_gear == Gear::reverse))
+			{
+				direction = DirectionMovement::movingBackward;
+			}
+			m_speed = speed * static_cast<int>(direction);
 			return true;
 		}
 	}
 	return false;
 }
 
-string CCar::GetDirection()const
+int CCar::GetSpeed()const
 {
-	if (m_speed == 0)
+	return abs(m_speed);
+}
+
+int CCar::GetGear()const
+{
+	return static_cast<int>(m_gear);
+}
+
+bool CCar::EngineIsOn()const
+{
+	return m_engineIsTurnOn;
+}
+
+DirectionMovement CCar::GetDirection()const
+{
+	if (m_speed > 0)
 	{
-		return "Stand on the spot.";
+		return DirectionMovement::movingForward;
 	}
-	else if (m_gear != Gear::reverse)
+	else if (m_speed < 0)
 	{
-		return "Moving forward.";
+		return DirectionMovement::movingBackward;
 	}
-	else 
-	{
-		return "Moving back.";
-	}
-	return "";
+	return DirectionMovement::standOnTheSpot;
 }
 
 bool CCar::TurnOnEngine()

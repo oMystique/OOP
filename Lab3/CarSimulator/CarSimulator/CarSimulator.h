@@ -12,6 +12,13 @@ enum class Gear
 	fifthGear = 5
 };
 
+enum class DirectionMovement
+{
+	movingBackward = -1,
+	standOnTheSpot = 0,
+	movingForward = 1
+};
+
 struct RangesVector
 {
 	int min;
@@ -22,19 +29,21 @@ class CCar
 {
 public:
 	CCar();
-	void GetInfoAboutCar()const;
 	bool TurnOnEngine();
 	bool TurnOffEngine();
 	bool SetGear(int gear);
 	bool SetSpeed(int speed);
+
+	int GetSpeed()const;
+	int GetGear()const;
+	bool EngineIsOn()const;
+	DirectionMovement GetDirection()const;
 private:
-	RangesVector GetRangeOfSpeeds(int gear)const;
-	bool SpeedInGearRange(int gear, int speed)const;
-	bool SwitchToReverseGearIsPossible(int gear)const;
-	std::string GetDirection()const;
+	RangesVector GetRangeOfSpeeds(Gear gear)const;
+	bool SpeedInGearRange(Gear gear, int speed)const;
+	bool SwitchToReverseGearIsPossible()const;
 private:
 	Gear m_gear;
 	int m_speed;
 	bool m_engineIsTurnOn;
-	bool m_switchFromReverseToNeutral;
 };
