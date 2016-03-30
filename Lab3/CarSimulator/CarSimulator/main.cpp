@@ -5,10 +5,18 @@
 
 using namespace std;
 
-void GetInfoAboutCar(CCar const &car)
+void GetInformationAboutCarSpeed(CCar const &car)
 {
-	cout << "===" << endl;
+	cout << "Speed: " << car.GetSpeed() << endl;
+}
 
+void GetInformationAboutCarGear(CCar const &car)
+{
+	cout << "Gear: " << car.GetGear() << endl;
+}
+
+void GetInformationAboutEngineStatus(CCar const &car)
+{
 	if (car.EngineIsOn())
 	{
 		cout << "Engine is on." << endl;
@@ -17,9 +25,10 @@ void GetInfoAboutCar(CCar const &car)
 	{
 		cout << "Engine is off." << endl;
 	}
+}
 
-	cout << "Gear: " << car.GetGear() << endl;
-
+void GetInformationAboutDirection(CCar const &car)
+{
 	switch (car.GetDirection())
 	{
 	case DirectionMovement::movingBackward:
@@ -34,9 +43,15 @@ void GetInfoAboutCar(CCar const &car)
 		cout << "Car moving forward." << endl;
 		break;
 	}
+}
 
-	cout << "Speed: " << car.GetSpeed() << endl;
-
+void GetInformationAboutCar(CCar const &car)
+{
+	cout << "===" << endl;
+	GetInformationAboutEngineStatus(car);
+	GetInformationAboutCarGear(car);
+	GetInformationAboutDirection(car);
+	GetInformationAboutCarSpeed(car);
 	cout << "===" << endl;
 }
 
@@ -50,15 +65,17 @@ void InteractWithUser()
 		getline(cin, inputString);
 		if (inputString == "Info")
 		{
-			GetInfoAboutCar(car);
+			GetInformationAboutCar(car);
 		}
 		else if (inputString == "EngineOn")
 		{
 			car.TurnOnEngine();
+			GetInformationAboutEngineStatus(car);
 		}
 		else if (inputString == "EngineOff")
 		{
 			car.TurnOffEngine();
+			GetInformationAboutEngineStatus(car);
 		}
 		else
 		{
@@ -70,10 +87,12 @@ void InteractWithUser()
 			if (command == "SetGear")
 			{
 				car.SetGear(atoi(value.c_str()));
+				GetInformationAboutCarGear(car);
 			}
 			else if (command == "SetSpeed")
 			{
 				car.SetSpeed(atoi(value.c_str()));
+				GetInformationAboutCarSpeed(car);
 			}
 		}
 	} while (!inputString.empty());

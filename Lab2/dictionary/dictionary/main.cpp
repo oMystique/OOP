@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <Windows.h>
+#include "application.h"
 
 using namespace std;
 

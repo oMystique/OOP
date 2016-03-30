@@ -18,15 +18,3 @@ private:
 	std::map <std::string, std::string> m_dictionary;
 	bool m_dictIsChanged;
 };
-
-class CApplication
-{
-public:
-	CApplication(std::string const &fileName);
-	void Execute();
-	bool WorkIsNotSuccesfull()const;
-private:
-	CDictionary m_dictionary;
-	std::string m_fileName;
-	bool m_isError;
-};
