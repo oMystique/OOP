@@ -55,6 +55,20 @@ void GetInformationAboutCar(CCar const &car)
 	cout << "===" << endl;
 }
 
+void SetParamether(CCar &car, string const &command, int value)
+{
+	if (command == "SetGear")
+	{
+		car.SetGear(value);
+		GetInformationAboutCarGear(car);
+	}
+	else if (command == "SetSpeed")
+	{
+		car.SetSpeed(value);
+		GetInformationAboutCarSpeed(car);
+	}
+}
+
 void InteractWithUser()
 {
 	CCar car;
@@ -84,16 +98,8 @@ void InteractWithUser()
 			string value;
 			strStream >> command;
 			strStream >> value;
-			if (command == "SetGear")
-			{
-				car.SetGear(atoi(value.c_str()));
-				GetInformationAboutCarGear(car);
-			}
-			else if (command == "SetSpeed")
-			{
-				car.SetSpeed(atoi(value.c_str()));
-				GetInformationAboutCarSpeed(car);
-			}
+
+			SetParamether(car, command, atoi(value.c_str()));
 		}
 	} while (!inputString.empty());
 }

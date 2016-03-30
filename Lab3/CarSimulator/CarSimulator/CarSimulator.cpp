@@ -41,7 +41,7 @@ RangesVector CCar::GetRangeOfSpeeds(Gear gear)const
 		return{ 50, 150 };
 	}
 
-	return{ 0, 0 };
+	return{ INT_MAX, INT_MAX };
 }
 
 
@@ -99,8 +99,8 @@ bool CCar::SetSpeed(int speed)
 {
 	if (m_engineIsTurnOn)
 	{
-		if (((m_gear == Gear::neutral) && (speed < abs(m_speed)))
-			|| (SpeedInGearRange(m_gear, speed) && (m_gear != Gear::neutral)))
+		if (((m_gear == Gear::neutral) && (abs(speed) <= abs(m_speed)))
+			|| (SpeedInGearRange(m_gear, abs(speed)) && (m_gear != Gear::neutral)))
 		{
 			auto direction = DirectionMovement::movingForward;
 			if ((m_speed < 0) || (m_gear == Gear::reverse))

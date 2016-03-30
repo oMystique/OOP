@@ -4,240 +4,277 @@
 #include "stdafx.h"
 #include "../CarSimulator/CarSimulator.h"
 
-BOOST_AUTO_TEST_SUITE(testSuiteCarSim)
 
-struct Fixture
+struct CarFixture
 {
-	Fixture()
-	{	
-	}
-	~Fixture()
-	{
-	}
 	CCar m_car;
 };
 
-BOOST_FIXTURE_TEST_CASE(testTurnOnTheCarsEngine, Fixture)
-{
-	BOOST_CHECK(m_car.TurnOnEngine() == true);
-	BOOST_CHECK(m_car.TurnOnEngine() == false);
-}
+BOOST_FIXTURE_TEST_SUITE(Car, CarFixture)
 
-BOOST_FIXTURE_TEST_CASE(testTurnOffTheCarsEngine, Fixture)
-{
-	BOOST_CHECK(m_car.EngineIsOn() == false);
+	// двигатель машины изначально выключен
+	BOOST_AUTO_TEST_CASE(engine_initially_off)
+	{
+		BOOST_CHECK(!m_car.EngineIsOn());
+	}
 
-	BOOST_CHECK(m_car.TurnOnEngine() == true);
-	BOOST_CHECK(m_car.EngineIsOn() == true);
+	// на нулевой скорости и передаче
+	BOOST_AUTO_TEST_CASE(at_zero_speed_and_zero_gear)
+	{
+		BOOST_CHECK_EQUAL(m_car.GetGear(), 0);
+	}
 
-	BOOST_CHECK(m_car.TurnOffEngine() == true);
-	BOOST_CHECK(m_car.EngineIsOn() == false);
-}
+	//	стоит, не двигаясь
+	BOOST_AUTO_TEST_CASE(standing_not_moving)
+	{
+		BOOST_CHECK(m_car.GetDirection() == DirectionMovement::standOnTheSpot);
+	}
 
-BOOST_FIXTURE_TEST_CASE(testAutoStatusWithOffEngine, Fixture)
-{
-	BOOST_CHECK(m_car.EngineIsOn() == false);
+	// не позволяет сменить передачу
+	BOOST_AUTO_TEST_CASE(does_not_allow_change_gear)
+	{
+		BOOST_CHECK(!m_car.SetGear(1)); 
+		BOOST_CHECK_EQUAL(m_car.GetGear(), 0);
+	}
 
-	BOOST_CHECK(m_car.GetGear() == 0);
-	BOOST_CHECK(m_car.GetSpeed() == 0);
-	BOOST_CHECK(m_car.GetDirection() == DirectionMovement::standOnTheSpot);
-}
+	// не позволяет сменить скорость
+	BOOST_AUTO_TEST_CASE(does_not_allow_change_speed)
+	{
+		BOOST_CHECK(!m_car.SetSpeed(10));
+		BOOST_CHECK_EQUAL(m_car.GetSpeed(), 0);
+	}
 
-BOOST_FIXTURE_TEST_CASE(testReStartingEngine, Fixture)
-{
-	BOOST_CHECK(m_car.EngineIsOn() == false);
+	// может быть включен
+	BOOST_AUTO_TEST_CASE(may_be_turn_on)
+	{
+		BOOST_CHECK(m_car.TurnOnEngine());
+		BOOST_CHECK(m_car.EngineIsOn());
+	}
 
-	BOOST_CHECK(m_car.TurnOnEngine() == true);
-	BOOST_CHECK(m_car.EngineIsOn() == true);
+	struct when_turned_on_ :CarFixture
+	{
+		when_turned_on_()
+		{
+			m_car.TurnOnEngine();
+		}
+	};
 
-	BOOST_CHECK(m_car.TurnOnEngine() == false);
-	BOOST_CHECK(m_car.EngineIsOn() == true);
-}
+	// после включения
+	BOOST_FIXTURE_TEST_SUITE(when_turned_on, when_turned_on_)
 
-BOOST_FIXTURE_TEST_CASE(testReOffEngine, Fixture)
-{
-	BOOST_CHECK(m_car.EngineIsOn() == false);
+		// позволяет включить первую передачу
+		BOOST_AUTO_TEST_CASE(allows_set_first_gear)
+		{
+			BOOST_CHECK(m_car.SetGear(1));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 1);
+		}
 
-	BOOST_CHECK(m_car.TurnOnEngine() == true);
-	BOOST_CHECK(m_car.EngineIsOn() == true);
+		// позволяет включить заднюю передачу
+		BOOST_AUTO_TEST_CASE(allows_set_reverse_gear)
+		{
+			BOOST_CHECK(m_car.SetGear(-1));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), -1);
+		}
 
-	BOOST_CHECK(m_car.TurnOffEngine() == true);
-	BOOST_CHECK(m_car.EngineIsOn() == false);
+		// не позволяет переключиться на несуществующую передачу
+		BOOST_AUTO_TEST_CASE(It_does_not_allow_the_switch_to_a_non_existent_gear)
+		{
+			BOOST_CHECK(!m_car.SetGear(20));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 0);
+		}
 
-	BOOST_CHECK(m_car.TurnOffEngine() == false);
-	BOOST_CHECK(m_car.EngineIsOn() == false);
-}
+		// не может быть выключен на задней передаче
+		BOOST_AUTO_TEST_CASE(can_not_turned_off_on_reverse_gear)
+		{
+			BOOST_CHECK(m_car.SetGear(-1));
+			BOOST_CHECK(!m_car.TurnOffEngine());
+		}
 
-BOOST_FIXTURE_TEST_CASE(testTurnOffCarsEngineWithNonZeroGear, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
+		// не может быть выключен на первой передаче
+		BOOST_AUTO_TEST_CASE(can_not_turned_off_on_first_gear)
+		{
+			BOOST_CHECK(m_car.SetGear(1));
+			BOOST_CHECK(!m_car.TurnOffEngine());
+		}
 
-	BOOST_CHECK(m_car.SetGear(1) == true);
-	BOOST_CHECK(m_car.TurnOffEngine() == false);
-	BOOST_CHECK(m_car.EngineIsOn() == true);
-}
+		// может быть выключен на нейтральной передаче
+		BOOST_AUTO_TEST_CASE(can_turned_off_on_neutral_gear)
+		{
+			BOOST_CHECK(m_car.SetGear(0));
+			BOOST_CHECK(m_car.TurnOffEngine());
+		}
+	BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_FIXTURE_TEST_CASE(testTurnOffCarsEngineWithNonZeroSpeedAndZeroGear, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
+	struct at_1st_gear_ :when_turned_on_
+	{
+		at_1st_gear_()
+		{
+			m_car.SetGear(1);
+		}
+	};
 
-	BOOST_CHECK(m_car.SetGear(1) == true);
-	BOOST_CHECK(m_car.SetSpeed(1) == true);
-	BOOST_CHECK(m_car.SetGear(0) == true);
-	BOOST_CHECK(m_car.TurnOffEngine() == false);
-	BOOST_CHECK(m_car.EngineIsOn() == true);
-}
+	// на первой скорости
+	BOOST_FIXTURE_TEST_SUITE(at_1st_gear, at_1st_gear_)
 
-BOOST_FIXTURE_TEST_CASE(testSetGearWithOffCarsEngine, Fixture)
-{
-	BOOST_CHECK(m_car.EngineIsOn() == false);
-	BOOST_CHECK(m_car.SetGear(1) == false);
-}
+		// движется вперед если скорость не равна нулю
+		BOOST_AUTO_TEST_CASE(allow_moving_forward_if_speed_non_zero)
+		{
+			BOOST_CHECK(m_car.SetSpeed(1));
+			BOOST_CHECK(m_car.GetDirection() == DirectionMovement::movingForward);
+		}
 
-BOOST_FIXTURE_TEST_CASE(testSetGearWithOnCarsEngine, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-	BOOST_CHECK(m_car.EngineIsOn() == true);
-	BOOST_CHECK(m_car.SetGear(1) == true);
-}
+		// развивает скорость от 0 до 30
+		BOOST_AUTO_TEST_CASE(accelerates_from_0_to_30)
+		{
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 0);
+			BOOST_CHECK(m_car.SetSpeed(30));
+			BOOST_CHECK(!m_car.SetSpeed(35));
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 30);
+		}
 
-BOOST_FIXTURE_TEST_CASE(testSetReverseFromNeutralGearAtZeroSpeed, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-	BOOST_CHECK(m_car.GetSpeed() == 0);
-	BOOST_CHECK(m_car.GetGear() == 0);
-	BOOST_CHECK(m_car.SetGear(-1) == true);
-	BOOST_CHECK(m_car.GetGear() == -1);
-}
+		// позволяет переключиться на нейтральную передачу на заданной скорости
+		BOOST_AUTO_TEST_CASE(allow_set_neutral_gear_at_given_speed)
+		{
+			BOOST_CHECK(m_car.SetSpeed(1));
+			BOOST_CHECK(m_car.SetGear(0));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 0);
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 1);
+		}
 
-BOOST_FIXTURE_TEST_CASE(testSetReverseFromNeutralGearAtNonZeroSpeed, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
+		// позволяет переключиться на заднюю передачу на нулевой скорости
+		BOOST_AUTO_TEST_CASE(allow_set_reverse_gear_at_zero_speed)
+		{
+			BOOST_CHECK(m_car.SetGear(-1));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), -1);
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 0);
+		}
 
-	BOOST_CHECK(m_car.SetGear(1) == true);
-	BOOST_CHECK(m_car.SetSpeed(10) == true);
-	BOOST_CHECK(m_car.GetSpeed() == 10);
-	BOOST_CHECK(m_car.GetGear() == 1);
+		// позволяет переключиться на заднюю передачу на нулевой скорости
+		BOOST_AUTO_TEST_CASE(not_allow_set_reverse_gear_at_non_zero_speed)
+		{
+			BOOST_CHECK(m_car.SetSpeed(1));
+			BOOST_CHECK(!m_car.SetGear(-1));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 1);
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 1);
+		}
 
-	BOOST_CHECK(m_car.SetGear(0) == true);
-	BOOST_CHECK(m_car.GetGear() == 0);
+		// позволяет переключиться на вторую передачу
+		BOOST_AUTO_TEST_CASE(allow_set_2nd_gear)
+		{
 
-	BOOST_CHECK(m_car.SetGear(-1) == false);
+			BOOST_CHECK(m_car.SetSpeed(21));
+			BOOST_CHECK(m_car.SetGear(2));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 2);
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 21);
+		}
+	BOOST_AUTO_TEST_SUITE_END()
 
-	BOOST_CHECK(m_car.GetGear() == 0);
-	BOOST_CHECK(m_car.GetDirection() == DirectionMovement::movingForward);
-}
+	struct at_0_gear_in_during_movement_ :at_1st_gear_
+	{
+		at_0_gear_in_during_movement_()
+		{
+			m_car.SetSpeed(10);
+			m_car.SetGear(0);
+		}
+	};
 
-BOOST_FIXTURE_TEST_CASE(testSetReverseFromFirstGearAtZeroSpeed, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-	BOOST_CHECK(m_car.SetGear(1) == true);
-	BOOST_CHECK(m_car.SetSpeed(10) == true);
-	BOOST_CHECK(m_car.GetSpeed() == 10);
-	BOOST_CHECK(m_car.GetGear() == 1);
-	BOOST_CHECK(m_car.SetSpeed(0) == true);
-	BOOST_CHECK(m_car.GetSpeed() == 0);
-	BOOST_CHECK(m_car.GetGear() == 1);
+	// на 0 передаче во время движения
+	BOOST_FIXTURE_TEST_SUITE(at_0_gear_in_during_movement, at_0_gear_in_during_movement_)
 
-	BOOST_CHECK(m_car.SetGear(-1) == true);
-	BOOST_CHECK(m_car.GetGear() == -1);
+		// не позволяет увеличить скорость
+		BOOST_AUTO_TEST_CASE(does_not_allow_to_increase_the_speed)
+		{
+			BOOST_CHECK(!m_car.SetSpeed(20));
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 10);
+		}
 
-	BOOST_CHECK(m_car.GetDirection() == DirectionMovement::standOnTheSpot);
-}
+		// позволяет уменьшить скорость или оставить прежней
+		BOOST_AUTO_TEST_CASE(reduces_the_speed_or_leave_earlier)
+		{
+			BOOST_CHECK(m_car.SetSpeed(10));
+			BOOST_CHECK(m_car.SetSpeed(9));
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 9);
+		}
 
-BOOST_FIXTURE_TEST_CASE(testSetReverseFromFirstGearAtNonZeroSpeed, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
+		// позволяет включить допустимую передачу если скорость позволяет
+		BOOST_AUTO_TEST_CASE(enables_the_gear_of_permissible_if_the_speed_allows)
+		{
+			BOOST_CHECK(m_car.SetGear(1));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 1);
+			BOOST_CHECK(m_car.SetSpeed(20));
 
-	BOOST_CHECK(m_car.SetGear(1) == true);
-	BOOST_CHECK(m_car.SetSpeed(10) == true);
-	BOOST_CHECK(m_car.GetSpeed() == 10);
-	BOOST_CHECK(m_car.GetGear() == 1);
+			BOOST_CHECK(m_car.SetGear(0));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 0);
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 20);
 
-	BOOST_CHECK(m_car.SetGear(-1) == false);
+			BOOST_CHECK(m_car.SetGear(2));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 2);
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 20);
+		}
 
-	BOOST_CHECK(m_car.GetGear() == 1);
-	BOOST_CHECK(m_car.GetDirection() == DirectionMovement::movingForward);
-}
+		// не позволяет выключить двигатель
+		BOOST_AUTO_TEST_CASE(does_not_allow_the_engine_to_switch_off)
+		{
+			BOOST_CHECK(!m_car.TurnOffEngine());
+			BOOST_CHECK(m_car.EngineIsOn());
+		}
 
-BOOST_FIXTURE_TEST_CASE(testSetSpeedWithOffCarsEngine, Fixture)
-{
-	BOOST_CHECK(m_car.EngineIsOn() == false);
-	BOOST_CHECK(m_car.SetSpeed(1) == false);
-}
+		// не позволяет переключиться на заднюю передачу
+		BOOST_AUTO_TEST_CASE(does_not_allow_the_switch_to_reverse_gear)
+		{
+			BOOST_CHECK(!m_car.SetGear(-1));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 0);
+		}
+	BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_FIXTURE_TEST_CASE(testSetSpeedOnFirstGear, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-	BOOST_REQUIRE(m_car.SetGear(1));
+	struct at_reverse_gear_in_during_moment_ :when_turned_on_
+	{
+		at_reverse_gear_in_during_moment_()
+		{
+			m_car.SetGear(-1);
+			m_car.SetSpeed(1);
+		}
+	};
 
-	BOOST_CHECK(m_car.SetSpeed(3) == true);
-	BOOST_CHECK(m_car.GetSpeed() == 3);
-}
+	// на задней скорости во время движения
+	BOOST_FIXTURE_TEST_SUITE(at_reverse_gear_in_during_moment, at_reverse_gear_in_during_moment_)
 
-BOOST_FIXTURE_TEST_CASE(testSetImpossibleSpeedOnFirstGear, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-	BOOST_REQUIRE(m_car.SetGear(1));
+		// развивает скорость от 0 до 20
+		BOOST_AUTO_TEST_CASE(accelerates_from_0_to_20)
+		{
+			BOOST_CHECK(m_car.SetSpeed(20));
+			BOOST_CHECK(!m_car.SetSpeed(35));
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 20);
+		}
 
-	BOOST_CHECK(m_car.SetSpeed(60) == false);
-	BOOST_CHECK(m_car.GetSpeed() == 0);
-}
+		// позволяет переключиться на нейтральную передачу на заданной скорости
+		BOOST_AUTO_TEST_CASE(allow_set_neutral_gear_at_given_speed)
+		{
+			BOOST_CHECK(m_car.SetGear(0));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), 0);
+			BOOST_CHECK_EQUAL(m_car.GetSpeed(), 1);
+		}
 
-BOOST_FIXTURE_TEST_CASE(testSetNeutralFromFirstGearOnNonZeroSpeed, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-	BOOST_REQUIRE(m_car.SetGear(1));
-	BOOST_REQUIRE(m_car.SetSpeed(10));
+		//не позволяет выключить двигатель
+		BOOST_AUTO_TEST_CASE(does_not_allow_the_engine_to_switch_off)
+		{
+			BOOST_CHECK(!m_car.TurnOffEngine());
+			BOOST_CHECK(m_car.EngineIsOn());
+		}
 
-	BOOST_CHECK(m_car.SetGear(0) == true);
+		//не позволяет переключиться на первую передачу
+		BOOST_AUTO_TEST_CASE(does_not_allow_set_first_gear)
+		{
+			BOOST_CHECK(!m_car.SetGear(1));
+			BOOST_CHECK_EQUAL(m_car.GetGear(), -1);
+		}
 
-	BOOST_CHECK(m_car.GetSpeed() == 10);
-	BOOST_CHECK(m_car.GetGear() == 0);
-}
+		//движется назад
+		BOOST_AUTO_TEST_CASE(moving_backward)
+		{
+			BOOST_CHECK(m_car.GetDirection() == DirectionMovement::movingBackward);
+		}
 
-BOOST_FIXTURE_TEST_CASE(testIncreaseSpeedOnNeutralGear, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-
-	BOOST_CHECK(m_car.GetSpeed() == 0);
-	BOOST_CHECK(m_car.GetGear() == 0);
-
-	BOOST_CHECK(m_car.SetSpeed(1) == false);
-}
-
-BOOST_FIXTURE_TEST_CASE(testLoweringSpeedOnNeutralGear, Fixture)
-{
-	BOOST_REQUIRE(m_car.TurnOnEngine());
-	BOOST_REQUIRE(m_car.SetGear(1));
-	BOOST_REQUIRE(m_car.SetSpeed(10));
-
-	BOOST_CHECK(m_car.GetSpeed() == 10);
-	BOOST_CHECK(m_car.GetGear() == 1);
-	BOOST_CHECK(m_car.SetGear(0) == true);
-
-	BOOST_CHECK(m_car.SetSpeed(5) == true);
-	BOOST_CHECK(m_car.SetSpeed(0) == true);
-}
-
-BOOST_FIXTURE_TEST_CASE(testTryMovingBackwardWhenTheActualDrivingForward, Fixture)
-{
-	BOOST_CHECK(m_car.TurnOnEngine() == true);
-	BOOST_CHECK(m_car.SetGear(1) == true);
-	BOOST_CHECK(m_car.SetSpeed(3) == true);
-
-	BOOST_CHECK(m_car.SetGear(-1) == false);
-	BOOST_CHECK(m_car.GetDirection() != DirectionMovement::movingBackward);
-}
-
-BOOST_FIXTURE_TEST_CASE(testTryMovingForwardWhenTheActualDrivingBackWard, Fixture)
-{
-	BOOST_CHECK(m_car.TurnOnEngine() == true);
-	BOOST_CHECK(m_car.SetGear(-1) == true);
-	BOOST_CHECK(m_car.SetSpeed(3) == true);
-
-	BOOST_CHECK(m_car.SetGear(1) == false);
-	BOOST_CHECK(m_car.GetDirection() == DirectionMovement::movingBackward);
-}
+	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
