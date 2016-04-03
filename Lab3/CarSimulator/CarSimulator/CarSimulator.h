@@ -36,6 +36,7 @@ public:
 
 	int GetSpeed()const;
 	int GetGear()const;
+
 	bool EngineIsOn()const;
 	DirectionMovement GetDirection()const;
 private:
