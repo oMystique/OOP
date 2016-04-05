@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes">
+      <UniqueIdentifier>{3f17a767-1970-473e-9db1-25947e0236ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes\Point">
+      <UniqueIdentifier>{97a6e3be-422b-4ca9-9bf1-fe488364aad5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes\Shape">
+      <UniqueIdentifier>{4af877f5-c0a0-4f09-85b3-5e908cc966e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes\LineSegment">
+      <UniqueIdentifier>{0d1a7ded-1bfa-44ec-ace4-d6db42e3fd4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes\SolidShape">
+      <UniqueIdentifier>{9604d609-4c24-45f3-bac7-b2a1fb04fd34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes\SolidShape\Triangle">
+      <UniqueIdentifier>{c57bed8c-a46e-4682-ab9c-7e0a3e2dd9f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes\SolidShape\Rectangle">
+      <UniqueIdentifier>{b442ff2c-1ca1-402f-9838-1bbdbdaea8f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Shapes\SolidShape\Circle">
+      <UniqueIdentifier>{6672b8e3-dcb1-4bdd-8af3-8e4ff33ff7e4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidShape.h">
+      <Filter>Файлы исходного кода\Shapes\SolidShape</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Файлы исходного кода\Shapes\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Файлы исходного кода\Shapes\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="LineSegment.h">
+      <Filter>Файлы исходного кода\Shapes\LineSegment</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Файлы исходного кода\Shapes\SolidShape\Rectangle</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Файлы исходного кода\Shapes\SolidShape\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Файлы исходного кода\Shapes\SolidShape\Triangle</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Point.cpp">
+      <Filter>Файлы исходного кода\Shapes\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="LineSegment.cpp">
+      <Filter>Файлы исходного кода\Shapes\LineSegment</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Файлы исходного кода\Shapes\SolidShape\Rectangle</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Файлы исходного кода\Shapes\SolidShape\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="Triangle.cpp">
+      <Filter>Файлы исходного кода\Shapes\SolidShape\Triangle</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
