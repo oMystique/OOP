@@ -27,7 +27,7 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 	BOOST_AUTO_TEST_CASE(if_var_does_not_exist_its_created)
 	{
 		BOOST_CHECK_EQUAL(calc.GetVarValue("x"), VAL_NOT_EXISTING);
-		BOOST_CHECK(calc.SetVarValue("x", "123"));
+		BOOST_CHECK(calc.SetVarValue("x=123"));
 		BOOST_CHECK_EQUAL(calc.GetVarValue("x"), 123);
 	}
 
@@ -35,7 +35,7 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 	BOOST_AUTO_TEST_CASE(var_name_can_not_be_empty)
 	{
 		BOOST_CHECK(!calc.SetVarIdentifier(""));
-		BOOST_CHECK(!calc.SetVarValue("", "20"));
+		BOOST_CHECK(!calc.SetVarValue("=20"));
 	}
 
 	
@@ -60,7 +60,7 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 		//значение можно изменить
 		BOOST_AUTO_TEST_CASE(can_set_new_value)
 		{
-			BOOST_CHECK(calc.SetVarValue("y", "15"));
+			BOOST_CHECK(calc.SetVarValue("y=15"));
 			BOOST_CHECK_EQUAL(calc.GetVarValue("y"), 15);
 		}
 
@@ -77,8 +77,8 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 	{
 		again_declare_new_var_()
 		{
-			calc.SetVarValue("y", "10");
-			calc.SetVarValue("x", "30");
+			calc.SetVarValue("y=10");
+			calc.SetVarValue("x=30");
 		}
 	};
 
@@ -91,27 +91,27 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 			BOOST_CHECK_EQUAL(calc.GetVarValue("y"), 10);
 			BOOST_CHECK_EQUAL(calc.GetVarValue("x"), 30);
 
-			BOOST_CHECK(calc.SetVarValue("y", "x"));
+			BOOST_CHECK(calc.SetVarValue("y=x"));
 			BOOST_CHECK_EQUAL(calc.GetVarValue("y"), 30);
 		}
 
 		//попытка вызвать функцию с некорректным операндом завершитс€ неудачей
 		BOOST_AUTO_TEST_CASE(can_not_call_function_with_an_invalid_operand)
 		{
-			BOOST_CHECK(!calc.SetFunctionValue("function", "x", "", "y"));
+			BOOST_CHECK(!calc.SetFunctionValue("function=x&y"));
 		}
 
 		//можно объ€вить функцию с одним единственным параметром
 		BOOST_AUTO_TEST_CASE(can_declare_function_with_one_paramether)
 		{
-			BOOST_CHECK(calc.SetFunctionValue("function", "x", "", ""));
+			BOOST_CHECK(calc.SetFunctionValue("function=x"));
 			BOOST_CHECK_EQUAL(calc.GetFunctionValue("function"), calc.GetVarValue("x"));
 		}
 
 		//можно объ€вить функцию, котора€ возводила бы в квадрат заданную переменную
 		BOOST_AUTO_TEST_CASE(squaring_x)
 		{
-			BOOST_CHECK(calc.SetFunctionValue("function", "x", "*", "x"));
+			BOOST_CHECK(calc.SetFunctionValue("function=x*x"));
 			BOOST_CHECK_EQUAL(calc.GetFunctionValue("function"), 900);
 		}
 
@@ -120,7 +120,7 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 	//нельз€ объ€вить функцию с несуществующими переменными
 	BOOST_AUTO_TEST_CASE(can_declare_function_with_non_existent_variable)
 	{
-		BOOST_CHECK(!calc.SetFunctionValue("function", "z", "+", "f"));
+		BOOST_CHECK(!calc.SetFunctionValue("function=z+f"));
 		BOOST_CHECK_EQUAL(calc.GetFunctionValue("fuction"), VAL_NOT_EXISTING);
 	}
 
@@ -128,7 +128,7 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 	BOOST_AUTO_TEST_CASE(fn_name_can_not_be_empty)
 	{
 		BOOST_CHECK(calc.SetVarIdentifier("var"));
-		BOOST_CHECK(!calc.SetFunctionValue("", "var", "", ""));
+		BOOST_CHECK(!calc.SetFunctionValue(" var"));
 	}
 
 	//можно объ€вить функцию с заданным названием, котора€ будет складывать x и y
@@ -136,7 +136,7 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 	{
 		declare_func_()
 		{
-			calc.SetFunctionValue("SumXandY", "x", "+", "y");
+			calc.SetFunctionValue("SumXandY=x+y");
 		}
 	};
 
@@ -152,13 +152,13 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 		//нельз€ объ€вить функцию повторно
 		BOOST_AUTO_TEST_CASE(can_not_declare_function_again)
 		{
-			BOOST_CHECK(!calc.SetFunctionValue("SumXandY", "x", "+", "y"));
+			BOOST_CHECK(!calc.SetFunctionValue("SumXandY=x+y"));
 		}
 
 		//нельз€ объ€вить новую функцию, если еЄ им€ уже зан€то
 		BOOST_AUTO_TEST_CASE(can_not_declare_function_if_her_name_is_busy)
 		{
-			BOOST_CHECK(!calc.SetFunctionValue("x", "y", "", ""));
+			BOOST_CHECK(!calc.SetFunctionValue("x=y"));
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
@@ -168,8 +168,8 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 	{
 		declare_func_again_()
 		{
-			calc.SetVarValue("z", "4");
-			calc.SetFunctionValue("DivSumXandYonZ", "SumXandY", "/", "z");
+			calc.SetVarValue("z=4");
+			calc.SetFunctionValue("DivSumXandYonZ=SumXandY/z");
 		}
 	};
 
@@ -185,14 +185,14 @@ BOOST_FIXTURE_TEST_SUITE(Calculator, CalculatorFixture)
 		//переменной можно присвоить значение результата вычислени€ функции
 		BOOST_AUTO_TEST_CASE(variable_can_be_assigned_value_of_calculation_result_of_function)
 		{
-			BOOST_CHECK(calc.SetVarValue("XandYdivZ", "DivSumXandYonZ"));
+			BOOST_CHECK(calc.SetVarValue("XandYdivZ=DivSumXandYonZ"));
 			BOOST_CHECK_EQUAL(calc.GetVarValue("XandYdivZ"), 10);
 		}
 
 		//если изменить значение переменной, то это отразитс€ и на использующей еЄ функции
 		BOOST_AUTO_TEST_CASE(function_can_change_its_value_due_to_variable)
 		{
-			BOOST_CHECK(calc.SetVarValue("z", "10"));
+			BOOST_CHECK(calc.SetVarValue("z=10"));
 			BOOST_CHECK_EQUAL(calc.GetFunctionValue("DivSumXandYonZ"), 4);
 		}
 

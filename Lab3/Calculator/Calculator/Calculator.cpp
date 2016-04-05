@@ -2,6 +2,8 @@
 #include "../Calculator/calculator.h"
 #include <iomanip>
 #include <algorithm>
+#include <cctype>
+#include <vector>
 
 using namespace std;
 
@@ -13,11 +15,6 @@ bool CCalculator::FunctionIsDeclared(string const &fnIdentifier)const
 bool CCalculator::VariableIsDeclared(string const &varIdentifier)const
 {
 	return (m_vars.find(varIdentifier) != m_vars.end());
-}
-
-bool CCalculator::OperandIsCorrect(string const &operand)const
-{
-	return ((operand == "+") || (operand == "/") || (operand == "*") || (operand == "-"));
 }
 
 double CCalculator::CalculateFunction(double value1, string const &operand, double value2)const
@@ -38,6 +35,7 @@ double CCalculator::CalculateFunction(double value1, string const &operand, doub
 	{
 		return value1 - value2;
 	}
+
 	return value1;
 }
 
@@ -51,6 +49,7 @@ double CCalculator::GetValue(string const &identifier)const
 	{
 		return GetVarValue(identifier);
 	}
+
 	return 0;
 }
 
@@ -69,10 +68,11 @@ double CCalculator::GetFunctionValue(string const &fnIdentifier)const
 		}
 		return CalculateFunction(value1, fnParamethers.operand, value2);
 	}
+
 	return VAL_NOT_EXISTING;
 }
 
-void CCalculator::PrintInfoAboutIdentifier(std::string const & identifier) const
+void CCalculator::PrintInfoAboutIdentifier(string const & identifier)const
 {
 	cout.setf(ios_base::fixed, ios_base::floatfield);
 	if (FunctionIsDeclared(identifier) && (GetFunctionValue(identifier) != VAL_NOT_EXISTING))
@@ -88,6 +88,7 @@ void CCalculator::PrintInfoAboutIdentifier(std::string const & identifier) const
 void CCalculator::PrintVariables()const
 {
 	cout.setf(ios_base::fixed, ios_base::floatfield);
+
 	for (auto it : m_vars)
 	{
 		cout << it.first << ":" << setprecision(2) <<  it.second << endl;
@@ -101,6 +102,7 @@ void CCalculator::PrintFunctions()const
 	{
 		cout << it.first << ":" << setprecision(2) << GetFunctionValue(it.first) << endl;
 	}
+
 }
 
 double CCalculator::GetVarValue(string const &varIdentifier)const
@@ -109,11 +111,37 @@ double CCalculator::GetVarValue(string const &varIdentifier)const
 	{
 		return (m_vars.find(varIdentifier))->second;
 	}
+
 	return VAL_NOT_EXISTING;
 }
 
-bool CCalculator::SetVarValue(string const &varIdentifier, string const &varValue)
+bool CCalculator::ParseLValueAndRValue(string const & str, string &lValue, string &rValue)
 {
+	if (isdigit(str.c_str()[0]))
+	{
+		return false;
+	}
+
+	auto equallyPos = str.find_first_of("=", 1);
+
+	if ((equallyPos == string::npos) || (equallyPos + 1 == str.size()))
+	{
+		return false;
+	}
+	lValue = str.substr(0, equallyPos);
+	rValue = str.substr(equallyPos + 1, str.size());
+
+	return true;
+}
+
+bool CCalculator::SetVarValue(string const &var)
+{
+	string varIdentifier;
+	string varValue;
+	if (!ParseLValueAndRValue(var, varIdentifier, varValue))
+	{
+		return false;
+	}
 	if (!FunctionIsDeclared(varIdentifier) && (!varIdentifier.empty()))
 	{
 		SetVarIdentifier(varIdentifier);
@@ -131,6 +159,7 @@ bool CCalculator::SetVarValue(string const &varIdentifier, string const &varValu
 		}
 		return true;
 	}
+
 	return false;
 }
 
@@ -141,30 +170,62 @@ bool CCalculator::SetVarIdentifier(string const &varIdentifier)
 		m_vars.emplace(varIdentifier, NAN);
 		return true;
 	}
+
 	return false;
 }
 
-bool CCalculator::SetFunctionValue(string const &fnIdentifier, string const &fnValue1, string const &fnOperand, string const &fnValue2)
+bool CCalculator::ParseRvalue(std::string const & rvalue, std::string & value1, std::string & operand, std::string & value2)
 {
+	vector<string> operands = { "+", "*", "/", "-" };
+	size_t operandPos = string::npos;
+
+	for (auto it : operands)
+	{
+		operandPos = rvalue.find_first_of(it);
+		if (operandPos != string::npos)
+		{
+			break;
+		}
+	}
+
+	if (operandPos != string::npos)
+	{
+		value1 = rvalue.substr(0, operandPos);
+		operand = rvalue.c_str()[operandPos];
+		value2 = rvalue.substr(operandPos + 1, rvalue.size());
+	}
+	else
+	{
+		value1 = rvalue;
+	}
+
+	return true;
+}
+
+bool CCalculator::SetFunctionValue(string const &fn)
+{
+	string fnIdentifier;
+	string value;
+	FunctionParamethers fnParamethers;
+
+	if (!ParseLValueAndRValue(fn, fnIdentifier, value) || 
+		(!ParseRvalue(value, fnParamethers.value1, fnParamethers.operand, fnParamethers.value2)))
+	{
+		return false;
+	}
+
 	if ((!FunctionIsDeclared(fnIdentifier)) && (!VariableIsDeclared(fnIdentifier)) && (!fnIdentifier.empty()))
 	{
-		FunctionParamethers fnParamethers;
-		if (!((FunctionIsDeclared(fnValue1)) || (VariableIsDeclared(fnValue1))))
+		if (!((FunctionIsDeclared(fnParamethers.value1) || (VariableIsDeclared(fnParamethers.value1))) 
+			|| (FunctionIsDeclared(fnParamethers.value2) || VariableIsDeclared(fnParamethers.value2)
+				&& (!fnParamethers.value2.empty()))))
 		{
 			return false;
 		}
-		fnParamethers.value1 = fnValue1;
-		if ((!fnValue2.empty()))
-		{
-			if (!(OperandIsCorrect(fnOperand)))
-			{
-				return false;
-			}
-			fnParamethers.operand = fnOperand;
-			fnParamethers.value2 = fnValue2;
-		}
+
 		m_functions.emplace(fnIdentifier, fnParamethers);
 		return true;
 	}
+
 	return false;
 }

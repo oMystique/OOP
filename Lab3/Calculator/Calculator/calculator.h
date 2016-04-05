@@ -29,13 +29,14 @@ public:
 	void PrintVariables()const;
 	void PrintFunctions()const;
 
-	bool SetVarValue(std::string const &varIdentifier, std::string const &varValue);
+	bool SetVarValue(std::string const &var);
 	bool SetVarIdentifier(std::string const &varIdentifier);
-	bool SetFunctionValue(std::string const &fnIdentifier, std::string const &fnValue1, std::string const &fnOperand, std::string const &fnValue2);
+	bool SetFunctionValue(std::string const &var);
 private:
 	bool VariableIsDeclared(std::string const &varIdentifier)const;
 	bool FunctionIsDeclared(std::string const &fnIdentifier)const;
-	bool OperandIsCorrect(std::string const &operand)const;
+	bool ParseLValueAndRValue(std::string const &str, std::string & lValue, std::string &rValue);
+	bool ParseRvalue(std::string const &rvalue, std::string &value1, std::string &operand, std::string &value2);
 
 	double CalculateFunction(double value1, std::string const &operand, double value2)const;
 	double GetValue(std::string const &identifier)const;

@@ -48,22 +48,24 @@ void CSimUseCalculator::DeclareVariable(istream &args)
 
 void CSimUseCalculator::AssignValueToVariable(istream &args)
 {
-	string identifier;
-	string value;
-	args >> identifier >> value;
+	string var;
+	args >> var;
 
-	m_calculator.SetVarValue(identifier, value);
+	if (!m_calculator.SetVarValue(var))
+	{
+		cout << "Incorrect let var value." << endl;
+	}
 }
 
 void CSimUseCalculator::DeclareFunction(istream &args)
 {
-	string identifier;
-	string value1;
-	string value2;
-	string operand;
-	args >> identifier >> value1 >> operand >> value2;
+	string fn;
+	args >> fn;
 
-	m_calculator.SetFunctionValue(identifier, value1, operand, value2);
+	if (!m_calculator.SetFunctionValue(fn))
+	{
+		cout << "Incorrect function declare." << endl;
+	}
 }
 
 void CSimUseCalculator::PrintInfoAboutIdentifier(istream &args)const
