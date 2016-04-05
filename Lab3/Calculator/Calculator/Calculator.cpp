@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "../Calculator/calculator.h"
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 
