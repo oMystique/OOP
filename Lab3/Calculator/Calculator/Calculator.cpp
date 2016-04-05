@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "../Calculator/calculator.h"
+#include <boost/utility/string_ref.hpp>
 #include <iomanip>
 #include <algorithm>
 #include <cctype>
 #include <vector>
 
 using namespace std;
+using boost::string_ref;
 
 bool CCalculator::FunctionIsDeclared(string const &fnIdentifier)const
 {
@@ -122,14 +124,16 @@ bool CCalculator::ParseLValueAndRValue(string const & str, string &lValue, strin
 		return false;
 	}
 
-	auto equallyPos = str.find_first_of("=", 1);
+	string_ref strRef(str);
+	auto equallyPos = strRef.find("=");
 
 	if ((equallyPos == string::npos) || (equallyPos + 1 == str.size()))
 	{
 		return false;
 	}
-	lValue = str.substr(0, equallyPos);
-	rValue = str.substr(equallyPos + 1, str.size());
+
+	lValue = strRef.substr(0, equallyPos).to_string();
+	rValue = strRef.substr(equallyPos + 1, str.size()).to_string();
 
 	return true;
 }
@@ -177,11 +181,13 @@ bool CCalculator::SetVarIdentifier(string const &varIdentifier)
 bool CCalculator::ParseRvalue(std::string const & rvalue, std::string & value1, std::string & operand, std::string & value2)
 {
 	vector<string> operands = { "+", "*", "/", "-" };
+	string_ref rvalueRef(rvalue);
+
 	size_t operandPos = string::npos;
 
 	for (auto it : operands)
 	{
-		operandPos = rvalue.find_first_of(it);
+		operandPos = rvalueRef.find(it);
 		if (operandPos != string::npos)
 		{
 			break;
@@ -190,9 +196,9 @@ bool CCalculator::ParseRvalue(std::string const & rvalue, std::string & value1, 
 
 	if (operandPos != string::npos)
 	{
-		value1 = rvalue.substr(0, operandPos);
-		operand = rvalue.c_str()[operandPos];
-		value2 = rvalue.substr(operandPos + 1, rvalue.size());
+		value1 = rvalueRef.substr(0, operandPos).to_string();
+		operand = rvalueRef.to_string().c_str()[operandPos];
+		value2 = rvalueRef.substr(operandPos + 1, rvalue.size()).to_string();
 	}
 	else
 	{

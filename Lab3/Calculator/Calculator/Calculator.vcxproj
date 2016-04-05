@@ -145,6 +145,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Additions.h" />
     <ClInclude Include="calculator.h" />
     <ClInclude Include="simUseCalculator.h" />
     <ClInclude Include="stdafx.h" />
