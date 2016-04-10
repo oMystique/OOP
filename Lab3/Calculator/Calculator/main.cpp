@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "simUseCalculator.h"
-#include "calculator.h"
+#include "calculatorPuppeteer.h"
 
 using namespace std;
 
 int main()
 {
-	CCalculator calc;
+	CCalculatorPuppeteer calc;
 	CSimUseCalculator simUseCalc(calc, cin, cout);
 
 	while ((!cin.eof()) && (!cin.fail()))

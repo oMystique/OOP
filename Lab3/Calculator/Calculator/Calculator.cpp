@@ -1,13 +1,9 @@
 #include "stdafx.h"
 #include "../Calculator/calculator.h"
-#include <boost/utility/string_ref.hpp>
-#include <iomanip>
 #include <algorithm>
 #include <cctype>
-#include <vector>
 
 using namespace std;
-using boost::string_ref;
 
 bool CCalculator::FunctionIsDeclared(string const &fnIdentifier)const
 {
@@ -41,126 +37,93 @@ double CCalculator::CalculateFunction(double value1, string const &operand, doub
 	return value1;
 }
 
-double CCalculator::GetValue(string const &identifier)const
+boost::optional<double> CCalculator::GetFunctionValue(string const &fnIdentifier)const
 {
+	double value1 = 0;
+	double value2 = 0;
+	boost::optional<double> output;
+	if (FunctionIsDeclared(fnIdentifier))
+	{
+		auto &fn = *(m_functions.find(fnIdentifier))->second;
+		if (fn.IsChanged())
+		{
+			value1 = GetInfoAboutIdentifier(fn.GetFnParamethers().value1).get();
+			if (GetInfoAboutIdentifier(fn.GetFnParamethers().value2).is_initialized())
+			{
+				value2 = GetInfoAboutIdentifier(fn.GetFnParamethers().value2).get();
+			}
+
+			if (isnan(value1) || isnan(value2))
+			{
+				return NAN;
+			}
+
+			fn.SetValue(CalculateFunction(value1, fn.GetFnParamethers().operand, value2));
+			fn.Change(false);
+		}
+		output = fn.GetValue();
+	}
+
+	return output;
+}
+
+boost::optional<double> CCalculator::GetInfoAboutIdentifier(string const & identifier)const
+{
+	boost::optional<double> value;
+
 	if (FunctionIsDeclared(identifier))
 	{
-		return GetFunctionValue(identifier);
+		value = GetFunctionValue(identifier);
 	}
 	else if (VariableIsDeclared(identifier))
 	{
-		return GetVarValue(identifier);
+		value = GetVarValue(identifier);
 	}
 
-	return 0;
+	return value;
 }
 
-double CCalculator::GetFunctionValue(string const &fnIdentifier)const
+Vars CCalculator::GetVariables()const
 {
-	double value1;
-	double value2;
-	if (FunctionIsDeclared(fnIdentifier))
-	{
-		FunctionParamethers fnParamethers = (m_functions.find(fnIdentifier))->second;
-		value1 = GetValue(fnParamethers.value1);
-		value2 = GetValue(fnParamethers.value2);
-		if (isnan(value1) || isnan(value2))
-		{
-			return NAN;
-		}
-		return CalculateFunction(value1, fnParamethers.operand, value2);
-	}
-
-	return VAL_NOT_EXISTING;
+	return m_vars;
 }
 
-void CCalculator::PrintInfoAboutIdentifier(string const & identifier)const
+Functions CCalculator::GetFunctions()const
 {
-	cout.setf(ios_base::fixed, ios_base::floatfield);
-	if (FunctionIsDeclared(identifier) && (GetFunctionValue(identifier) != VAL_NOT_EXISTING))
-	{
-		cout << setprecision(2) <<GetFunctionValue(identifier) << endl;
-	}
-	else if (VariableIsDeclared(identifier) && (GetVarValue(identifier) != VAL_NOT_EXISTING))
-	{
-		cout << setprecision(2) << GetVarValue(identifier) << endl;
-	}
+	return m_functions;
 }
 
-void CCalculator::PrintVariables()const
+boost::optional<double> CCalculator::GetVarValue(string const &varIdentifier)const
 {
-	cout.setf(ios_base::fixed, ios_base::floatfield);
+	boost::optional<double> output;
 
-	for (auto it : m_vars)
-	{
-		cout << it.first << ":" << setprecision(2) <<  it.second << endl;
-	}
-}
-
-void CCalculator::PrintFunctions()const
-{
-	cout.setf(ios_base::fixed, ios_base::floatfield);
-	for (auto it : m_functions)
-	{
-		cout << it.first << ":" << setprecision(2) << GetFunctionValue(it.first) << endl;
-	}
-
-}
-
-double CCalculator::GetVarValue(string const &varIdentifier)const
-{
 	if (VariableIsDeclared(varIdentifier))
 	{
-		return (m_vars.find(varIdentifier))->second;
+		output = (m_vars.find(varIdentifier))->second->GetValue();
 	}
 
-	return VAL_NOT_EXISTING;
+	return output;
 }
 
-bool CCalculator::ParseLValueAndRValue(string const & str, string &lValue, string &rValue)
+bool CCalculator::SetVarValue(string const &varIdentifier, string const &varValue)
 {
-	if (isdigit(str.c_str()[0]))
-	{
-		return false;
-	}
-
-	string_ref strRef(str);
-	auto equallyPos = strRef.find("=");
-
-	if ((equallyPos == string::npos) || (equallyPos + 1 == str.size()))
-	{
-		return false;
-	}
-
-	lValue = strRef.substr(0, equallyPos).to_string();
-	rValue = strRef.substr(equallyPos + 1, str.size()).to_string();
-
-	return true;
-}
-
-bool CCalculator::SetVarValue(string const &var)
-{
-	string varIdentifier;
-	string varValue;
-	if (!ParseLValueAndRValue(var, varIdentifier, varValue))
-	{
-		return false;
-	}
 	if (!FunctionIsDeclared(varIdentifier) && (!varIdentifier.empty()))
 	{
 		SetVarIdentifier(varIdentifier);
 		if (VariableIsDeclared(varValue))
 		{
-			m_vars[varIdentifier] = GetVarValue(varValue);
+			m_vars[varIdentifier]->SetValue(GetVarValue(varValue).get());
 		}
 		else if (FunctionIsDeclared(varValue))
 		{
-			m_vars[varIdentifier] = GetFunctionValue(varValue);
+			m_vars[varIdentifier]->SetValue(GetFunctionValue(varValue).get());
 		}
 		else
 		{
-			m_vars[varIdentifier] = atof(varValue.c_str());
+			m_vars[varIdentifier]->SetValue(atof(varValue.c_str()));
 		}
+		m_vars[varIdentifier]->NotifyUpdate();
+
 		return true;
 	}
 
@@ -171,65 +134,43 @@ bool CCalculator::SetVarIdentifier(string const &varIdentifier)
 {
 	if (!VariableIsDeclared(varIdentifier) && (!varIdentifier.empty()))
 	{
-		m_vars.emplace(varIdentifier, NAN);
+		auto var = make_shared<CVar>(NAN);
+		m_vars.emplace(varIdentifier, var);
+
 		return true;
 	}
 
 	return false;
 }
 
-bool CCalculator::ParseRvalue(std::string const & rvalue, std::string & value1, std::string & operand, std::string & value2)
+void CCalculator::SetSubscriber(CFunction &func, std::string const &identifier)
 {
-	vector<string> operands = { "+", "*", "/", "-" };
-	string_ref rvalueRef(rvalue);
-
-	size_t operandPos = string::npos;
-
-	for (auto it : operands)
+	if (FunctionIsDeclared(identifier))
 	{
-		operandPos = rvalueRef.find(it);
-		if (operandPos != string::npos)
-		{
-			break;
-		}
+		m_functions[identifier]->SubscribeToFunction(boost::bind(&CFunction::OnUpdate, &func));
 	}
-
-	if (operandPos != string::npos)
+	else if (VariableIsDeclared(identifier))
 	{
-		value1 = rvalueRef.substr(0, operandPos).to_string();
-		operand = rvalueRef.to_string().c_str()[operandPos];
-		value2 = rvalueRef.substr(operandPos + 1, rvalue.size()).to_string();
+		m_vars[identifier]->SubscribeToFunction(boost::bind(&CFunction::OnUpdate, &func));
 	}
-	else
-	{
-		value1 = rvalue;
-	}
-
-	return true;
 }
 
-bool CCalculator::SetFunctionValue(string const &fn)
+bool CCalculator::SetFunctionValue(std::string const &fnIdentifier, std::string const &value1, std::string const &operand, std::string const &value2)
 {
-	string fnIdentifier;
-	string value;
-	FunctionParamethers fnParamethers;
-
-	if (!ParseLValueAndRValue(fn, fnIdentifier, value) || 
-		(!ParseRvalue(value, fnParamethers.value1, fnParamethers.operand, fnParamethers.value2)))
-	{
-		return false;
-	}
+	FunctionParamethers fnParamethers(value1, operand, value2);
 
 	if ((!FunctionIsDeclared(fnIdentifier)) && (!VariableIsDeclared(fnIdentifier)) && (!fnIdentifier.empty()))
 	{
-		if (!((FunctionIsDeclared(fnParamethers.value1) || (VariableIsDeclared(fnParamethers.value1))) 
-			|| (FunctionIsDeclared(fnParamethers.value2) || VariableIsDeclared(fnParamethers.value2)
-				&& (!fnParamethers.value2.empty()))))
+		if (!((FunctionIsDeclared(value1) || (VariableIsDeclared(value1))) 
+			|| ((FunctionIsDeclared(value2) || VariableIsDeclared(value2))
+				&& (!value2.empty()))))
 		{
 			return false;
 		}
-
-		m_functions.emplace(fnIdentifier, fnParamethers);
+		auto func = make_shared<CFunction>(fnParamethers);
+		SetSubscriber(*func, value1);
+		SetSubscriber(*func, value2);
+		m_functions.emplace(fnIdentifier, func);
 		return true;
 	}
 

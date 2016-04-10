@@ -2,12 +2,12 @@
 #include <boost/noncopyable.hpp>
 #include <map>
 #include <functional>
-#include "calculator.h"
+#include "calculatorPuppeteer.h"
 
 class CSimUseCalculator: boost::noncopyable
 {
 public:
-	CSimUseCalculator(CCalculator &calculator, std::istream &input, std::ostream &output);
+	CSimUseCalculator(CCalculatorPuppeteer calcPuppeteer, std::istream &input, std::ostream &output);
 	bool HandleCommand();
 private:
 	void DeclareVariable(std::istream & args);
@@ -23,6 +23,6 @@ private:
 	std::istream &m_input;
 	std::ostream &m_output;
 
-	CCalculator &m_calculator;
+	CCalculatorPuppeteer m_calcPuppeteer;
 	const ActionMap m_actionMap;
 };

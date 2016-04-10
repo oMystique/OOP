@@ -1,28 +1,29 @@
 #pragma once
 #include "../Calculator/Additions.h"
+#include "../Calculator/function.h"
+#include "../Calculator/var.h"
 
 class CCalculator
 {
 public:
-	double GetVarValue(std::string const &varIdentifier)const;
-	double GetFunctionValue(std::string const &fnIdentifier)const;
+	boost::optional<double> GetVarValue(std::string const &varIdentifier)const;
+	boost::optional<double> GetFunctionValue(std::string const &fnIdentifier)const;
+	boost::optional<double> GetInfoAboutIdentifier(std::string const &identifier)const;
 
-	void PrintInfoAboutIdentifier(std::string const &identifier)const;
-	void PrintVariables()const;
-	void PrintFunctions()const;
+	Vars GetVariables()const;
+	Functions GetFunctions()const;
 
-	bool SetVarValue(std::string const &var);
+	bool SetVarValue(std::string const &varIdentifier, std::string const &varValue);
 	bool SetVarIdentifier(std::string const &varIdentifier);
-	bool SetFunctionValue(std::string const &var);
+	bool SetFunctionValue(std::string const &fnIdentifier, std::string const &value1, std::string const &operand, std::string const &value2);
 private:
+	double CalculateFunction(double value1, std::string const &operand, double value2)const;
+
 	bool VariableIsDeclared(std::string const &varIdentifier)const;
 	bool FunctionIsDeclared(std::string const &fnIdentifier)const;
-	bool ParseLValueAndRValue(std::string const &str, std::string & lValue, std::string &rValue);
-	bool ParseRvalue(std::string const &rvalue, std::string &value1, std::string &operand, std::string &value2);
 
-	double CalculateFunction(double value1, std::string const &operand, double value2)const;
-	double GetValue(std::string const &identifier)const;
+	void SetSubscriber(CFunction &func, std::string const &identifier);
 private:
-	VarsArray m_vars;
-	FunctionsArray m_functions;
+	Vars m_vars;
+	Functions m_functions;
 };

@@ -147,12 +147,19 @@
   <ItemGroup>
     <ClInclude Include="Additions.h" />
     <ClInclude Include="calculator.h" />
+    <ClInclude Include="calculatorPuppeteer.h" />
+    <ClInclude Include="function.h" />
+    <ClInclude Include="Observer.h" />
+    <ClInclude Include="signals.h" />
     <ClInclude Include="simUseCalculator.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="var.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calculator.cpp" />
+    <ClCompile Include="calculatorPuppeteer.cpp" />
+    <ClCompile Include="function.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="simUseCalculator.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -161,6 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="var.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

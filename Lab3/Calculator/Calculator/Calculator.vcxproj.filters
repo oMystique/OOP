@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы исходного кода\Calculator">
+      <UniqueIdentifier>{7356b619-4b26-4c2d-9f63-f8de2302f031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\CalculatorPuppeter">
+      <UniqueIdentifier>{aa75cbb1-4f21-44a1-9a93-0022339b5604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\SimUseCalculator">
+      <UniqueIdentifier>{2f90366e-20e2-448a-963c-1b2c6d732b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Observer">
+      <UniqueIdentifier>{4253deae-7498-4870-91d0-fa54c7efab53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Calculator\Var">
+      <UniqueIdentifier>{edfb2234-7381-4897-b9f0-014dacd84cdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\Calculator\Function">
+      <UniqueIdentifier>{820e7ae3-27c0-46d7-8b8b-a8d987abe1a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -24,28 +42,52 @@
     <ClInclude Include="targetver.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="calculator.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="simUseCalculator.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="Additions.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="calculator.h">
+      <Filter>Файлы исходного кода\Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="simUseCalculator.h">
+      <Filter>Файлы исходного кода\SimUseCalculator</Filter>
+    </ClInclude>
+    <ClInclude Include="calculatorPuppeteer.h">
+      <Filter>Файлы исходного кода\CalculatorPuppeter</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Файлы исходного кода\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="signals.h">
+      <Filter>Файлы исходного кода\Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="function.h">
+      <Filter>Файлы исходного кода\Calculator\Function</Filter>
+    </ClInclude>
+    <ClInclude Include="var.h">
+      <Filter>Файлы исходного кода\Calculator\Var</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="Calculator.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="Calculator.cpp">
+      <Filter>Файлы исходного кода\Calculator</Filter>
+    </ClCompile>
     <ClCompile Include="simUseCalculator.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\SimUseCalculator</Filter>
+    </ClCompile>
+    <ClCompile Include="calculatorPuppeteer.cpp">
+      <Filter>Файлы исходного кода\CalculatorPuppeter</Filter>
+    </ClCompile>
+    <ClCompile Include="function.cpp">
+      <Filter>Файлы исходного кода\Calculator\Function</Filter>
+    </ClCompile>
+    <ClCompile Include="var.cpp">
+      <Filter>Файлы исходного кода\Calculator\Var</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
