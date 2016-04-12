@@ -1,16 +1,11 @@
 #pragma once
 #include "Shape.h"
 
-class CPoint final : public IShape
+class CPoint final : public CShape
 {
 public:
-	CPoint(Vector2f const & pos, std::string const &lineColor);
-	float GetShapesSquare()const override;
-	float GetShapesPerimeter()const override;
-	std::string GetShapesName()const override;
-	std::string GetLineColor()const override;
-	Vector2f GetPosition()const;
+	CPoint(Vector2f const & pos, Color const &lineColor);
+	std::string GetShapesPresentation()const override;
 private:
-	std::string const m_lineColor;
-	Vector2f const m_pos;
+	Vector2f m_pos;
 };

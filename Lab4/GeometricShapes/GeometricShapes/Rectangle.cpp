@@ -3,12 +3,13 @@
 
 using namespace std;
 
-CRectangle::CRectangle(Vector2f const &rectPos, Vector2f const &rectProportion, string const & lineColor, string const & fillColor)
+CRectangle::CRectangle(Vector2f const &rectPos, Vector2f const &rectProportion
+		, Color const & lineColor, Color const & fillColor)
 	: m_pos(rectPos)
 	, m_proportion(rectProportion)
-	, m_lineColor(lineColor)
-	, m_fillColor(fillColor)
 {
+	m_fillColor = fillColor;
+	m_lineColor = lineColor;
 }
 
 float CRectangle::GetShapesSquare()const
@@ -21,17 +22,15 @@ float CRectangle::GetShapesPerimeter()const
 	return (m_proportion.x + m_proportion.y) * 2.f;
 }
 
-string CRectangle::GetShapesName()const
+string CRectangle::GetShapesPresentation() const
 {
-	return "Rectangle";
-}
+	std::ostringstream strm;
+	strm.setf(ios_base::fixed, ios_base::floatfield);
+	strm << setprecision(2);
 
-string CRectangle::GetLineColor()const
-{
-	return m_lineColor;
-}
+	strm << "Rectangle: " << "Pos <" << m_pos.x << "," << m_pos.y
+		<< ">; Size <" << m_proportion.x << "," << m_proportion.y << ">; " << "P = "
+		<< GetShapesPerimeter() << "; " << "S = " << GetShapesSquare();
 
-std::string CRectangle::GetFillColor()const
-{
-	return m_fillColor;
+	return strm.str();
 }

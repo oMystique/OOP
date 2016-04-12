@@ -3,33 +3,23 @@
 
 using namespace std;
 
-CPoint::CPoint(Vector2f const &pos, string const &lineColor)
-	: m_pos(pos)
-	, m_lineColor(lineColor)
+CPoint::CPoint(Vector2f const &pos, Color const &lineColor)
+	:m_pos(pos)
 {
+	m_lineColor = lineColor;
+	m_perimeter = 0.f;
+	m_square = 0.f;
 }
 
-float CPoint::GetShapesSquare()const
+string CPoint::GetShapesPresentation() const
 {
-	return 0.0f;
-}
+	std::ostringstream strm;
+	strm.setf(ios_base::fixed, ios_base::floatfield);
+	strm << setprecision(2);
 
-float CPoint::GetShapesPerimeter()const
-{
-	return 0.0f;
-}
+	strm << "Point: " << "Pos <" << m_pos.x << "," << m_pos.y
+		<< ">; P = " << GetShapesPerimeter()
+		<< "; S = " << GetShapesSquare();
 
-string CPoint::GetShapesName()const
-{
-	return "Point";
-}
-
-string CPoint::GetLineColor()const
-{
-	return m_lineColor;
-}
-
-Vector2f CPoint::GetPosition()const
-{
-	return m_pos;
+	return strm.str();
 }

@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{9BF70242-C5F8-4896-AEA1-CA1C09DD3D49}</ProjectGuid>
+    <ProjectGuid>{EAEF2886-8B22-4321-86CB-ABA65BC05CE3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GeometricShapes</RootNamespace>
+    <RootNamespace>GeometricShapesTests</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -84,7 +84,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
@@ -145,46 +145,28 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Circle.h" />
-    <ClInclude Include="Circle_view.h" />
-    <ClInclude Include="IShapeView.h" />
-    <ClInclude Include="LineSegment_view.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="LineSegment.h" />
-    <ClInclude Include="Rectangle.h" />
-    <ClInclude Include="Rectangle_view.h" />
-    <ClInclude Include="Shape.h" />
-    <ClInclude Include="ShapesContainer.h" />
-    <ClInclude Include="ShapesControl.h" />
-    <ClInclude Include="ShapeViewer.h" />
-    <ClInclude Include="SolidShape.h" />
+    <ClInclude Include="..\GeometricShapes\Circle.h" />
+    <ClInclude Include="..\GeometricShapes\Point.h" />
+    <ClInclude Include="..\GeometricShapes\Rectangle.h" />
+    <ClInclude Include="..\GeometricShapes\Shape.h" />
+    <ClInclude Include="..\GeometricShapes\SolidShape.h" />
+    <ClInclude Include="..\GeometricShapes\Triangle.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Triangle.h" />
-    <ClInclude Include="Triangle_view.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="Circle_view.cpp" />
-    <ClCompile Include="LineSegment.cpp" />
-    <ClCompile Include="LineSegment_view.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Point.cpp" />
-    <ClCompile Include="Rectangle.cpp" />
-    <ClCompile Include="Rectangle_view.cpp" />
-    <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="ShapesContainer.cpp" />
-    <ClCompile Include="ShapesControl.cpp" />
-    <ClCompile Include="ShapeViewer.cpp" />
-    <ClCompile Include="SolidShape.cpp" />
+    <ClCompile Include="..\GeometricShapes\Circle.cpp" />
+    <ClCompile Include="..\GeometricShapes\Point.cpp" />
+    <ClCompile Include="..\GeometricShapes\Rectangle.cpp" />
+    <ClCompile Include="..\GeometricShapes\SolidShape.cpp" />
+    <ClCompile Include="..\GeometricShapes\Triangle.cpp" />
+    <ClCompile Include="GeometricShapesTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Triangle.cpp" />
-    <ClCompile Include="Triangle_view.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

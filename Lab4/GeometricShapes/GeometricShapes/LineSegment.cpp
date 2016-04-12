@@ -4,16 +4,12 @@
 
 using namespace std;
 
-CLineSegment::CLineSegment(Vector2f const &firstPointPos, Vector2f const &secondPointPos, string const &lineColor)
+CLineSegment::CLineSegment(Vector2f const &firstPointPos, Vector2f const &secondPointPos, Color const &lineColor)
 	: m_firstPointPos(firstPointPos)
 	, m_secondPointPos(secondPointPos)
-	, m_lineColor(lineColor)
 {
-}
-
-float CLineSegment::GetShapesSquare()const
-{
-	return 0.0f;
+	m_lineColor = lineColor;
+	m_square = 0.0f;
 }
 
 float CLineSegment::GetShapesPerimeter()const
@@ -21,14 +17,17 @@ float CLineSegment::GetShapesPerimeter()const
 	return GetLengthOfTheLineSegment();
 }
 
-string CLineSegment::GetShapesName()const
+string CLineSegment::GetShapesPresentation()const
 {
-	return "Line Segment";
-}
+	std::ostringstream strm;
+	strm.setf(ios_base::fixed, ios_base::floatfield);
+	strm << setprecision(2);
 
-string CLineSegment::GetLineColor()const
-{
-	return m_lineColor;
+	strm << "LineSegment: " << "First point pos <" << m_firstPointPos.x << "," << m_firstPointPos.y
+		<< ">, Second point pos <" << m_secondPointPos.x << "," << m_secondPointPos.y << ">; P = "
+		<< GetShapesPerimeter() << "; " << "S = " << GetShapesSquare();
+
+	return strm.str();
 }
 
 float CLineSegment::GetLengthOfTheLineSegment()const

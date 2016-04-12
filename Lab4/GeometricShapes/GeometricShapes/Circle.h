@@ -1,18 +1,15 @@
 #pragma once
 #include "SolidShape.h"
 
-class CCircle final : public ISolidShape
+class CCircle final : public CSolidShape
 {
 public:
-	CCircle(Vector2f const &pos, float radius, std::string const &lineColor, std::string const &fillColor);
+	CCircle(Vector2f const &pos, float radius
+		, Color const &lineColor, Color const &fillColor);
 	float GetShapesSquare()const override;
 	float GetShapesPerimeter()const override;
-	std::string GetShapesName()const override;
-	std::string GetLineColor()const override;
-	std::string GetFillColor()const override;
+	std::string GetShapesPresentation()const override;
 private:
-	Vector2f const m_pos;
-	float const m_radius;
-	std::string const m_lineColor;
-	std::string const m_fillColor;
+	Vector2f m_pos;
+	float m_radius;
 };

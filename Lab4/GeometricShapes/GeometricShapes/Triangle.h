@@ -1,21 +1,18 @@
 #pragma once
-#include "SolidShape.h"
+#include "Rectangle.h"
 
-class CTriangle final : public ISolidShape
+class CTriangle final : public CSolidShape
 {
 public:
-	CTriangle(Vector2f const &topVertexPos, Vector2f const &leftVertexPos, Vector2f const &rightVertexPos, std::string const &lineColor, std::string const &fillColor);
+	CTriangle(Vector2f const &topVertexPos, Vector2f const &leftVertexPos
+		, Vector2f const &rightVertexPos, Color const &lineColor, Color const &fillColor);
 	float GetShapesSquare()const override;
 	float GetShapesPerimeter()const override;
-	std::string GetShapesName()const override;
-	std::string GetLineColor()const override;
-	std::string GetFillColor()const override;
+	std::string GetShapesPresentation()const override;
 private:
 	void CalculateTriangleSides(float &a, float &b, float &c)const;
 private:
-	Vector2f const m_topVertexPos;
-	Vector2f const m_leftVertexPos;
-	Vector2f const m_rightVertexPos;
-	std::string const m_lineColor;
-	std::string const m_fillColor;
+	Vector2f m_topVertexPos;
+	Vector2f m_leftVertexPos;
+	Vector2f m_rightVertexPos;
 };

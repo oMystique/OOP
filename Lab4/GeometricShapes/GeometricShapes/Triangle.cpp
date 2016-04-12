@@ -3,13 +3,14 @@
 
 using namespace std;
 
-CTriangle::CTriangle(Vector2f const &topVertexPos, Vector2f const &leftVertexPos, Vector2f const &rightVertexPos, std::string const &lineColor, string const &fillColor)
+CTriangle::CTriangle(Vector2f const &topVertexPos, Vector2f const &leftVertexPos
+		, Vector2f const &rightVertexPos, Color const &lineColor, Color const &fillColor)
 	: m_topVertexPos(topVertexPos)
 	, m_leftVertexPos(leftVertexPos)
 	, m_rightVertexPos(rightVertexPos)
-	, m_lineColor(lineColor)
-	, m_fillColor(fillColor)
 {
+	m_lineColor = lineColor;
+	m_fillColor = fillColor;
 }
 
 void CTriangle::CalculateTriangleSides(float & a, float & b, float & c)const
@@ -23,7 +24,7 @@ void CTriangle::CalculateTriangleSides(float & a, float & b, float & c)const
 
 float CTriangle::GetShapesSquare()const
 {
-	float perimeterHalf = GetShapesPerimeter();
+	float perimeterHalf = GetShapesPerimeter() / 2.f;
 
 	float a;
 	float b;
@@ -39,22 +40,22 @@ float CTriangle::GetShapesPerimeter()const
 	float a;
 	float b;
 	float c;
+
 	CalculateTriangleSides(a, b, c);
 
 	return a + b + c;
 }
 
-string CTriangle::GetShapesName()const
+string CTriangle::GetShapesPresentation() const
 {
-	return "Triangle";
-}
+	std::ostringstream strm;
+	strm.setf(ios_base::fixed, ios_base::floatfield);
+	strm << setprecision(2);
 
-string CTriangle::GetLineColor()const
-{
-	return m_lineColor;
-}
+	strm << "Triangle: " << "Top vertex pos <" << m_topVertexPos.x << "," << m_topVertexPos.y
+		<< ">, Left vertex pos <" << m_leftVertexPos.x << "," << m_leftVertexPos.y << ">, Right Vertex Pos <"
+		<< m_rightVertexPos.x << "," << m_rightVertexPos.y << ">; P = "
+		<< GetShapesPerimeter() << "; S = " << GetShapesSquare();
 
-string CTriangle::GetFillColor()const
-{
-	return m_fillColor;
+	return strm.str();
 }
