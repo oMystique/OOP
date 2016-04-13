@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		WorkWithFile(shapesControl, inputStr, argv[1]);
+		WorkWithFile(shapesControl, inputStr, "input.txt");
 	}
 
 	cout << "=== Squares ===" << endl;

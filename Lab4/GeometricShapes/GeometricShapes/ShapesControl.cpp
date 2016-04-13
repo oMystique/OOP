@@ -9,7 +9,7 @@ struct SquareSorter : public binary_function<shared_ptr<IShape>, shared_ptr<ISha
 {
 	bool const operator () (shared_ptr<IShape> shape1, shared_ptr<IShape> shape2)
 	{
-		return shape1->GetShapesPerimeter() <= shape2->GetShapesPerimeter();
+		return shape1->GetShapesPerimeter() < shape2->GetShapesPerimeter();
 	}
 };
 
@@ -17,7 +17,7 @@ struct PerimeterSorter : public binary_function<shared_ptr<IShape>, shared_ptr<I
 {
 	bool const operator () (shared_ptr<IShape> shape1, shared_ptr<IShape> shape2)
 	{
-		return shape1->GetShapesPerimeter() >= shape2->GetShapesPerimeter();
+		return shape1->GetShapesPerimeter() > shape2->GetShapesPerimeter();
 	}
 };
 

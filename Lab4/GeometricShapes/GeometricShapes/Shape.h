@@ -5,9 +5,9 @@
 
 struct Color
 {
-	int RR;
-	int GG;
-	int BB;
+	int RR = 0;
+	int GG = 0;
+	int BB = 0;
 };
 
 struct Vector2f

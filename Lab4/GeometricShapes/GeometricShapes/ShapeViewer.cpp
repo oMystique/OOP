@@ -29,5 +29,7 @@ void CShapeViewer::Exec(std::vector<std::shared_ptr<IShapeView>> const & shapes)
 			m_window.draw(*it);
 		}
 		m_window.display();
+
 	}
+
 }

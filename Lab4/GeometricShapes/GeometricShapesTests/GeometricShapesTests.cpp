@@ -2,10 +2,5 @@
 //
 
 #include "stdafx.h"
-
-
-int main()
-{
-    return 0;
-}
-
+#include "../GeometricShapes/LineSegment.h"
+#include "../GeometricShapes/Triangle.h"

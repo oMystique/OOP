@@ -8,6 +8,7 @@ CTriangleView::CTriangleView(Vector2f const & topVertexPos, Vector2f const & lef
 	m_triangle.setPoint(1, { leftVertexPos.x, leftVertexPos.y });
 	m_triangle.setPoint(2, { rightVertexPos.x, rightVertexPos.y });
 	m_triangle.setOutlineColor(sf::Color(sf::Uint8(lineColor.RR), sf::Uint8(lineColor.GG), sf::Uint8(lineColor.BB)));
+	m_triangle.setOutlineThickness(2.f);
 	m_triangle.setFillColor(sf::Color(sf::Uint8(fillColor.RR), sf::Uint8(fillColor.GG), sf::Uint8(fillColor.BB)));
 }
 
