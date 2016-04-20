@@ -204,6 +204,7 @@ tests.bat "$(TargetPath)"</Command>
   <ItemGroup>
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Circle_view.cpp" />
+    <ClCompile Include="IShapeView.cpp" />
     <ClCompile Include="LineSegment.cpp" />
     <ClCompile Include="LineSegment_view.cpp" />
     <ClCompile Include="main.cpp" />

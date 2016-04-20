@@ -173,8 +173,8 @@ BOOST_FIXTURE_TEST_SUITE(rectangle_tests, RectangleFixture)
 
 	BOOST_AUTO_TEST_CASE(rect_has_a_proportion)
 	{
-		BOOST_CHECK_EQUAL(rect.GetProportion().x, 100);
-		BOOST_CHECK_EQUAL(rect.GetProportion().y, 30);
+		BOOST_CHECK_EQUAL(rect.GetProportions().x, 100);
+		BOOST_CHECK_EQUAL(rect.GetProportions().y, 30);
 	}
 
 	BOOST_AUTO_TEST_CASE(rect_has_a_line_color)

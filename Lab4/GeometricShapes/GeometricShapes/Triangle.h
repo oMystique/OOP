@@ -4,6 +4,7 @@
 
 class CTriangle final : public CSolidShape
 {
+	using Sides = std::tuple<float, float, float>;
 public:
 	CTriangle(Vector2f const &topVertexPos, Vector2f const &leftVertexPos
 		, Vector2f const &rightVertexPos, Color const &lineColor, Color const &fillColor);
@@ -15,8 +16,6 @@ public:
 	float GetShapesPerimeter()const override;
 	std::string ToString()const override;
 private:
-	using Sides = std::tuple<float, float, float>;
-
 	Sides CalculateTriangleSides()const;
 private:
 	Vector2f m_topVertexPos;

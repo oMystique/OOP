@@ -47,7 +47,7 @@ float CTriangle::GetShapesSquare()const
 	float b;
 	float c;
 
-	std::tie(a, b, c) = CalculateTriangleSides();
+	tie(a, b, c) = CalculateTriangleSides();
 
 	return sqrtf(perimeterHalf*(perimeterHalf - a)*(perimeterHalf - b)*(perimeterHalf - c));
 }
@@ -58,7 +58,7 @@ float CTriangle::GetShapesPerimeter()const
 	float b;
 	float c;
 
-	std::tie(a, b, c) = CalculateTriangleSides();
+	tie(a, b, c) = CalculateTriangleSides();
 
 	return a + b + c;
 }

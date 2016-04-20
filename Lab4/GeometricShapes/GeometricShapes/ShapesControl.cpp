@@ -19,7 +19,7 @@ bool IsNotAlphaSpace(char symbol)
 
 Color GetColorInDecimalForm(std::string const &color)
 {
-	std::istringstream strm(color);
+	istringstream strm(color);
 	int dec;
 	strm >> std::hex >> dec;
 
@@ -148,8 +148,8 @@ void CShapesControl::ParseRectangleArgs(istringstream &strm)
 	OptionalVector2f leftPointPos;
 	strm >> leftPointPos;
 
-	OptionalVector2f rectProportion;
-	strm >> rectProportion;
+	OptionalVector2f rectProportions;
+	strm >> rectProportions;
 
 	boost::optional<string> lineColor;
 	strm >> lineColor;
@@ -157,9 +157,9 @@ void CShapesControl::ParseRectangleArgs(istringstream &strm)
 	boost::optional<string> fillColor;
 	strm >> fillColor;
 
-	if (leftPointPos && rectProportion && lineColor && fillColor)
+	if (leftPointPos && rectProportions && lineColor && fillColor)
 	{
-		m_shapesContainer.PushRectangle(leftPointPos.get(), rectProportion.get(),
+		m_shapesContainer.PushRectangle(leftPointPos.get(), rectProportions.get(),
 			GetColorInDecimalForm(lineColor.get()), GetColorInDecimalForm(fillColor.get()));
 	}
 

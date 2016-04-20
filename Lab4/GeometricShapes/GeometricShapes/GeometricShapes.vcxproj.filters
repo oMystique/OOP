@@ -167,5 +167,8 @@
     <ClCompile Include="Triangle_view.cpp">
       <Filter>Файлы исходного кода\ShapesView\Shapes\Triangle</Filter>
     </ClCompile>
+    <ClCompile Include="IShapeView.cpp">
+      <Filter>Файлы исходного кода\ShapesView\Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

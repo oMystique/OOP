@@ -5,8 +5,8 @@ CLineSegmentView::CLineSegmentView(Vector2f const & firstPointPos, Vector2f cons
 {
 	m_line[0].position = sf::Vector2f(firstPointPos.x, firstPointPos.y);
 	m_line[1].position = sf::Vector2f(secondPointPos.x, secondPointPos.y);
-	m_line[0].color = sf::Color(sf::Uint8(lineColor.r), sf::Uint8(lineColor.g), sf::Uint8(lineColor.b), 255);
-	m_line[1].color = sf::Color(sf::Uint8(lineColor.r), sf::Uint8(lineColor.g), sf::Uint8(lineColor.b), 255);
+	m_line[0].color = GetSFColor(lineColor);
+	m_line[1].color = GetSFColor(lineColor);
 }
 
 void CLineSegmentView::draw(sf::RenderTarget & target, sf::RenderStates states)const
