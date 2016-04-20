@@ -26,8 +26,10 @@ struct OptionalVector2f
 
 std::istringstream &operator >> (std::istringstream &strm, OptionalVector2f &vec);
 
+
 class CShapesControl : boost::noncopyable
 {
+	typedef std::map<std::string, std::function<void(std::istringstream & args) >> ActionMap;
 public:
 	CShapesControl(CShapesContainer &shapesContainer, std::string &input, std::ostream &output);
 	bool HandleCommand();
@@ -42,8 +44,6 @@ private:
 	void ParseRectangleArgs(std::istringstream &strm);
 	void ParseTriangleArgs(std::istringstream &strm);
 private:
-	typedef std::map<std::string, std::function<void(std::istringstream & args) >> ActionMap;
-
 	std::string &m_input;
 	std::ostream &m_output;
 
