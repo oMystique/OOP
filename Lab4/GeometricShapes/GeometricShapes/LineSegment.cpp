@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "LineSegment.h"
+#include "../GeometricShapes/LineSegment.h"
 #include <math.h>
 
 using namespace std;
@@ -7,9 +7,18 @@ using namespace std;
 CLineSegment::CLineSegment(Vector2f const &firstPointPos, Vector2f const &secondPointPos, Color const &lineColor)
 	: m_firstPointPos(firstPointPos)
 	, m_secondPointPos(secondPointPos)
+	, m_lineColor(lineColor)
 {
-	m_lineColor = lineColor;
-	m_square = 0.0f;
+}
+
+Vector2f CLineSegment::GetPosOfFirstPoint()const
+{
+	return m_firstPointPos;
+}
+
+Vector2f CLineSegment::GetPosOfSecondPoint()const
+{
+	return m_secondPointPos;
 }
 
 float CLineSegment::GetShapesPerimeter()const
@@ -28,6 +37,16 @@ string CLineSegment::GetShapesPresentation()const
 		<< GetShapesPerimeter() << "; " << "S = " << GetShapesSquare();
 
 	return strm.str();
+}
+
+float CLineSegment::GetShapesSquare() const
+{
+	return 0.0f;
+}
+
+Color CLineSegment::GetLineColor() const
+{
+	return m_lineColor;
 }
 
 float CLineSegment::GetLengthOfTheLineSegment()const

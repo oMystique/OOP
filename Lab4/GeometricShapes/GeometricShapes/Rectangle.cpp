@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Rectangle.h"
+#include "../GeometricShapes/Rectangle.h"
 
 using namespace std;
 
@@ -10,6 +10,16 @@ CRectangle::CRectangle(Vector2f const &rectPos, Vector2f const &rectProportion
 {
 	m_fillColor = fillColor;
 	m_lineColor = lineColor;
+}
+
+Vector2f CRectangle::GetProportion() const
+{
+	return m_proportion;
+}
+
+Vector2f CRectangle::GetPosition() const
+{
+	return m_pos;
 }
 
 float CRectangle::GetShapesSquare()const

@@ -7,15 +7,15 @@ using namespace std;
 
 struct SquareSorter : public binary_function<shared_ptr<IShape>, shared_ptr<IShape>, bool>
 {
-	bool const operator () (shared_ptr<IShape> shape1, shared_ptr<IShape> shape2)
+	bool const operator () (shared_ptr<IShape> const &shape1, shared_ptr<IShape> const &shape2)
 	{
-		return shape1->GetShapesPerimeter() < shape2->GetShapesPerimeter();
+		return shape1->GetShapesSquare() < shape2->GetShapesSquare();
 	}
 };
 
 struct PerimeterSorter : public binary_function<shared_ptr<IShape>, shared_ptr<IShape>, bool>
 {
-	bool const operator () (shared_ptr<IShape> shape1, shared_ptr<IShape> shape2)
+	bool const operator () (shared_ptr<IShape> const &shape1, shared_ptr<IShape> const &shape2)
 	{
 		return shape1->GetShapesPerimeter() > shape2->GetShapesPerimeter();
 	}
@@ -103,7 +103,7 @@ void CShapesControl::ParsePointArgs(istringstream &strm)
 	string lineColor;
 	strm >> lineColor;
 
-	m_shapesContainer.PushPoint(pos, GetColorInDecimalForm(lineColor));
+	m_shapesContainer.PushPoint(pos);
 }
 
 void CShapesControl::ParseLineSegmentArgs(istringstream &strm)

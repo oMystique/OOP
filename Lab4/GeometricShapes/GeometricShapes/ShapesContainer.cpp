@@ -10,9 +10,9 @@
 
 using namespace std;
 
-void CShapesContainer::PushPoint(Vector2f const & pos, Color const & lineColor)
+void CShapesContainer::PushPoint(Vector2f const & pos)
 {
-	auto point = make_shared<CPoint>(pos, lineColor);
+	auto point = make_shared<CPoint>(pos);
 	m_shapes.push_back(point);
 }
 
@@ -54,7 +54,7 @@ void CShapesContainer::PushTriangle(Vector2f const & topVertexPos, Vector2f cons
 	m_viewShapes.push_back(triangleView);
 }
 
-ShapesPtrs CShapesContainer::GetShapes()const
+LogicShapesPtrs CShapesContainer::GetShapes()const
 {
 	return m_shapes;
 }

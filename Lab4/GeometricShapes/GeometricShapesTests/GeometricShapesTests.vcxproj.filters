@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Заголовочные файлы\toTests">
+    <Filter Include="Заголовочные файлы\Files">
       <UniqueIdentifier>{935e0bd9-0721-4eba-9d97-18e37d9c1b10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -28,22 +28,25 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="..\GeometricShapes\Triangle.h">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClInclude>
     <ClInclude Include="..\GeometricShapes\Circle.h">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClInclude>
     <ClInclude Include="..\GeometricShapes\Point.h">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClInclude>
     <ClInclude Include="..\GeometricShapes\Rectangle.h">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClInclude>
     <ClInclude Include="..\GeometricShapes\Shape.h">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClInclude>
     <ClInclude Include="..\GeometricShapes\SolidShape.h">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GeometricShapes\LineSegment.h">
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,19 +57,22 @@
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
     <ClCompile Include="..\GeometricShapes\Triangle.cpp">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClCompile>
     <ClCompile Include="..\GeometricShapes\Circle.cpp">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClCompile>
     <ClCompile Include="..\GeometricShapes\Point.cpp">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClCompile>
     <ClCompile Include="..\GeometricShapes\Rectangle.cpp">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClCompile>
     <ClCompile Include="..\GeometricShapes\SolidShape.cpp">
-      <Filter>Заголовочные файлы\toTests</Filter>
+      <Filter>Заголовочные файлы\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GeometricShapes\LineSegment.cpp">
+      <Filter>Заголовочные файлы\Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

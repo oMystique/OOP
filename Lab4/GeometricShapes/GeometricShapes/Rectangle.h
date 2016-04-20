@@ -1,11 +1,14 @@
 #pragma once
-#include "Circle.h"
+#include "../GeometricShapes/Circle.h"
 
 class CRectangle final : public CSolidShape
 {
 public:
 	CRectangle(Vector2f const &topLeftPointPos, Vector2f const &rectProportion
 		, Color const &lineColor, Color const &fillColor);
+	Vector2f GetProportion()const;
+	Vector2f GetPosition()const;
+
 	float GetShapesSquare()const override;
 	float GetShapesPerimeter()const override;
 	std::string GetShapesPresentation()const override;

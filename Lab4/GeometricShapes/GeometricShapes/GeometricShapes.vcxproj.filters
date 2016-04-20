@@ -146,9 +146,6 @@
     <ClCompile Include="SolidShape.cpp">
       <Filter>Файлы исходного кода\ShapesLogic\SolidShape</Filter>
     </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>Файлы исходного кода\ShapesLogic\Shape</Filter>
-    </ClCompile>
     <ClCompile Include="ShapesContainer.cpp">
       <Filter>Файлы исходного кода\ShapesContainer</Filter>
     </ClCompile>

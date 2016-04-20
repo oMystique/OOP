@@ -1,14 +1,12 @@
 #include "stdafx.h"
+#include "../GeometricShapes/Point.h"
 #include "Point.h"
 
 using namespace std;
 
-CPoint::CPoint(Vector2f const &pos, Color const &lineColor)
+CPoint::CPoint(Vector2f const &pos)
 	:m_pos(pos)
 {
-	m_lineColor = lineColor;
-	m_perimeter = 0.f;
-	m_square = 0.f;
 }
 
 string CPoint::GetShapesPresentation() const
@@ -22,4 +20,24 @@ string CPoint::GetShapesPresentation() const
 		<< "; S = " << GetShapesSquare();
 
 	return strm.str();
+}
+
+float CPoint::GetShapesSquare() const
+{
+	return 0.0f;
+}
+
+float CPoint::GetShapesPerimeter() const
+{
+	return 0.0f;
+}
+
+Color CPoint::GetLineColor() const
+{
+	return Color(0, 0, 0);
+}
+
+Vector2f CPoint::GetPointPosition() const
+{
+	return m_pos;
 }

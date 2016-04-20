@@ -2,8 +2,8 @@
 
 #define _USE_MATH_DEFINES
 
-#include "Circle.h"
-#include <cmath> 
+#include "../GeometricShapes/Circle.h"
+#include <math.h> 
 
 using namespace std;
 
@@ -14,6 +14,16 @@ CCircle::CCircle(Vector2f const &pos, float radius
 {
 	m_lineColor = lineColor;
 	m_fillColor = fillColor;
+}
+
+float CCircle::GetRadius() const
+{
+	return m_radius;
+}
+
+Vector2f CCircle::GetPosition() const
+{
+	return m_pos;
 }
 
 float CCircle::GetShapesSquare()const

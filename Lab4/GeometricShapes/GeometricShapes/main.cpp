@@ -35,6 +35,23 @@ void WorkWithFile(CShapesControl &shapesControl, string &inputStr, string const 
 	}
 }
 
+void PrintInfoAboutShapes(CShapesControl const &shapesControl)
+{
+	cout << "=== Squares ===" << endl;
+	shapesControl.PrintSortedBySquareShapes();
+	cout << "===============" << endl << endl;
+
+	cout << "=== Perimeters ===" << endl;
+	shapesControl.PrintSortedByPerimeterShapes();
+	cout << "==================" << endl;
+}
+
+void DrawShapes(CShapesContainer const &shapesContainer)
+{
+	CShapeViewer shapeViewer;
+	shapeViewer.Exec(shapesContainer.GetViewShapes());
+}
+
 int main(int argc, char *argv[])
 {
 	string inputStr;
@@ -51,16 +68,9 @@ int main(int argc, char *argv[])
 		WorkWithFile(shapesControl, inputStr, "input.txt");
 	}
 
-	cout << "=== Squares ===" << endl;
-	shapesControl.PrintSortedBySquareShapes();
-	cout << "===============" << endl << endl;
+	PrintInfoAboutShapes(shapesControl);
 
-	cout << "=== Perimeters ===" << endl;
-	shapesControl.PrintSortedByPerimeterShapes();
-	cout << "==================" << endl;
-
-	CShapeViewer shapeViewer;
-	shapeViewer.Exec(shapesContainer.GetViewShapes());
+	DrawShapes(shapesContainer);
 
     return 0;
 }

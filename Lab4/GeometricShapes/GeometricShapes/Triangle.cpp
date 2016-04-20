@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Triangle.h"
+#include "../GeometricShapes/Triangle.h"
 
 using namespace std;
 
@@ -11,6 +11,21 @@ CTriangle::CTriangle(Vector2f const &topVertexPos, Vector2f const &leftVertexPos
 {
 	m_lineColor = lineColor;
 	m_fillColor = fillColor;
+}
+
+Vector2f CTriangle::GetTopVertexPos() const
+{
+	return m_topVertexPos;
+}
+
+Vector2f CTriangle::GetLeftVertexPos() const
+{
+	return m_leftVertexPos;
+}
+
+Vector2f CTriangle::GetRightVertexPos() const
+{
+	return m_rightVertexPos;
 }
 
 void CTriangle::CalculateTriangleSides(float & a, float & b, float & c)const

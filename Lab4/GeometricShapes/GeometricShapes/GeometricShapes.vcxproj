@@ -172,7 +172,6 @@
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Rectangle_view.cpp" />
-    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="ShapesContainer.cpp" />
     <ClCompile Include="ShapesControl.cpp" />
     <ClCompile Include="ShapeViewer.cpp" />

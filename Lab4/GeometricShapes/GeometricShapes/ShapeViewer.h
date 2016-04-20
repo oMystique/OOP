@@ -4,10 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include "IShapeView.h"
 
+typedef std::vector<std::shared_ptr<IShapeView>> ViewShapesPtrs;
+
 class CShapeViewer
 {
 public:
-	void Exec(std::vector<std::shared_ptr<IShapeView>> const &shapes);
+	void Exec(ViewShapesPtrs const &shapes);
 private:
 	void ProcessEvent();
 private:

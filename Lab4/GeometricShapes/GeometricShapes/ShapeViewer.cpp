@@ -11,7 +11,7 @@ void CShapeViewer::ProcessEvent()
 	}
 }
 
-void CShapeViewer::Exec(std::vector<std::shared_ptr<IShapeView>> const & shapes)
+void CShapeViewer::Exec(ViewShapesPtrs const & shapes)
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;

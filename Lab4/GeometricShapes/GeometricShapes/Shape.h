@@ -5,6 +5,12 @@
 
 struct Color
 {
+	Color() = default;
+	Color(int rr, int gg, int bb)
+		: RR(rr)
+		, GG(gg)
+		, BB(bb)
+	{};
 	int RR = 0;
 	int GG = 0;
 	int BB = 0;
@@ -12,6 +18,11 @@ struct Color
 
 struct Vector2f
 {
+	Vector2f() = default;
+	Vector2f(float tempX, float tempY)
+		: x(tempX)
+		, y(tempY)
+	{};
 	float x;
 	float y;
 };
@@ -24,16 +35,4 @@ public:
 	virtual float GetShapesPerimeter()const = 0;
 	virtual std::string GetShapesPresentation()const = 0;
 	virtual Color GetLineColor()const = 0;
-};
-
-class CShape: public IShape
-{
-public:
-	float GetShapesSquare()const override;
-	float GetShapesPerimeter()const override;
-	Color GetLineColor()const override;
-protected:
-	float m_square;
-	float m_perimeter;
-	Color m_lineColor;
 };
