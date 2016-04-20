@@ -16,7 +16,7 @@ void CShapeViewer::Exec(ViewShapesPtrs const & shapes)
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
 
-	m_window.create(sf::VideoMode(580, 420), "Shape Viewer", sf::Style::Default, settings);
+	m_window.create(sf::VideoMode(800, 700), "Shape Viewer", sf::Style::Default, settings);
 
 	while (m_window.isOpen())
 	{

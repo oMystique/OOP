@@ -5,22 +5,9 @@
 #include "ShapesControl.h"
 #include "Rectangle.h"
 #include "ShapeViewer.h"
+#include <boost/range/concepts.hpp>
 
 using namespace std;
-
-void DialogWithUser(CShapesControl &shapesControl, string &inputStr)
-{
-	while ((!cin.eof()) && (!cin.fail()))
-	{
-		cout << ">: ";
-		getline(cin, inputStr);
-
-		if (!shapesControl.HandleCommand())
-		{
-			cout << "Unknown command: " << inputStr << endl;
-		}
-	}
-}
 
 void WorkWithFile(CShapesControl &shapesControl, string &inputStr, string const &fileName)
 {
@@ -32,6 +19,30 @@ void WorkWithFile(CShapesControl &shapesControl, string &inputStr, string const 
 		{
 			cout << "Unknown command: " << inputStr << endl;
 		}
+	}
+}
+
+void DialogWithUser(CShapesControl &shapesControl, string &inputStr)
+{
+	cout << "Input file name or write \"None\" to continue..." << endl;
+	cin >> inputStr;
+
+	if (inputStr == "None")
+	{
+		while ((!cin.eof()) && (!cin.fail()))
+		{
+			cout << ">: ";
+			getline(cin, inputStr);
+
+			if (!shapesControl.HandleCommand())
+			{
+				cout << "Unknown command: " << inputStr << endl;
+			}
+		}
+	}
+	else
+	{
+		WorkWithFile(shapesControl, inputStr, move(inputStr));
 	}
 }
 
@@ -59,13 +70,13 @@ int main(int argc, char *argv[])
 	CShapesContainer shapesContainer;
 	CShapesControl shapesControl(shapesContainer, inputStr, cout);
 
-	if (argc < 0)
+	if (argc < 2)
 	{
 		DialogWithUser(shapesControl, inputStr);
 	}
 	else
 	{
-		WorkWithFile(shapesControl, inputStr, "input.txt");
+		WorkWithFile(shapesControl, inputStr, argv[1]);
 	}
 
 	PrintInfoAboutShapes(shapesControl);

@@ -1,0 +1,15 @@
+=== Squares ===
+LineSegment: First point pos <158.00,260.00>, Second point pos <380.00,260.00>; P = 222.00; S = 0.00
+Circle: Pos <190.00,310.00>; Radius = 20.00; P = 125.66; S = 1256.64
+Circle: Pos <319.00,310.00>; Radius = 20.00; P = 125.66; S = 1256.64
+Triangle: Top vertex pos <199.00,220.00>, Left vertex pos <100.00,310.00>, Right Vertex Pos <199.00,310.00>; P = 322.79; S = 4455.00
+Rectangle: Pos <200.00,220.00>; Size <180.00,90.00>; P = 540.00; S = 16200.00
+===============
+
+=== Perimeters ===
+Rectangle: Pos <200.00,220.00>; Size <180.00,90.00>; P = 540.00; S = 16200.00
+Triangle: Top vertex pos <199.00,220.00>, Left vertex pos <100.00,310.00>, Right Vertex Pos <199.00,310.00>; P = 322.79; S = 4455.00
+LineSegment: First point pos <158.00,260.00>, Second point pos <380.00,260.00>; P = 222.00; S = 0.00
+Circle: Pos <190.00,310.00>; Radius = 20.00; P = 125.66; S = 1256.64
+Circle: Pos <319.00,310.00>; Radius = 20.00; P = 125.66; S = 1256.64
+==================

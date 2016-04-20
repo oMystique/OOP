@@ -73,15 +73,20 @@ bool CShapesControl::HandleCommand()
 	return false;
 }
 
+void CShapesControl::PrintInfoAboutShapes(LogicShapesPtrs const &arr)const
+{
+	for (auto it: arr)
+	{
+		cout << it->GetShapesPresentation() << endl;
+	}
+}
+
 void CShapesControl::PrintSortedByPerimeterShapes()const
 {
 	auto copyArray = m_shapesContainer.GetShapes();
 	sort(copyArray.begin(), copyArray.end(), PerimeterSorter());
 
-	for (auto &it : copyArray)
-	{
-		cout << it->GetShapesPresentation() << endl;
-	}
+	PrintInfoAboutShapes(copyArray);
 }
 
 void CShapesControl::PrintSortedBySquareShapes()const
@@ -89,99 +94,113 @@ void CShapesControl::PrintSortedBySquareShapes()const
 	auto copyArray = m_shapesContainer.GetShapes();
 	sort(copyArray.begin(), copyArray.end(), SquareSorter());
 
-	for (auto &it : copyArray)
-	{
-		cout << it->GetShapesPresentation() << endl;
-	}
+	PrintInfoAboutShapes(copyArray);
 }
 
 void CShapesControl::ParsePointArgs(istringstream &strm)
 {
-	Vector2f pos;
+	OptionalVector2f pos;
 	strm >> pos.x;
 	strm >> pos.y;
-	string lineColor;
-	strm >> lineColor;
 
-	m_shapesContainer.PushPoint(pos);
+	if (pos.is_initialized())
+	{
+		m_shapesContainer.PushPoint(pos.get());
+	}
 }
 
 void CShapesControl::ParseLineSegmentArgs(istringstream &strm)
 {
-	Vector2f firstPointPos;
+	OptionalVector2f firstPointPos;
 	strm >> firstPointPos.x;
 	strm >> firstPointPos.y;
 
-	Vector2f secondPointPos;
+	OptionalVector2f secondPointPos;
 	strm >> secondPointPos.x;
 	strm >> secondPointPos.y;
 
-	string lineColor;
+	boost::optional<string> lineColor;
 	strm >> lineColor;
 
-	m_shapesContainer.PushLineSegment(firstPointPos, secondPointPos, GetColorInDecimalForm(lineColor));
+	if (firstPointPos.is_initialized() && secondPointPos.is_initialized() && lineColor.is_initialized())
+	{
+		m_shapesContainer.PushLineSegment(firstPointPos.get(), secondPointPos.get(), GetColorInDecimalForm(lineColor.get()));
+	}
 }
 
 void CShapesControl::ParseCircleArgs(istringstream &strm)
 {
-	Vector2f pos;
+	OptionalVector2f pos;
 	strm >> pos.x;
 	strm >> pos.y;
 
-	float radius;
+	boost::optional<float> radius;
 	strm >> radius;
 
-	string lineColor;
+	boost::optional<string> lineColor;
 	strm >> lineColor;
 
-	string fillColor;
+	boost::optional<string> fillColor;
 	strm >> fillColor;
 
-	m_shapesContainer.PushCircle(pos, radius, GetColorInDecimalForm(lineColor), GetColorInDecimalForm(fillColor));
+	if (pos.is_initialized() && radius.is_initialized()
+		&& lineColor.is_initialized() && fillColor.is_initialized())
+	{
+		m_shapesContainer.PushCircle(pos.get(), radius.get(),
+			GetColorInDecimalForm(lineColor.get()), GetColorInDecimalForm(fillColor.get()));
+	}
 }
 
 void CShapesControl::ParseRectangleArgs(istringstream &strm)
 {
-	Vector2f leftPointPos;
+	OptionalVector2f leftPointPos;
 	strm >> leftPointPos.x;
 	strm >> leftPointPos.y;
 
-	Vector2f rectProportion;
+	OptionalVector2f rectProportion;
 	strm >> rectProportion.x;
 	strm >> rectProportion.y;
 
-	string lineColor;
+	boost::optional<string> lineColor;
 	strm >> lineColor;
 
-	string fillColor;
+	boost::optional<string> fillColor;
 	strm >> fillColor;
 
-	m_shapesContainer.PushRectangle(leftPointPos, rectProportion, GetColorInDecimalForm(lineColor), GetColorInDecimalForm(fillColor));
+	if (leftPointPos.is_initialized() && rectProportion.is_initialized()
+		&& lineColor.is_initialized() && fillColor.is_initialized())
+	{
+		m_shapesContainer.PushRectangle(leftPointPos.get(), rectProportion.get(),
+			GetColorInDecimalForm(lineColor.get()), GetColorInDecimalForm(fillColor.get()));
+	}
 
 }
 
 void CShapesControl::ParseTriangleArgs(istringstream &strm)
 {
-	Vector2f topVertexPos;
+	OptionalVector2f topVertexPos;
 	strm >> topVertexPos.x;
 	strm >> topVertexPos.y;
 
-	Vector2f leftVertexPos;
+	OptionalVector2f leftVertexPos;
 	strm >> leftVertexPos.x;
 	strm >> leftVertexPos.y;
 
-	Vector2f rightVertexPos;
+	OptionalVector2f rightVertexPos;
 	strm >> rightVertexPos.x;
 	strm >> rightVertexPos.y;
 
-	string lineColor;
+	boost::optional<string> lineColor;
 	strm >> lineColor;
 
-	string fillColor;
+	boost::optional<string> fillColor;
 	strm >> fillColor;
 
-	m_shapesContainer.PushTriangle(topVertexPos, leftVertexPos, rightVertexPos
-		, GetColorInDecimalForm(lineColor), GetColorInDecimalForm(fillColor));
+	if (topVertexPos.is_initialized() && leftVertexPos.is_initialized() && rightVertexPos.is_initialized() && lineColor.is_initialized() && fillColor.is_initialized())
+	{
+		m_shapesContainer.PushTriangle(topVertexPos.get(), leftVertexPos.get(), rightVertexPos.get()
+			, GetColorInDecimalForm(lineColor.get()), GetColorInDecimalForm(fillColor.get()));
+	}
 
 }
 

@@ -5,9 +5,24 @@
 #include "ShapesContainer.h"
 #include <fstream>
 #include <iostream>
+#include <boost/optional.hpp>
+#include <boost/optional/optional_io.hpp>
 
-//запилить класс ShapesContainer, хран€щий массив указателей на конкретные фигуры и имеющий методы PushLine, Triangle ...
-//в классе визуализации конкретной фигуры наследовать IDrawable и хранить weak_ptr на конкретный экземпл€р фигуры
+struct OptionalVector2f
+{
+	bool is_initialized()const
+	{
+		return x && y;
+	}
+
+	Vector2f get()const
+	{
+		return Vector2f(x.get(), y.get());
+	}
+
+	boost::optional<float> x;
+	boost::optional<float> y;
+};
 
 class CShapesControl : boost::noncopyable
 {
@@ -17,6 +32,8 @@ public:
 	void PrintSortedBySquareShapes()const;
 	void PrintSortedByPerimeterShapes()const;
 private:
+	void PrintInfoAboutShapes(LogicShapesPtrs const &arr)const;
+
 	void ParsePointArgs(std::istringstream &strm);
 	void ParseLineSegmentArgs(std::istringstream &strm);
 	void ParseCircleArgs(std::istringstream &strm);
