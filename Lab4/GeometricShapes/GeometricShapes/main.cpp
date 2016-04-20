@@ -5,7 +5,6 @@
 #include "ShapesControl.h"
 #include "Rectangle.h"
 #include "ShapeViewer.h"
-#include <boost/range/concepts.hpp>
 
 using namespace std;
 
@@ -81,7 +80,10 @@ int main(int argc, char *argv[])
 
 	PrintInfoAboutShapes(shapesControl);
 
-	DrawShapes(shapesContainer);
+	if (argc < 2)
+	{
+		DrawShapes(shapesContainer);
+	}
 
     return 0;
 }

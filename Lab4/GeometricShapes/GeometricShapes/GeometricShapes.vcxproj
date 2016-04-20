@@ -99,7 +99,7 @@
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd Tests
-tests_draw.bat "$(TargetPath)"</Command>
+tests.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,7 +120,7 @@ tests_draw.bat "$(TargetPath)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd Tests
-tests_draw.bat "$(TargetPath)"</Command>
+tests.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,7 +145,7 @@ tests_draw.bat "$(TargetPath)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd Tests
-tests_draw.bat "$(TargetPath)"</Command>
+tests.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -170,7 +170,7 @@ tests_draw.bat "$(TargetPath)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>cd Tests
-tests_draw.bat "$(TargetPath)"</Command>
+tests.bat "$(TargetPath)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
