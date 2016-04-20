@@ -32,7 +32,7 @@ float CRectangle::GetShapesPerimeter()const
 	return (m_proportion.x + m_proportion.y) * 2.f;
 }
 
-string CRectangle::GetShapesPresentation() const
+string CRectangle::ToString() const
 {
 	std::ostringstream strm;
 	strm.setf(ios_base::fixed, ios_base::floatfield);

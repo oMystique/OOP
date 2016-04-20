@@ -10,7 +10,7 @@ public:
 	Vector2f GetPosOfSecondPoint()const;
 
 	float GetShapesPerimeter()const override;
-	std::string GetShapesPresentation()const override;
+	std::string ToString()const override;
 	float GetShapesSquare()const override;
 	Color GetLineColor()const override;
 private:

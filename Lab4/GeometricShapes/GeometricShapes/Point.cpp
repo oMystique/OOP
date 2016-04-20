@@ -9,7 +9,7 @@ CPoint::CPoint(Vector2f const &pos)
 {
 }
 
-string CPoint::GetShapesPresentation() const
+string CPoint::ToString() const
 {
 	std::ostringstream strm;
 	strm.setf(ios_base::fixed, ios_base::floatfield);

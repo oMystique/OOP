@@ -26,7 +26,7 @@ float CLineSegment::GetShapesPerimeter()const
 	return GetLengthOfTheLineSegment();
 }
 
-string CLineSegment::GetShapesPresentation()const
+string CLineSegment::ToString()const
 {
 	std::ostringstream strm;
 	strm.setf(ios_base::fixed, ios_base::floatfield);

@@ -36,7 +36,7 @@ float CCircle::GetShapesPerimeter()const
 	return 2.f * static_cast<float>(M_PI) * m_radius;
 }
 
-string CCircle::GetShapesPresentation() const
+string CCircle::ToString() const
 {
 	std::ostringstream strm;
 	strm.setf(ios_base::fixed, ios_base::floatfield);

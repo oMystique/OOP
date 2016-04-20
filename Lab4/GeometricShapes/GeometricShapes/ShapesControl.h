@@ -10,7 +10,7 @@
 
 struct OptionalVector2f
 {
-	bool is_initialized()const
+	explicit operator bool()const
 	{
 		return x && y;
 	}
@@ -23,6 +23,8 @@ struct OptionalVector2f
 	boost::optional<float> x;
 	boost::optional<float> y;
 };
+
+std::istringstream &operator >> (std::istringstream &strm, OptionalVector2f &vec);
 
 class CShapesControl : boost::noncopyable
 {

@@ -1,5 +1,6 @@
 #pragma once
 #include "../GeometricShapes/Rectangle.h"
+#include <tuple>
 
 class CTriangle final : public CSolidShape
 {
@@ -12,9 +13,11 @@ public:
 
 	float GetShapesSquare()const override;
 	float GetShapesPerimeter()const override;
-	std::string GetShapesPresentation()const override;
+	std::string ToString()const override;
 private:
-	void CalculateTriangleSides(float &a, float &b, float &c)const;
+	using Sides = std::tuple<float, float, float>;
+
+	Sides CalculateTriangleSides()const;
 private:
 	Vector2f m_topVertexPos;
 	Vector2f m_leftVertexPos;

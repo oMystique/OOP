@@ -26,9 +26,9 @@ BOOST_FIXTURE_TEST_SUITE(point_test, PointFixture)
 	BOOST_AUTO_TEST_CASE(a_point_is_black_by_default)
 	{
 		Color blackColor(0, 0, 0);
-		BOOST_CHECK_EQUAL(point.GetLineColor().RR, blackColor.RR);
-		BOOST_CHECK_EQUAL(point.GetLineColor().GG, blackColor.GG);
-		BOOST_CHECK_EQUAL(point.GetLineColor().BB, blackColor.BB);
+		BOOST_CHECK_EQUAL(point.GetLineColor().r, blackColor.r);
+		BOOST_CHECK_EQUAL(point.GetLineColor().g, blackColor.g);
+		BOOST_CHECK_EQUAL(point.GetLineColor().b, blackColor.b);
 	}
 
 	BOOST_AUTO_TEST_CASE(a_point_has_zero_area)
@@ -44,7 +44,7 @@ BOOST_FIXTURE_TEST_SUITE(point_test, PointFixture)
 	BOOST_AUTO_TEST_CASE(point_has_a_string_representation)
 	{
 		auto str = "Point: Pos <15.00,30.00>; P = 0.00; S = 0.00";
-		BOOST_CHECK_EQUAL(point.GetShapesPresentation(), str);
+		BOOST_CHECK_EQUAL(point.ToString(), str);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -76,9 +76,9 @@ BOOST_FIXTURE_TEST_SUITE(line_tests, LineFixture)
 	BOOST_AUTO_TEST_CASE(line_has_color_set_in_the_constructor)
 	{
 		Color color(138, 138, 138);
-		BOOST_CHECK_EQUAL(line.GetLineColor().RR, color.RR);
-		BOOST_CHECK_EQUAL(line.GetLineColor().GG, color.GG);
-		BOOST_CHECK_EQUAL(line.GetLineColor().BB, color.BB);
+		BOOST_CHECK_EQUAL(line.GetLineColor().r, color.r);
+		BOOST_CHECK_EQUAL(line.GetLineColor().g, color.g);
+		BOOST_CHECK_EQUAL(line.GetLineColor().b, color.b);
 	}
 
 	BOOST_AUTO_TEST_CASE(line_has_zero_area)
@@ -98,7 +98,7 @@ BOOST_FIXTURE_TEST_SUITE(line_tests, LineFixture)
 	BOOST_AUTO_TEST_CASE(line_has_string_representation)
 	{
 		auto str = "LineSegment: First point pos <10.00,10.00>, Second point pos <20.00,20.00>; P = 14.14; S = 0.00";
-		BOOST_CHECK_EQUAL(line.GetShapesPresentation(), str);
+		BOOST_CHECK_EQUAL(line.ToString(), str);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -128,16 +128,16 @@ BOOST_FIXTURE_TEST_SUITE(circle_tests, CircleFixture)
 
 	BOOST_AUTO_TEST_CASE(circle_has_a_line_color)
 	{
-		BOOST_CHECK_EQUAL(circle.GetLineColor().RR, 135);
-		BOOST_CHECK_EQUAL(circle.GetLineColor().GG, 135);
-		BOOST_CHECK_EQUAL(circle.GetLineColor().BB, 135);
+		BOOST_CHECK_EQUAL(circle.GetLineColor().r, 135);
+		BOOST_CHECK_EQUAL(circle.GetLineColor().g, 135);
+		BOOST_CHECK_EQUAL(circle.GetLineColor().b, 135);
 	}
 
 	BOOST_AUTO_TEST_CASE(circle_has_a_fill_color)
 	{
-		BOOST_CHECK_EQUAL(circle.GetFillColor().RR, 204);
-		BOOST_CHECK_EQUAL(circle.GetFillColor().GG, 204);
-		BOOST_CHECK_EQUAL(circle.GetFillColor().BB, 204);
+		BOOST_CHECK_EQUAL(circle.GetFillColor().r, 204);
+		BOOST_CHECK_EQUAL(circle.GetFillColor().g, 204);
+		BOOST_CHECK_EQUAL(circle.GetFillColor().b, 204);
 	}
 
 	BOOST_AUTO_TEST_CASE(can_find_area)
@@ -179,16 +179,16 @@ BOOST_FIXTURE_TEST_SUITE(rectangle_tests, RectangleFixture)
 
 	BOOST_AUTO_TEST_CASE(rect_has_a_line_color)
 	{
-		BOOST_CHECK_EQUAL(rect.GetLineColor().RR, 175);
-		BOOST_CHECK_EQUAL(rect.GetLineColor().GG, 125);
-		BOOST_CHECK_EQUAL(rect.GetLineColor().BB, 115);
+		BOOST_CHECK_EQUAL(rect.GetLineColor().r, 175);
+		BOOST_CHECK_EQUAL(rect.GetLineColor().g, 125);
+		BOOST_CHECK_EQUAL(rect.GetLineColor().b, 115);
 	}
 
 	BOOST_AUTO_TEST_CASE(circle_has_a_fill_color)
 	{
-		BOOST_CHECK_EQUAL(rect.GetFillColor().RR, 214);
-		BOOST_CHECK_EQUAL(rect.GetFillColor().GG, 224);
-		BOOST_CHECK_EQUAL(rect.GetFillColor().BB, 234);
+		BOOST_CHECK_EQUAL(rect.GetFillColor().r, 214);
+		BOOST_CHECK_EQUAL(rect.GetFillColor().g, 224);
+		BOOST_CHECK_EQUAL(rect.GetFillColor().b, 234);
 	}
 
 	BOOST_AUTO_TEST_CASE(can_find_area)
@@ -236,16 +236,16 @@ BOOST_FIXTURE_TEST_SUITE(triangle_tests, TriangleFixture)
 
 	BOOST_AUTO_TEST_CASE(triangle_has_a_line_color)
 	{
-		BOOST_CHECK_EQUAL(triangle.GetLineColor().RR, 123);
-		BOOST_CHECK_EQUAL(triangle.GetLineColor().GG, 125);
-		BOOST_CHECK_EQUAL(triangle.GetLineColor().BB, 255);
+		BOOST_CHECK_EQUAL(triangle.GetLineColor().r, 123);
+		BOOST_CHECK_EQUAL(triangle.GetLineColor().g, 125);
+		BOOST_CHECK_EQUAL(triangle.GetLineColor().b, 255);
 	}
 
 	BOOST_AUTO_TEST_CASE(triangle_has_a_fill_color)
 	{
-		BOOST_CHECK_EQUAL(triangle.GetFillColor().RR, 12);
-		BOOST_CHECK_EQUAL(triangle.GetFillColor().GG, 4);
-		BOOST_CHECK_EQUAL(triangle.GetFillColor().BB, 234);
+		BOOST_CHECK_EQUAL(triangle.GetFillColor().r, 12);
+		BOOST_CHECK_EQUAL(triangle.GetFillColor().g, 4);
+		BOOST_CHECK_EQUAL(triangle.GetFillColor().b, 234);
 	}
 
 	BOOST_AUTO_TEST_CASE(can_find_area)

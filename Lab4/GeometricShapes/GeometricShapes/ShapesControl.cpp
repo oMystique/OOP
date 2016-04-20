@@ -5,21 +5,12 @@
 
 using namespace std;
 
-struct SquareSorter : public binary_function<shared_ptr<IShape>, shared_ptr<IShape>, bool>
+istringstream &operator >> (istringstream &strm, OptionalVector2f &vec)
 {
-	bool const operator () (shared_ptr<IShape> const &shape1, shared_ptr<IShape> const &shape2)
-	{
-		return shape1->GetShapesSquare() < shape2->GetShapesSquare();
-	}
-};
-
-struct PerimeterSorter : public binary_function<shared_ptr<IShape>, shared_ptr<IShape>, bool>
-{
-	bool const operator () (shared_ptr<IShape> const &shape1, shared_ptr<IShape> const &shape2)
-	{
-		return shape1->GetShapesPerimeter() > shape2->GetShapesPerimeter();
-	}
-};
+	strm >> vec.x;
+	strm >> vec.y;
+	return strm;
+}
 
 bool IsNotAlphaSpace(char symbol)
 {
@@ -28,14 +19,14 @@ bool IsNotAlphaSpace(char symbol)
 
 Color GetColorInDecimalForm(std::string const &color)
 {
-	Color rgbColor;
 	std::istringstream strm(color);
 	int dec;
 	strm >> std::hex >> dec;
 
-	rgbColor.RR = dec / 0x10000;
-	rgbColor.GG = (dec / 0x100) % 0x100;
-	rgbColor.BB = dec % 0x100;
+	Color rgbColor;
+	rgbColor.r = dec / 0x10000;
+	rgbColor.g = (dec / 0x100) % 0x100;
+	rgbColor.b = dec % 0x100;
 
 	return rgbColor;
 }
@@ -77,14 +68,17 @@ void CShapesControl::PrintInfoAboutShapes(LogicShapesPtrs const &arr)const
 {
 	for (auto it: arr)
 	{
-		cout << it->GetShapesPresentation() << endl;
+		cout << it->ToString() << endl;
 	}
 }
 
 void CShapesControl::PrintSortedByPerimeterShapes()const
 {
 	auto copyArray = m_shapesContainer.GetShapes();
-	sort(copyArray.begin(), copyArray.end(), PerimeterSorter());
+	sort(copyArray.begin(), copyArray.end(), [](shared_ptr<IShape> const &shape1, shared_ptr<IShape> const &shape2)
+	{
+		return shape1->GetShapesPerimeter() > shape2->GetShapesPerimeter();
+	});
 
 	PrintInfoAboutShapes(copyArray);
 }
@@ -92,7 +86,10 @@ void CShapesControl::PrintSortedByPerimeterShapes()const
 void CShapesControl::PrintSortedBySquareShapes()const
 {
 	auto copyArray = m_shapesContainer.GetShapes();
-	sort(copyArray.begin(), copyArray.end(), SquareSorter());
+	sort(copyArray.begin(), copyArray.end(), [](shared_ptr<IShape> const &shape1, shared_ptr<IShape> const &shape2)
+	{
+		return shape1->GetShapesSquare() < shape2->GetShapesSquare();
+	});
 
 	PrintInfoAboutShapes(copyArray);
 }
@@ -100,10 +97,9 @@ void CShapesControl::PrintSortedBySquareShapes()const
 void CShapesControl::ParsePointArgs(istringstream &strm)
 {
 	OptionalVector2f pos;
-	strm >> pos.x;
-	strm >> pos.y;
+	strm >> pos;
 
-	if (pos.is_initialized())
+	if (pos)
 	{
 		m_shapesContainer.PushPoint(pos.get());
 	}
@@ -112,17 +108,15 @@ void CShapesControl::ParsePointArgs(istringstream &strm)
 void CShapesControl::ParseLineSegmentArgs(istringstream &strm)
 {
 	OptionalVector2f firstPointPos;
-	strm >> firstPointPos.x;
-	strm >> firstPointPos.y;
+	strm >> firstPointPos;;
 
 	OptionalVector2f secondPointPos;
-	strm >> secondPointPos.x;
-	strm >> secondPointPos.y;
+	strm >> secondPointPos;
 
 	boost::optional<string> lineColor;
 	strm >> lineColor;
 
-	if (firstPointPos.is_initialized() && secondPointPos.is_initialized() && lineColor.is_initialized())
+	if (firstPointPos && secondPointPos && lineColor)
 	{
 		m_shapesContainer.PushLineSegment(firstPointPos.get(), secondPointPos.get(), GetColorInDecimalForm(lineColor.get()));
 	}
@@ -131,8 +125,7 @@ void CShapesControl::ParseLineSegmentArgs(istringstream &strm)
 void CShapesControl::ParseCircleArgs(istringstream &strm)
 {
 	OptionalVector2f pos;
-	strm >> pos.x;
-	strm >> pos.y;
+	strm >> pos;
 
 	boost::optional<float> radius;
 	strm >> radius;
@@ -143,8 +136,7 @@ void CShapesControl::ParseCircleArgs(istringstream &strm)
 	boost::optional<string> fillColor;
 	strm >> fillColor;
 
-	if (pos.is_initialized() && radius.is_initialized()
-		&& lineColor.is_initialized() && fillColor.is_initialized())
+	if (pos && radius && lineColor && fillColor)
 	{
 		m_shapesContainer.PushCircle(pos.get(), radius.get(),
 			GetColorInDecimalForm(lineColor.get()), GetColorInDecimalForm(fillColor.get()));
@@ -154,12 +146,10 @@ void CShapesControl::ParseCircleArgs(istringstream &strm)
 void CShapesControl::ParseRectangleArgs(istringstream &strm)
 {
 	OptionalVector2f leftPointPos;
-	strm >> leftPointPos.x;
-	strm >> leftPointPos.y;
+	strm >> leftPointPos;
 
 	OptionalVector2f rectProportion;
-	strm >> rectProportion.x;
-	strm >> rectProportion.y;
+	strm >> rectProportion;
 
 	boost::optional<string> lineColor;
 	strm >> lineColor;
@@ -167,8 +157,7 @@ void CShapesControl::ParseRectangleArgs(istringstream &strm)
 	boost::optional<string> fillColor;
 	strm >> fillColor;
 
-	if (leftPointPos.is_initialized() && rectProportion.is_initialized()
-		&& lineColor.is_initialized() && fillColor.is_initialized())
+	if (leftPointPos && rectProportion && lineColor && fillColor)
 	{
 		m_shapesContainer.PushRectangle(leftPointPos.get(), rectProportion.get(),
 			GetColorInDecimalForm(lineColor.get()), GetColorInDecimalForm(fillColor.get()));
@@ -179,16 +168,13 @@ void CShapesControl::ParseRectangleArgs(istringstream &strm)
 void CShapesControl::ParseTriangleArgs(istringstream &strm)
 {
 	OptionalVector2f topVertexPos;
-	strm >> topVertexPos.x;
-	strm >> topVertexPos.y;
+	strm >> topVertexPos;
 
 	OptionalVector2f leftVertexPos;
-	strm >> leftVertexPos.x;
-	strm >> leftVertexPos.y;
+	strm >> leftVertexPos;
 
 	OptionalVector2f rightVertexPos;
-	strm >> rightVertexPos.x;
-	strm >> rightVertexPos.y;
+	strm >> rightVertexPos;
 
 	boost::optional<string> lineColor;
 	strm >> lineColor;
@@ -196,7 +182,7 @@ void CShapesControl::ParseTriangleArgs(istringstream &strm)
 	boost::optional<string> fillColor;
 	strm >> fillColor;
 
-	if (topVertexPos.is_initialized() && leftVertexPos.is_initialized() && rightVertexPos.is_initialized() && lineColor.is_initialized() && fillColor.is_initialized())
+	if (topVertexPos && leftVertexPos && rightVertexPos && lineColor && fillColor)
 	{
 		m_shapesContainer.PushTriangle(topVertexPos.get(), leftVertexPos.get(), rightVertexPos.get()
 			, GetColorInDecimalForm(lineColor.get()), GetColorInDecimalForm(fillColor.get()));

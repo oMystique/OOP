@@ -6,14 +6,14 @@
 struct Color
 {
 	Color() = default;
-	Color(int rr, int gg, int bb)
-		: RR(rr)
-		, GG(gg)
-		, BB(bb)
+	Color(int r, int g, int b)
+		: r(r)
+		, g(g)
+		, b(b)
 	{};
-	int RR = 0;
-	int GG = 0;
-	int BB = 0;
+	int r = 0;
+	int g = 0;
+	int b = 0;
 };
 
 struct Vector2f
@@ -30,9 +30,9 @@ struct Vector2f
 class IShape
 {
 public:
-	~IShape() = default;
+	virtual ~IShape() = default;
 	virtual float GetShapesSquare()const = 0;
 	virtual float GetShapesPerimeter()const = 0;
-	virtual std::string GetShapesPresentation()const = 0;
+	virtual std::string ToString()const = 0;
 	virtual Color GetLineColor()const = 0;
 };

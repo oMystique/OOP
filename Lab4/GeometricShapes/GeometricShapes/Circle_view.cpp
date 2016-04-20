@@ -5,9 +5,9 @@ CCircleView::CCircleView(Vector2f const & pos, float radius, Color const & lineC
 {
 	m_circle.setPosition({ pos.x, pos.y });
 	m_circle.setRadius(radius);
-	m_circle.setOutlineColor(sf::Color(sf::Uint8(lineColor.RR), sf::Uint8(lineColor.GG), sf::Uint8(lineColor.BB)));
+	m_circle.setOutlineColor(sf::Color(sf::Uint8(lineColor.r), sf::Uint8(lineColor.g), sf::Uint8(lineColor.b)));
 	m_circle.setOutlineThickness(2.f);
-	m_circle.setFillColor(sf::Color(sf::Uint8(fillColor.RR), sf::Uint8(fillColor.GG), sf::Uint8(fillColor.BB)));
+	m_circle.setFillColor(sf::Color(sf::Uint8(fillColor.r), sf::Uint8(fillColor.g), sf::Uint8(fillColor.b)));
 }
 
 void CCircleView::draw(sf::RenderTarget & target, sf::RenderStates states) const

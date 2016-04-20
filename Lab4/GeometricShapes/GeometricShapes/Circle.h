@@ -11,7 +11,7 @@ public:
 
 	float GetShapesSquare()const override;
 	float GetShapesPerimeter()const override;
-	std::string GetShapesPresentation()const override;
+	std::string ToString()const override;
 private:
 	Vector2f m_pos;
 	float m_radius;

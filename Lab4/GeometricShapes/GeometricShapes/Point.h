@@ -7,7 +7,7 @@ public:
 	CPoint(Vector2f const & pos);
 	Vector2f GetPointPosition()const;
 
-	std::string GetShapesPresentation()const override;
+	std::string ToString()const override;
 	float GetShapesSquare()const override;
 	float GetShapesPerimeter()const override;
 	Color GetLineColor()const override;

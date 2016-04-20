@@ -81,9 +81,6 @@
     <ClInclude Include="Shape.h">
       <Filter>Файлы исходного кода\ShapesLogic\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h">
-      <Filter>Файлы исходного кода\ShapesLogic\Point</Filter>
-    </ClInclude>
     <ClInclude Include="LineSegment.h">
       <Filter>Файлы исходного кода\ShapesLogic\LineSegment</Filter>
     </ClInclude>
@@ -119,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="Triangle_view.h">
       <Filter>Файлы исходного кода\ShapesView\Shapes\Triangle</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Файлы исходного кода\ShapesLogic\Point</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

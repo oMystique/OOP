@@ -28,13 +28,15 @@ Vector2f CTriangle::GetRightVertexPos() const
 	return m_rightVertexPos;
 }
 
-void CTriangle::CalculateTriangleSides(float & a, float & b, float & c)const
+CTriangle::Sides CTriangle::CalculateTriangleSides()const
 {
-	a = sqrtf(pow((m_topVertexPos.x - m_leftVertexPos.x), 2) + pow((m_topVertexPos.y - m_leftVertexPos.y), 2));
+	float a = sqrtf(pow((m_topVertexPos.x - m_leftVertexPos.x), 2) + pow((m_topVertexPos.y - m_leftVertexPos.y), 2));
 
-	b = sqrtf(pow((m_topVertexPos.x - m_rightVertexPos.x), 2) + pow((m_topVertexPos.y - m_rightVertexPos.y), 2));
+	float b = sqrtf(pow((m_topVertexPos.x - m_rightVertexPos.x), 2) + pow((m_topVertexPos.y - m_rightVertexPos.y), 2));
 
-	c = sqrtf(pow((m_rightVertexPos.x - m_leftVertexPos.x), 2) + pow((m_rightVertexPos.y - m_leftVertexPos.y), 2));
+	float c = sqrtf(pow((m_rightVertexPos.x - m_leftVertexPos.x), 2) + pow((m_rightVertexPos.y - m_leftVertexPos.y), 2));
+
+	return make_tuple(a, b, c);
 }
 
 float CTriangle::GetShapesSquare()const
@@ -45,7 +47,7 @@ float CTriangle::GetShapesSquare()const
 	float b;
 	float c;
 
-	CalculateTriangleSides(a, b, c);
+	std::tie(a, b, c) = CalculateTriangleSides();
 
 	return sqrtf(perimeterHalf*(perimeterHalf - a)*(perimeterHalf - b)*(perimeterHalf - c));
 }
@@ -56,12 +58,12 @@ float CTriangle::GetShapesPerimeter()const
 	float b;
 	float c;
 
-	CalculateTriangleSides(a, b, c);
+	std::tie(a, b, c) = CalculateTriangleSides();
 
 	return a + b + c;
 }
 
-string CTriangle::GetShapesPresentation() const
+string CTriangle::ToString() const
 {
 	std::ostringstream strm;
 	strm.setf(ios_base::fixed, ios_base::floatfield);
