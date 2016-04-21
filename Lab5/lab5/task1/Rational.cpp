@@ -42,7 +42,7 @@ CRational const CRational::operator-()const
 
 CRational const CRational::operator+()const
 {
-	return CRational(m_numerator, m_denominator);
+	return *this;
 }
 
 CRational &CRational::operator+=(CRational const &rValue)
@@ -133,12 +133,12 @@ std::ostream & operator <<(std::ostream & strm, CRational const & rational)
 
 std::istream & operator >>(std::istream & strm, CRational & rational)
 {
-	std::streamoff const startPos = strm.tellg();
+	std::streamoff startPos = strm.tellg();
 	int numerator;
-	int denomirator;
-	if ((strm >> numerator) && (strm.get() == '/') && (strm >> denomirator))
+	int denominator;
+	if ((strm >> numerator) && (strm.get() == '/') && (strm >> denominator))
 	{
-		rational = CRational(numerator, denomirator);
+		rational = CRational(numerator, denominator);
 		return strm;
 	}
 	strm.seekg(startPos);

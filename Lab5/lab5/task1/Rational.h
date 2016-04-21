@@ -19,6 +19,7 @@ public:
 
 	// 1) Унарный + и -
 	CRational const operator-()const;
+
 	CRational const operator+()const;
 	//
 
@@ -65,13 +66,17 @@ CRational const operator /(CRational const &rational1, CRational const &rational
 
 // 10) == and !=
 bool const operator ==(CRational const &rational1, CRational const &rational2);
+
 bool const operator !=(CRational const &rational1, CRational const &rational2);
 //
 
 // 11) <, <=, >, >=
 bool const operator <(CRational const &rational1, CRational const &rational2);
+
 bool const operator <=(CRational const &rational1, CRational const &rational2);
+
 bool const operator >(CRational const &rational1, CRational const &rational2);
+
 bool const operator >=(CRational const &rational1, CRational const &rational2);
 //
 

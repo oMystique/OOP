@@ -119,8 +119,8 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 
 		BOOST_AUTO_TEST_CASE(subtraction_of_two_floating_point_integers)
 		{
-			auto answer = rational - CRational(32, 65);
-			VerifyRational(answer, 1, 130);
+			auto answer = rational - CRational(75, 60);
+			VerifyRational(answer, -3, 4);
 		}
 
 		BOOST_AUTO_TEST_CASE(subtraction_of_fractional_and_rational_integers)
@@ -206,8 +206,8 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 
 		BOOST_AUTO_TEST_CASE(bi_multiplication_integer_and_rational)
 		{
-			auto answer = CRational(7) * rational;
-			VerifyRational(answer, 7, 2);
+			auto answer = CRational(20) * rational;
+			VerifyRational(answer, 10, 1);
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
@@ -237,6 +237,11 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 		{
 			auto answer = CRational(7) / rational;
 			VerifyRational(answer, 14, 1);
+		}
+
+		BOOST_AUTO_TEST_CASE(can_not_bi_divide_rational_and_zero)
+		{
+			BOOST_REQUIRE_THROW(auto answer = rational / CRational(0), std::invalid_argument);
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
@@ -283,6 +288,11 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 		{
 			rational /= 3;
 			VerifyRational(rational, 1, 6);
+		}
+
+		BOOST_AUTO_TEST_CASE(can_not_divide_rational_and_zero)
+		{
+			BOOST_REQUIRE_THROW(rational /= CRational(0), std::invalid_argument);
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
