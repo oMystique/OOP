@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <sstream>
-
+#include <cmath>
 /*
 Класс, моделирующий рациональное число
 */
@@ -9,13 +9,16 @@ class CRational final
 public:
 	CRational(int numerator = 0, int denominator = 1);
 
+	// Возвращает представление рационального числа в виде смешанной дроби
+	std::pair<int, CRational>ToCompoundFraction()const;
+
 	// Возвращает числитель
 	int GetNumerator() const;
 
 	// Возвращает знаменатель
 	int GetDenominator() const;
 
-	double ToDouble();
+	double ToDouble()const;
 
 	// 1) Унарный + и -
 	CRational const operator-()const;

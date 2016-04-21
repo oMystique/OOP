@@ -529,4 +529,29 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 	BOOST_AUTO_TEST_SUITE_END()
 	//
 
+	//ADDITION TASK TESTS;
+	BOOST_AUTO_TEST_CASE(can_get_compound_fraction)
+	{
+		auto rational = CRational(9, 4);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, 2);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), 1);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 4);
+	}
+
+	BOOST_AUTO_TEST_CASE(can_get_compound_negative_fraction)
+	{
+		auto rational = CRational(-9, 4);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, -2);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), -1);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 4);
+	}
+
+	BOOST_AUTO_TEST_CASE(integer_will_return_to_previous_state)
+	{
+		auto rational = CRational(-9);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, -9);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), 0);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 1);
+	}
+
 BOOST_AUTO_TEST_SUITE_END()
