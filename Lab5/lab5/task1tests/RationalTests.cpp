@@ -241,8 +241,12 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 
 		BOOST_AUTO_TEST_CASE(can_not_bi_divide_rational_and_zero)
 		{
-			BOOST_REQUIRE_THROW(auto answer = rational / CRational(0), std::invalid_argument);
+			BOOST_REQUIRE_THROW(auto answer = rational / CRational(0), std::invalid_argument::exception);
+
+			BOOST_REQUIRE_THROW(auto answer = rational / CRational(0, 1), std::invalid_argument::exception);
 		}
+
+
 
 	BOOST_AUTO_TEST_SUITE_END()
 	//
@@ -552,6 +556,14 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, -9);
 		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), 0);
 		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 1);
+	}
+
+	BOOST_AUTO_TEST_CASE(if_fraction_is_less_than_zero_then_integer_equal_to_zero)
+	{
+		auto rational = CRational(1, 2);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, 0);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), 1);
+		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 2);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
