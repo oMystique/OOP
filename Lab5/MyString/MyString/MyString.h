@@ -20,8 +20,8 @@ public:
 
 	void Clear();
 private:
-	char *m_string = nullptr;
 	size_t m_length = 0;
+	char *m_string;
 };
 
 
