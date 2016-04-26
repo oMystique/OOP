@@ -44,5 +44,8 @@
     <ClCompile Include="..\MyString\MyStringOperators.cpp">
       <Filter>Заголовочные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="MyStringOperatorsTests.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

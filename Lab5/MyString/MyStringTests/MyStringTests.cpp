@@ -1,9 +1,6 @@
-// MyStringTests.cpp: определяет точку входа для консольного приложения.
-//
-
 #include "stdafx.h"
 #include "../MyString/MyString.h"
-#include <memory>
+#include <string>
 
 struct my_string_can_be_declared_by_default_
 {
@@ -14,7 +11,7 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string, my_string_can_be_declared_by_de
 
 	BOOST_AUTO_TEST_CASE(default_pointer_to_an_array_of_char_strings_is_nullptr)
 	{
-		BOOST_CHECK(myString.GetStringData() == nullptr);
+		BOOST_CHECK(myString.GetStringData()[0] == '\0');
 	}
 
 	BOOST_AUTO_TEST_CASE(default_length_of_the_string_is_equal_to_zero)
@@ -22,11 +19,16 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string, my_string_can_be_declared_by_de
 		BOOST_CHECK_EQUAL(myString.GetLength(), 0);
 	}
 
+	BOOST_AUTO_TEST_CASE(my_str_have_a_null_char_on_end)
+	{
+		BOOST_CHECK_EQUAL(myString.GetStringData()[myString.GetLength()], '\0');
+	}
+
 	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_returns_nullptr_and_zero_length)
 	{
 		auto substr = myString.SubString(0, 30);
 		BOOST_CHECK_EQUAL(substr.GetLength(), 0);
-		BOOST_CHECK(substr.GetStringData() == nullptr);
+		BOOST_CHECK(substr.GetStringData()[0] == '\0');
 	}
 
 	BOOST_AUTO_TEST_CASE(can_clear_empty_string)
@@ -36,6 +38,20 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string, my_string_can_be_declared_by_de
 
 BOOST_AUTO_TEST_SUITE_END()
 
+
+BOOST_AUTO_TEST_CASE(can_create_my_string_without_null_char)
+{
+	CMyString myStr("\0");
+	BOOST_CHECK_EQUAL(myStr.GetStringData(), "\0");
+	BOOST_CHECK_EQUAL(myStr.GetLength(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(my_string_without_null_char_in_center_str_will_be_cut)
+{
+	CMyString myStr("Test\0 String");
+	BOOST_CHECK_EQUAL(myStr.GetStringData()[myStr.GetLength()], '\0');
+	BOOST_CHECK_EQUAL(myStr.GetLength(), 4);
+}
 
 struct my_string_can_be_declared_by_value_
 {
@@ -55,21 +71,34 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value, my_string_can_be_decla
 
 	BOOST_AUTO_TEST_CASE(default_length_of_the_string_is_equal_to_length_test_str)
 	{
-		BOOST_CHECK_EQUAL(myString.GetLength(), 12);
+		BOOST_CHECK_EQUAL(myString.GetLength(), 11);
 	}
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_correct_substring_returns_this_substr)
 	{
 		auto substr = myString.SubString(0, 4);
-		BOOST_CHECK_EQUAL(substr.GetLength(), 5);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 4);
 		BOOST_CHECK_EQUAL(substr.GetStringData(), "Test");
 	}
 
-	BOOST_AUTO_TEST_CASE(attempt_to_take_incorrect_substring_returns_empty_my_str)
+	BOOST_AUTO_TEST_CASE(my_str_have_a_null_char_on_end)
+	{
+		BOOST_CHECK_EQUAL(myString.GetStringData()[myString.GetLength()], '\0');
+	}
+
+
+	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_without_incorrect_args_returns_null_str)
+	{
+		auto substr = myString.SubString(4, 0);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 0);
+		BOOST_CHECK_EQUAL(substr.GetStringData()[0], '\0');
+	}
+
+	BOOST_AUTO_TEST_CASE(attempt_to_take_incorrect_substring_returns_empty_str)
 	{
 		auto substr = myString.SubString(20, 30);
 		BOOST_CHECK_EQUAL(substr.GetLength(), 0);
-		BOOST_CHECK(substr.GetStringData() == nullptr);
+		BOOST_CHECK(substr.GetStringData()[0] == '\0');
 	}
 
 	BOOST_AUTO_TEST_CASE(can_clear_initialized_string)
@@ -77,7 +106,151 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value, my_string_can_be_decla
 		BOOST_CHECK_NO_THROW(myString.Clear());
 		BOOST_CHECK_EQUAL(myString.GetLength(), 0);
 		BOOST_CHECK(myString.GetStringData() == nullptr);
-
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
+
+
+struct my_string_can_be_declared_by_value_and_length_
+{
+	my_string_can_be_declared_by_value_and_length_()
+		: myString("Test String", 11)
+	{};
+
+	CMyString myString;
+};
+
+BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value_and_length, my_string_can_be_declared_by_value_and_length_)
+
+	BOOST_AUTO_TEST_CASE(pointer_to_an_array_of_char_strings_is_equal_to_test_str)
+	{
+		BOOST_CHECK_EQUAL(myString.GetStringData(), "Test String");
+	}
+
+	BOOST_AUTO_TEST_CASE(default_length_of_the_string_is_equal_to_length_test_str)
+	{
+		BOOST_CHECK_EQUAL(myString.GetLength(), 11);
+	}
+
+	BOOST_AUTO_TEST_CASE(attempt_to_take_correct_substring_returns_this_substr)
+	{
+		auto substr = myString.SubString(0, 4);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 4);
+		BOOST_CHECK_EQUAL(substr.GetStringData(), "Test");
+	}
+
+	BOOST_AUTO_TEST_CASE(my_str_have_a_null_char_on_end)
+	{
+		BOOST_CHECK_EQUAL(myString.GetStringData()[myString.GetLength()], '\0');
+	}
+
+	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_without_incorrect_args_returns_null_str)
+	{
+		auto substr = myString.SubString(4, 0);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 0);
+		BOOST_CHECK_EQUAL(substr.GetStringData()[0], '\0');
+	}
+
+	BOOST_AUTO_TEST_CASE(attempt_to_take_incorrect_substring_returns_empty_str)
+	{
+		auto substr = myString.SubString(20, 30);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 0);
+		BOOST_CHECK(substr.GetStringData()[0] == '\0');
+	}
+
+	BOOST_AUTO_TEST_CASE(can_clear_initialized_string)
+	{
+		BOOST_CHECK_NO_THROW(myString.Clear());
+		BOOST_CHECK_EQUAL(myString.GetLength(), 0);
+		BOOST_CHECK(myString.GetStringData() == nullptr);
+	}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+BOOST_AUTO_TEST_CASE(my_string_without_null_char_in_center_str_will_not_be_cut_off)
+{
+	CMyString myStr("Test\0 String", 12);
+	BOOST_CHECK_EQUAL(myStr.GetStringData(), "Test\0 String");
+	BOOST_CHECK_EQUAL(myStr.GetLength(), 12);
+}
+
+
+struct my_string_can_be_copied_existing_my_str_
+{
+	my_string_can_be_copied_existing_my_str_()
+		: myString("Test String", 11)
+		, copiedMyStr(myString)
+	{
+	};
+
+	CMyString myString;
+	CMyString copiedMyStr;
+};
+
+BOOST_FIXTURE_TEST_SUITE(before_copied_my_str, my_string_can_be_copied_existing_my_str_)
+
+	BOOST_AUTO_TEST_CASE(character_string_of_existing_string_is_equal_copied_string)
+	{
+		BOOST_CHECK_EQUAL(myString.GetStringData(), copiedMyStr.GetStringData());
+	}
+
+	BOOST_AUTO_TEST_CASE(existing_strings_length_is_equal_copied_strings_length)
+	{
+		BOOST_CHECK_EQUAL(myString.GetLength(), copiedMyStr.GetLength());
+	}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+struct my_string_can_be_moved_from_rvalue_my_str_
+{
+	my_string_can_be_moved_from_rvalue_my_str_()
+		: myString(CMyString("Test String", 11))
+	{
+	};
+
+	CMyString myString;
+};
+
+BOOST_FIXTURE_TEST_SUITE(before_moved_to_my_str, my_string_can_be_moved_from_rvalue_my_str_)
+
+	BOOST_AUTO_TEST_CASE(character_string_of_existing_string_is_equal_to_moved_string)
+	{
+		BOOST_CHECK_EQUAL(myString.GetStringData(), "Test String");
+	}
+
+	BOOST_AUTO_TEST_CASE(existing_strings_length_is_equal_copied_strings_length)
+	{
+		BOOST_CHECK_EQUAL(myString.GetLength(), 11);
+	}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+struct my_string_can_be_copied_from_stl_string_
+{
+	my_string_can_be_copied_from_stl_string_()
+		: stlString("Test String")
+		, myString(stlString)
+	{
+	};
+
+	std::string stlString;
+	CMyString myString;
+};
+
+BOOST_FIXTURE_TEST_SUITE(before_copied_from_stl_string, my_string_can_be_copied_from_stl_string_)
+
+	BOOST_AUTO_TEST_CASE(character_string_of_existing_string_is_equal_to_stl_string)
+	{
+		BOOST_CHECK_EQUAL(myString.GetStringData(), "Test String");
+	}
+
+	BOOST_AUTO_TEST_CASE(existing_strings_length_is_equal_copied_stl_strings_length)
+	{
+		BOOST_CHECK_EQUAL(myString.GetLength(), 11);
+	}
+
+BOOST_AUTO_TEST_SUITE_END()
+
