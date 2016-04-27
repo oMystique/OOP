@@ -2,10 +2,11 @@
 #include <iostream>
 #include "MyString.h"
 
+using namespace std;
+
 int main()
 {
-	CMyString str1("abvgd", 5);
-	std::cout << str1.GetSortedAlphabeticallyChars() << std::endl;
+	cout << memcmp("abc", "abc", 3) << endl;
 	return 0;
 }
 

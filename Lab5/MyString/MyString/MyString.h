@@ -15,11 +15,10 @@ public:
 
 	size_t GetLength()const;
 	const char* GetStringData()const;
-	CMyString const SubString(size_t start, size_t length = SIZE_MAX)const;
+	CMyString SubString(size_t start, size_t length = SIZE_MAX)const;
 	void Clear();
 
-	bool StrCmp(CMyString const &str)const;
-	const char* GetSortedAlphabeticallyChars();
+	int StrCmp(CMyString const &str)const;
 
 //operators
 	CMyString& operator =(const CMyString& str);
@@ -27,7 +26,7 @@ public:
 	const char &operator[](size_t index) const;
 	char &operator[](size_t index);
 private:
-	void StrCpy(const char* str, size_t length);
+	void StrCpy(const char* str);
 
 private:
 	size_t m_length;

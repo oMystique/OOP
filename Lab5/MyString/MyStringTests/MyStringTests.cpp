@@ -26,7 +26,7 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string, my_string_can_be_declared_by_de
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_returns_nullptr_and_zero_length)
 	{
-		auto substr = myString.SubString(0, 30);
+		auto substr = myString.SubString(0u, 30u);
 		BOOST_CHECK_EQUAL(substr.GetLength(), 0u);
 		BOOST_CHECK(substr.GetStringData()[0] == '\0');
 	}
@@ -76,7 +76,7 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value, my_string_can_be_decla
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_correct_substring_returns_this_substr)
 	{
-		auto substr = myString.SubString(0, 4);
+		auto substr = myString.SubString(0u, 4u);
 		BOOST_CHECK_EQUAL(substr.GetLength(), 4u);
 		BOOST_CHECK_EQUAL(substr.GetStringData(), "Test");
 	}
@@ -89,14 +89,14 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value, my_string_can_be_decla
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_without_incorrect_args_returns_null_str)
 	{
-		auto substr = myString.SubString(4, 0);
+		auto substr = myString.SubString(4u, 0u);
 		BOOST_CHECK_EQUAL(substr.GetLength(), 0u);
 		BOOST_CHECK_EQUAL(substr.GetStringData()[0], '\0');
 	}
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_incorrect_substring_returns_empty_str)
 	{
-		auto substr = myString.SubString(20, 30);
+		auto substr = myString.SubString(20u, 30u);
 		BOOST_CHECK_EQUAL(substr.GetLength(), 0u);
 		BOOST_CHECK(substr.GetStringData()[0] == '\0');
 	}
@@ -105,7 +105,7 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value, my_string_can_be_decla
 	{
 		BOOST_CHECK_NO_THROW(myString.Clear());
 		BOOST_CHECK_EQUAL(myString.GetLength(), 0u);
-		BOOST_CHECK(myString.GetStringData() == nullptr);
+		BOOST_CHECK_EQUAL(myString.GetStringData()[0], '\0');
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_SUITE_END()
 struct my_string_can_be_declared_by_value_and_length_
 {
 	my_string_can_be_declared_by_value_and_length_()
-		: myString("Test String", 11)
+		: myString("Test String", 11u)
 	{};
 
 	CMyString myString;
@@ -129,13 +129,13 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value_and_length, my_string_c
 
 	BOOST_AUTO_TEST_CASE(default_length_of_the_string_is_equal_to_length_test_str)
 	{
-		BOOST_CHECK_EQUAL(myString.GetLength(), 11);
+		BOOST_CHECK_EQUAL(myString.GetLength(), 11u);
 	}
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_correct_substring_returns_this_substr)
 	{
-		auto substr = myString.SubString(0, 4);
-		BOOST_CHECK_EQUAL(substr.GetLength(), 4);
+		auto substr = myString.SubString(0u, 4u);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 4u);
 		BOOST_CHECK_EQUAL(substr.GetStringData(), "Test");
 	}
 
@@ -146,23 +146,23 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string_by_value_and_length, my_string_c
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_without_incorrect_args_returns_null_str)
 	{
-		auto substr = myString.SubString(4, 0);
-		BOOST_CHECK_EQUAL(substr.GetLength(), 0);
+		auto substr = myString.SubString(4u, 0u);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 0u);
 		BOOST_CHECK_EQUAL(substr.GetStringData()[0], '\0');
 	}
 
 	BOOST_AUTO_TEST_CASE(attempt_to_take_incorrect_substring_returns_empty_str)
 	{
-		auto substr = myString.SubString(20, 30);
-		BOOST_CHECK_EQUAL(substr.GetLength(), 0);
+		auto substr = myString.SubString(20u, 30u);
+		BOOST_CHECK_EQUAL(substr.GetLength(), 0u);
 		BOOST_CHECK(substr.GetStringData()[0] == '\0');
 	}
 
 	BOOST_AUTO_TEST_CASE(can_clear_initialized_string)
 	{
 		BOOST_CHECK_NO_THROW(myString.Clear());
-		BOOST_CHECK_EQUAL(myString.GetLength(), 0);
-		BOOST_CHECK(myString.GetStringData() == nullptr);
+		BOOST_CHECK_EQUAL(myString.GetLength(), 0u);
+		BOOST_CHECK_EQUAL(myString.GetStringData()[0], '\0');
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -171,6 +171,7 @@ BOOST_AUTO_TEST_SUITE_END()
 void ExpectStringDataImpl(const CMyString & s, const char *data, size_t size)
 {
 	BOOST_REQUIRE_EQUAL(s.GetLength(), size - 1);
+	BOOST_REQUIRE_EQUAL(s.GetStringData(), data);
 	BOOST_REQUIRE_EQUAL(memcmp(s.GetStringData(), data, size), 0);
 }
 template <size_t N>
@@ -189,17 +190,17 @@ BOOST_AUTO_TEST_CASE(SelfConcatenationAfterClearing)
 
 BOOST_AUTO_TEST_CASE(my_string_without_null_char_in_center_str_will_not_be_cut_off)
 {
-	CMyString myStr("Test\0 String", 12);
+	CMyString myStr("Test\0 String", 12u);
 	ExpectStringData(myStr, "Test\0 String");
 	BOOST_CHECK_EQUAL(myStr.GetStringData(), "Test\0 String");
-	BOOST_CHECK_EQUAL(myStr.GetLength(), 12);
+	BOOST_CHECK_EQUAL(myStr.GetLength(), 12u);
 }
 
 
 struct my_string_can_be_copied_existing_my_str_
 {
 	my_string_can_be_copied_existing_my_str_()
-		: myString("Test String", 11)
+		: myString("Test String", 11u)
 		, copiedMyStr(myString)
 	{
 	};
@@ -226,7 +227,7 @@ BOOST_AUTO_TEST_SUITE_END()
 struct my_string_can_be_moved_from_rvalue_my_str_
 {
 	my_string_can_be_moved_from_rvalue_my_str_()
-		: myString(CMyString("Test String", 11))
+		: myString(CMyString("Test String", 11u))
 	{
 	};
 
@@ -242,7 +243,7 @@ BOOST_FIXTURE_TEST_SUITE(before_moved_to_my_str, my_string_can_be_moved_from_rva
 
 	BOOST_AUTO_TEST_CASE(existing_strings_length_is_equal_copied_strings_length)
 	{
-		BOOST_CHECK_EQUAL(myString.GetLength(), 11);
+		BOOST_CHECK_EQUAL(myString.GetLength(), 11u);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -269,7 +270,7 @@ BOOST_FIXTURE_TEST_SUITE(before_copied_from_stl_string, my_string_can_be_copied_
 
 	BOOST_AUTO_TEST_CASE(existing_strings_length_is_equal_copied_stl_strings_length)
 	{
-		BOOST_CHECK_EQUAL(myString.GetLength(), 11);
+		BOOST_CHECK_EQUAL(myString.GetLength(), 11u);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
