@@ -31,7 +31,7 @@ CMyString::CMyString(CMyString const & other)
 	: m_length(other.m_length + 1)
 	, m_pChars(new char[m_length])
 {
-	if (m_length != 0)
+	if (m_length != 1)
 	{
 		StrCpy(other.m_pChars, other.m_length);
 	}
@@ -108,7 +108,7 @@ bool CMyString::StrCmp(CMyString const &str)const
 const char* CMyString::GetSortedAlphabeticallyChars()
 {
 	auto str = CMyString(*this);
-
+	
 	qsort(str.m_pChars, str.m_length, sizeof(char), (int(*)(const void *, const  void *)) strcmp);
 
 	return str.m_pChars;

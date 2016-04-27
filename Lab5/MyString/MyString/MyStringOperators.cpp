@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "../MyString/MyString.h"
+#include <iostream>
 
 using namespace std;
 
