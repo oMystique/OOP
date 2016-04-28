@@ -4,7 +4,6 @@
 #include <cassert>
 #include "MyStringIterator.h"
 
-
 class CMyString
 {
 public:
@@ -38,6 +37,7 @@ public:
 
 //operators
 	CMyString& operator =(const CMyString& str);
+	CMyString& operator =(CMyString &&str);
 	CMyString& operator +=(const CMyString& str);
 	const char &operator [](size_t index) const;
 	char &operator [](size_t index);

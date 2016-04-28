@@ -176,9 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MyString\MyString.cpp" />
-    <ClCompile Include="..\MyString\MyStringOperators.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyStringOperatorsTests.cpp" />
     <ClCompile Include="MyStringTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

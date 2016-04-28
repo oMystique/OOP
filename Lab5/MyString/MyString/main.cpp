@@ -23,8 +23,19 @@ int main()
 		cout << it << endl;
 	}
 
-	cout << mStr.rbegin() - mStr.rend() << endl;
-	 
+	cout << endl << mStr.rbegin() - mStr.rend() << endl << endl;;
+	
+	CMyString const mmStr = mStr;
+
+	for (CMyString::ConstIterator it = mmStr.begin(); it != mmStr.end(); it++)
+	{
+		cout << *it << endl;
+	}
+
+	auto sts = mmStr.begin();
+	--sts;
+	cout << sts[3] << endl;
+
 	return 0;
 }
 
