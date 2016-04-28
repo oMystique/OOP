@@ -5,22 +5,42 @@
 
 CMyString::Iterator CMyString::begin()
 {
-	return Iterator(&m_pChars[0]);
+	return Iterator(m_pChars);
 }
 
 CMyString::Iterator CMyString::end()
 {
-	return Iterator(&m_pChars[m_length]);
+	return Iterator(m_pChars + m_length);
 }
 
 CMyString::ConstIterator CMyString::begin() const
 {
-	return ConstIterator(&m_pChars[0]);
+	return ConstIterator(m_pChars);
 }
 
 CMyString::ConstIterator CMyString::end()const
 {
-	return ConstIterator(&m_pChars[m_length]);
+	return ConstIterator(m_pChars + m_length);
+}
+
+CMyString::Iterator CMyString::rbegin()
+{
+	return Iterator(end());
+}
+
+CMyString::Iterator CMyString::rend()
+{
+	return Iterator(m_pChars - 1);
+}
+
+CMyString::ConstIterator CMyString::rbegin()const
+{
+	return ConstIterator(end());
+}
+
+CMyString::ConstIterator CMyString::rend()const
+{
+	return ConstIterator(m_pChars - 1);
 }
 
 CMyString::CMyString()

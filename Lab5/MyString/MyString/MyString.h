@@ -16,6 +16,11 @@ public:
 	ConstIterator begin()const;
 	ConstIterator end()const;
 
+	Iterator rbegin();
+	Iterator rend();
+	ConstIterator rbegin()const;
+	ConstIterator rend()const;
+
 	CMyString();
 	CMyString(const char *pString);
 	CMyString(const char *pString, size_t length);

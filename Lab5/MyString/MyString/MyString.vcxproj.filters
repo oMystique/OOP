@@ -47,8 +47,5 @@
     <ClCompile Include="MyStringOperators.cpp">
       <Filter>Файлы исходного кода\MyString</Filter>
     </ClCompile>
-    <ClCompile Include="MyStringIterator.cpp">
-      <Filter>Файлы исходного кода\MyString</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
