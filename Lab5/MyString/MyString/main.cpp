@@ -6,7 +6,10 @@ using namespace std;
 
 int main()
 {
-	cout << memcmp("abc", "abc", 3) << endl;
+	std::string str;
+	cin >> str;
+	cout << str.c_str() << endl;
+
 	return 0;
 }
 

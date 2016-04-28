@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <sstream>
+#include <boost/iterator/indirect_iterator.hpp>
+#include <cassert>
 
 class CMyString
 {
@@ -23,8 +25,8 @@ public:
 //operators
 	CMyString& operator =(const CMyString& str);
 	CMyString& operator +=(const CMyString& str);
-	const char &operator[](size_t index) const;
-	char &operator[](size_t index);
+	const char &operator [](size_t index) const;
+	char &operator [](size_t index);
 private:
 	void StrCpy(const char* str);
 
@@ -32,9 +34,6 @@ private:
 	size_t m_length;
 	char *m_pChars;
 };
-
-
-CMyString SortByAlphabet(CMyString const &str);
 
 //operators
 CMyString operator +(CMyString const &str1, CMyString const &str2);
@@ -48,5 +47,5 @@ bool operator >(const CMyString &str1, const CMyString &str2);
 bool operator <=(const CMyString &str1, const CMyString &str2);
 bool operator >=(const CMyString &str1, const CMyString &str2);
 
-std::ostream & operator <<(std::ostream & strm, CMyString const & string);
-std::istream & operator >>(std::istream & strm, CMyString & string);
+std::ostream &operator <<(std::ostream & strm, CMyString const &string);
+std::istream &operator >>(std::istream & strm, CMyString &string);

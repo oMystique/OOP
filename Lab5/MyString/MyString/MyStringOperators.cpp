@@ -77,16 +77,12 @@ bool operator !=(const CMyString &str1, const CMyString &str2)
 
 bool operator <(const CMyString &str1, const CMyString &str2)
 {
-	return (memcmp(str1.GetStringData()
-		, str2.GetStringData()
-		, static_cast<size_t>(fmaxl(str1.GetLength(), str2.GetLength()))) == -1);
+	return (str1.StrCmp(str2) == -1);
 }
 
 bool operator >(const CMyString &str1, const CMyString &str2)
 {
-	return (memcmp(str1.GetStringData()
-		, str2.GetStringData()
-		, static_cast<size_t>(fmaxl(str1.GetLength(), str2.GetLength()))) == 1);
+	return (str1.StrCmp(str2) == 1);
 }
 
 bool operator <=(const CMyString &str1, const CMyString &str2)
@@ -101,14 +97,20 @@ bool operator >=(const CMyString &str1, const CMyString &str2)
 	
 const char & CMyString::operator [](size_t index)const
 {
-	char empty = '\0';
-	return (index >= 0 && index < m_length) ? m_pChars[index] : empty;
+	if (index >= m_length)
+	{
+		throw std::out_of_range("Index out of range.");
+	}
+	return m_pChars[index];
 }
 
 char & CMyString::operator [](size_t index)
 {
-	char empty = '\0';
-	return (index >= 0 && index < m_length) ? m_pChars[index] : empty;
+	if (index >= m_length)
+	{
+		throw std::out_of_range("Index out of range.");
+	}
+	return m_pChars[index];
 }
 
 ostream & operator <<(ostream & strm, CMyString const & string)

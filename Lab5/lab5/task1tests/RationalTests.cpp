@@ -508,7 +508,7 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 
 	BOOST_AUTO_TEST_SUITE_END()
 
-	// 13) ostream <<
+	// 13) istream <<
 	struct istream_
 	{
 		CRational rational;
