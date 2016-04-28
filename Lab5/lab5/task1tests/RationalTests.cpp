@@ -31,6 +31,13 @@ void VerifyRational(const CRational & r, int expectedNumerator, int expectedDeno
 	BOOST_CHECK_EQUAL(r.GetDenominator(), expectedDenominator);
 }
 
+void VerifyCompoundFraction(const CRational &r, int expectedInteger, int expectedNumerator, int expectedDeniminator)
+{
+	BOOST_CHECK_EQUAL(r.ToCompoundFraction().first, expectedInteger);
+	BOOST_CHECK_EQUAL(r.ToCompoundFraction().second.GetNumerator(), expectedNumerator);
+	BOOST_CHECK_EQUAL(r.ToCompoundFraction().second.GetDenominator(), expectedDeniminator);
+}
+
 BOOST_AUTO_TEST_SUITE(Rational_number)
 	BOOST_AUTO_TEST_CASE(is_0_by_default)
 	{
@@ -119,8 +126,8 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 
 		BOOST_AUTO_TEST_CASE(subtraction_of_two_floating_point_integers)
 		{
-			auto answer = rational - CRational(75, 60);
-			VerifyRational(answer, -3, 4);
+			auto answer = rational - CRational(3, 8);
+			VerifyRational(answer, 1, 8);
 		}
 
 		BOOST_AUTO_TEST_CASE(subtraction_of_fractional_and_rational_integers)
@@ -537,33 +544,25 @@ BOOST_AUTO_TEST_SUITE(Rational_number)
 	BOOST_AUTO_TEST_CASE(can_get_compound_fraction)
 	{
 		auto rational = CRational(9, 4);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, 2);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), 1);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 4);
+		VerifyCompoundFraction(rational, 2, 1, 4);
 	}
 
 	BOOST_AUTO_TEST_CASE(can_get_compound_negative_fraction)
 	{
 		auto rational = CRational(-9, 4);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, -2);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), -1);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 4);
+		VerifyCompoundFraction(rational, -2, -1, 4);
 	}
 
 	BOOST_AUTO_TEST_CASE(integer_will_return_to_previous_state)
 	{
 		auto rational = CRational(-9);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, -9);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), 0);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 1);
+		VerifyCompoundFraction(rational, -9, 0, 1);
 	}
 
 	BOOST_AUTO_TEST_CASE(if_fraction_is_less_than_zero_then_integer_equal_to_zero)
 	{
 		auto rational = CRational(1, 2);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().first, 0);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetNumerator(), 1);
-		BOOST_CHECK_EQUAL(rational.ToCompoundFraction().second.GetDenominator(), 2);
+		VerifyCompoundFraction(rational, 0, 1, 2);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
