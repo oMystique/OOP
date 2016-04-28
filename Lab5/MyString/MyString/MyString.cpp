@@ -3,6 +3,26 @@
 #include <iostream>
 #include <stdlib.h>
 
+CMyString::Iterator CMyString::begin()
+{
+	return Iterator(&m_pChars[0]);
+}
+
+CMyString::Iterator CMyString::end()
+{
+	return Iterator(&m_pChars[m_length]);
+}
+
+CMyString::ConstIterator CMyString::begin() const
+{
+	return ConstIterator(&m_pChars[0]);
+}
+
+CMyString::ConstIterator CMyString::end()const
+{
+	return ConstIterator(&m_pChars[m_length]);
+}
+
 CMyString::CMyString()
 	: m_length(0)
 	, m_pChars(new char[1])

@@ -10,6 +10,7 @@ int main()
 	cin >> str;
 	cout << str.c_str() << endl;
 
+
 	return 0;
 }
 

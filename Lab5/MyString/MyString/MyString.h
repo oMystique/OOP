@@ -1,12 +1,21 @@
 #pragma once
 #include <string>
 #include <sstream>
-#include <boost/iterator/indirect_iterator.hpp>
 #include <cassert>
+#include "MyStringIterator.h"
+
 
 class CMyString
 {
 public:
+	using Iterator = MyStrIterator<char>;
+	using ConstIterator = MyStrIterator<const char>;
+
+	Iterator begin();
+	Iterator end();
+	ConstIterator begin()const;
+	ConstIterator end()const;
+
 	CMyString();
 	CMyString(const char *pString);
 	CMyString(const char *pString, size_t length);
