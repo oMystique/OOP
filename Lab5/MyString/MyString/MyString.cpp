@@ -27,7 +27,7 @@ CMyString::ConstIterator CMyString::end()const
 
 CMyString::Iterator CMyString::rbegin()
 {
-	return Iterator(m_pChars + m_length);
+	return Iterator(m_pChars + m_length - 1);
 }
 
 CMyString::Iterator CMyString::rend()
@@ -37,7 +37,7 @@ CMyString::Iterator CMyString::rend()
 
 CMyString::ConstIterator CMyString::rbegin()const
 {
-	return ConstIterator(end());
+	return ConstIterator(m_pChars + m_length - 1);
 }
 
 CMyString::ConstIterator CMyString::rend()const
