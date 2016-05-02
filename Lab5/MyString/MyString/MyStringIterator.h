@@ -97,14 +97,14 @@ template<typename ValueType>
 MyStrIterator<ValueType> const operator +(MyStrIterator<ValueType> &&iter, size_t value)
 {
 	iter += value;
-	return (iter);
+	return iter;
 }
 
 template<typename ValueType>
 MyStrIterator<ValueType> const operator +(size_t value, MyStrIterator<ValueType> &&iter)
 {
 	iter += value;
-	return (iter);
+	return iter;
 }
 
 template<typename ValueType>

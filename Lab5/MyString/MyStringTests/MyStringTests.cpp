@@ -8,9 +8,9 @@ struct my_string_can_be_declared_by_default_
 	CMyString myString;
 };
 
-BOOST_FIXTURE_TEST_SUITE(before_declared_string, my_string_can_be_declared_by_default_)
+BOOST_FIXTURE_TEST_SUITE(before_declared_empty_string, my_string_can_be_declared_by_default_)
 
-	BOOST_AUTO_TEST_CASE(default_pointer_to_an_array_of_char_strings_is_nullptr)
+	BOOST_AUTO_TEST_CASE(default_pointer_to_an_array_of_char_strings_is_null)
 	{
 		BOOST_CHECK(myString.GetStringData()[0] == '\0');
 	}
@@ -25,7 +25,7 @@ BOOST_FIXTURE_TEST_SUITE(before_declared_string, my_string_can_be_declared_by_de
 		BOOST_CHECK_EQUAL(myString.GetStringData()[myString.GetLength()], '\0');
 	}
 
-	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_returns_exception)
+	BOOST_AUTO_TEST_CASE(attempt_to_take_substring_if_empty_str_returns_exception)
 	{
 		BOOST_REQUIRE_THROW(auto substr = myString.SubString(0u, 30u), std::out_of_range);
 	}
@@ -540,6 +540,32 @@ BOOST_AUTO_TEST_SUITE_END()
 
 // operator >> (istream)
 
+void VerifyCorrectWorkIstreamOperator(std::string const &str)
+{
+	std::istringstream strm(str);
+	CMyString myStr;
+	strm >> myStr;
+	BOOST_CHECK_EQUAL(myStr.GetStringData(), str);
+}
+
+BOOST_AUTO_TEST_SUITE(istream_operator_tests)
+
+	BOOST_AUTO_TEST_CASE(input_from_istream_to_mystring_without_null_char_in_middle)
+	{
+		VerifyCorrectWorkIstreamOperator("SomeString");
+	}
+
+	BOOST_AUTO_TEST_CASE(input_from_istream_to_mystring_with_null_char_in_middle)
+	{
+		VerifyCorrectWorkIstreamOperator("Some\0String");
+	}
+
+	BOOST_AUTO_TEST_CASE(input_to_mystring_from_istream_empty_string)
+	{
+		VerifyCorrectWorkIstreamOperator("");
+	}
+
+BOOST_AUTO_TEST_SUITE_END()
 
 //ITERATOR tests;
 struct declare_mystring_for_iterator_tests_

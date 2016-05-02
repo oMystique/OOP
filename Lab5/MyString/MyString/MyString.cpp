@@ -5,46 +5,6 @@
 
 using namespace std;
 
-CMyString::Iterator CMyString::begin()
-{
-	return Iterator(m_pChars);
-}
-
-CMyString::Iterator CMyString::end()
-{
-	return Iterator(m_pChars + m_length);
-}
-
-CMyString::ConstIterator CMyString::begin() const
-{
-	return ConstIterator(m_pChars);
-}
-
-CMyString::ConstIterator CMyString::end()const
-{
-	return ConstIterator(m_pChars + m_length);
-}
-
-CMyString::Iterator CMyString::rbegin()
-{
-	return Iterator(m_pChars + m_length - 1);
-}
-
-CMyString::Iterator CMyString::rend()
-{
-	return Iterator(m_pChars - 1);
-}
-
-CMyString::ConstIterator CMyString::rbegin()const
-{
-	return ConstIterator(m_pChars + m_length - 1);
-}
-
-CMyString::ConstIterator CMyString::rend()const
-{
-	return ConstIterator(m_pChars - 1);
-}
-
 CMyString::CMyString()
 	: m_length(0)
 	, m_pChars(new char[1])
@@ -84,7 +44,7 @@ CMyString::CMyString(CMyString && other)
 	other.m_length = 0;
 }
 
-CMyString::CMyString(std::string const & stlString)
+CMyString::CMyString(string const & stlString)
 	: m_length(stlString.size() + 1)
 	, m_pChars(new char[m_length])
 {
@@ -250,7 +210,7 @@ const char & CMyString::operator [](size_t index)const
 {
 	if (index >= m_length)
 	{
-		throw std::out_of_range("Index out of range.");
+		throw out_of_range("Index out of range.");
 	}
 	return m_pChars[index];
 }
@@ -259,7 +219,7 @@ char & CMyString::operator [](size_t index)
 {
 	if (index >= m_length)
 	{
-		throw std::out_of_range("Index out of range.");
+		throw out_of_range("Index out of range.");
 	}
 	return m_pChars[index];
 }
@@ -273,9 +233,49 @@ ostream & operator <<(ostream & strm, CMyString const & string)
 
 istream & operator >>(istream & strm, CMyString & string)
 {
-	char tmp[2048];
-	strm.getline(tmp, sizeof(tmp));
-	string = CMyString(tmp);
+	std::string tStr;
+	strm >> tStr;
+	string = CMyString(tStr);
 
 	return strm;
+}
+
+CMyString::Iterator CMyString::begin()
+{
+	return Iterator(m_pChars);
+}
+
+CMyString::Iterator CMyString::end()
+{
+	return Iterator(m_pChars + m_length);
+}
+
+CMyString::ConstIterator CMyString::begin() const
+{
+	return ConstIterator(m_pChars);
+}
+
+CMyString::ConstIterator CMyString::end()const
+{
+	return ConstIterator(m_pChars + m_length);
+}
+
+CMyString::Iterator CMyString::rbegin()
+{
+	return Iterator(m_pChars + m_length - 1);
+}
+
+CMyString::Iterator CMyString::rend()
+{
+	return Iterator(m_pChars - 1);
+}
+
+CMyString::ConstIterator CMyString::rbegin()const
+{
+	return ConstIterator(m_pChars + m_length - 1);
+}
+
+CMyString::ConstIterator CMyString::rend()const
+{
+	return ConstIterator(m_pChars - 1);
 }
