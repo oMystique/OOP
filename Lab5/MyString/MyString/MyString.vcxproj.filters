@@ -42,7 +42,7 @@
       <Filter>Файлы исходного кода\MyString</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Файлы исходного кода</Filter>
+      <Filter>Файлы исходного кода\MyString</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

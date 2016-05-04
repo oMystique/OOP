@@ -171,6 +171,7 @@ void ExpectStringDataImpl(const CMyString & s, const char *data, size_t size)
 	BOOST_REQUIRE_EQUAL(s.GetStringData(), data);
 	BOOST_REQUIRE_EQUAL(memcmp(s.GetStringData(), data, size), 0);
 }
+
 template <size_t N>
 void ExpectStringData(const CMyString & s, const char(&data)[N])
 {

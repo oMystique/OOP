@@ -2,38 +2,37 @@
 #include "../MyString/MyString.h"
 #include <iostream>
 #include <stdlib.h>
+#include <algorithm>
+
+const char* CMyString::m_nullTerminated = "\0";
 
 using namespace std;
 
 CMyString::CMyString()
 	: m_length(0)
-	, m_pChars(new char[1])
+	, m_pChars(nullptr)
 {
-	m_pChars[0] = '\0';
 }
 
 CMyString::CMyString(const char * pString)
-	: m_length(strlen(pString) + 1)
-	, m_pChars(new char[m_length])
+	: m_length(strlen(pString))
+	, m_pChars(new char[m_length + 1])
 {
 	StrCpy(pString);
-	--m_length;
 }
 
 CMyString::CMyString(const char * pString, size_t length)
-	: m_length(length + 1)
-	, m_pChars(new char[m_length])
+	: m_length(length)
+	, m_pChars(new char[m_length + 1])
 {
 	StrCpy(pString);
-	--m_length;
 }
 
 CMyString::CMyString(CMyString const & other)
-	: m_length(other.m_length + 1)
-	, m_pChars(new char[m_length])
+	: m_length(other.m_length)
+	, m_pChars(new char[m_length + 1])
 {
 	StrCpy(other.m_pChars);
-	--m_length;
 }
 
 CMyString::CMyString(CMyString && other)
@@ -45,17 +44,18 @@ CMyString::CMyString(CMyString && other)
 }
 
 CMyString::CMyString(string const & stlString)
-	: m_length(stlString.size() + 1)
-	, m_pChars(new char[m_length])
+	: m_length(stlString.size())
+	, m_pChars(new char[m_length + 1])
 {
 	StrCpy(stlString.c_str());
-	--m_length;
 }
 
 CMyString::~CMyString()
 {
-	delete[] m_pChars;
-	m_pChars = nullptr;
+	if (m_pChars)
+	{
+		delete[] m_pChars;
+	}
 }
 
 size_t CMyString::GetLength() const
@@ -65,6 +65,10 @@ size_t CMyString::GetLength() const
 
 const char * CMyString::GetStringData() const
 {
+	if (!m_pChars)
+	{
+		return m_nullTerminated;
+	}
 	return m_pChars;
 }
 
@@ -73,6 +77,10 @@ CMyString CMyString::SubString(size_t start, size_t length)const
 	if (start >= m_length || start >= length)
 	{
 		throw out_of_range("Out of range");
+	}
+	else if (!m_pChars)
+	{
+		return m_nullTerminated;
 	}
 	else if (length > m_length)
 	{
@@ -83,35 +91,37 @@ CMyString CMyString::SubString(size_t start, size_t length)const
 
 void CMyString::Clear()
 {
-	delete[] m_pChars;
-	m_pChars = new char[1];
-	m_pChars[0] = '\0';
 	m_length = 0;
+	if (m_pChars)
+	{
+		delete[] m_pChars;
+		m_pChars = nullptr;
+	}
 }
 
 
 void CMyString::StrCpy(const char* str)
 {
 	memcpy(m_pChars, str, m_length);
-	m_pChars[m_length - 1] = '\0';
+	m_pChars[m_length] = '\0';
 }
 
 int CMyString::StrCmp(CMyString const &str)const
 {
-	return (memcmp(m_pChars
-		, str.GetStringData()
-		, static_cast<size_t>(fmaxl(static_cast<long double>(m_length)
-			, static_cast<long double>(str.GetLength())))));
+	return (memcmp(m_pChars, str.GetStringData(), max(m_length, str.GetLength()))); //TODO
 }
 
 
 CMyString& CMyString::operator =(CMyString &&str)
 {
-	swap(m_pChars, str.m_pChars);
-	swap(m_length, str.m_length);
+	if (this != &str)
+	{
+		swap(m_pChars, str.m_pChars);
+		swap(m_length, str.m_length);
 
-	delete[] str.m_pChars;
-	str.m_pChars = nullptr;
+		delete[] str.m_pChars;
+		str.m_pChars = nullptr;
+	}
 
 	return *this;
 }
@@ -129,41 +139,44 @@ CMyString& CMyString::operator =(const CMyString& str)
 	return *this;
 }
 
-CMyString & CMyString::operator +=(const CMyString & str)
+CMyString & CMyString::operator +=(const CMyString & str) //TODO
 {
-	char *tempStr;
-	tempStr = new char[m_length + str.m_length + 1];
-
-	for (size_t i = 0; i < m_length; i++)
+	if (str.m_pChars)
 	{
-		tempStr[i] = m_pChars[i];
+		char *tempStr;
+		tempStr = new char[m_length + str.m_length + 1];
+
+		for (size_t i = 0; i < m_length; i++)
+		{
+			tempStr[i] = m_pChars[i];
+		}
+
+		for (size_t i = m_length, j = 0;
+		i <= m_length + str.m_length; i++, j++)
+		{
+			tempStr[i] = str.m_pChars[j];
+		}
+
+		m_length = m_length + str.m_length;
+
+		delete[] m_pChars;
+		m_pChars = tempStr;
 	}
-
-	for (size_t i = m_length, j = 0;
-	i <= m_length + str.m_length; i++, j++)
-	{
-		tempStr[i] = str.m_pChars[j];
-	}
-
-	m_length = m_length + str.m_length;
-
-	delete[] m_pChars;
-	m_pChars = tempStr;
 
 	return *this;
 }
 
-CMyString operator +(CMyString const &str1, CMyString const &str2)
+CMyString operator +(CMyString const &str1, CMyString const &str2) //TODO
 {
 	return (CMyString(str1) += str2);
 }
 
-CMyString operator +(string const &str1, CMyString const &str2)
+CMyString operator +(string const &str1, CMyString const &str2) //TODO
 {
 	return (CMyString(str1) += str2);
 }
 
-CMyString operator +(const char* str1, CMyString const &str2)
+CMyString operator +(const char* str1, CMyString const &str2) //TODO
 {
 	return (CMyString(str1) += str2);
 }
@@ -179,29 +192,25 @@ bool operator ==(const CMyString &str1, const CMyString &str2)
 
 bool operator !=(const CMyString &str1, const CMyString &str2)
 {
-	if (str1.GetLength() != str2.GetLength())
-	{
-		return true;
-	}
-	return (str1.StrCmp(str2) != 0);
+	return !(str1 == str2);
 }
 
 bool operator <(const CMyString &str1, const CMyString &str2)
 {
-	return (str1.StrCmp(str2) == -1);
+	return (str1.StrCmp(str2) < 0 );
 }
 
 bool operator >(const CMyString &str1, const CMyString &str2)
 {
-	return (str1.StrCmp(str2) == 1);
+	return (str1.StrCmp(str2) > 0);
 }
 
-bool operator <=(const CMyString &str1, const CMyString &str2)
+bool operator <=(const CMyString &str1, const CMyString &str2) //TODO
 {
 	return ((str1 == str2) || (str1 < str2));
 }
 
-bool operator >=(const CMyString &str1, const CMyString &str2)
+bool operator >=(const CMyString &str1, const CMyString &str2) //TODO
 {
 	return ((str1 == str2) || (str1 > str2));
 }

@@ -45,6 +45,7 @@ private:
 	void StrCpy(const char* str);
 
 private:
+	const static char *m_nullTerminated;
 	size_t m_length;
 	char *m_pChars;
 };
