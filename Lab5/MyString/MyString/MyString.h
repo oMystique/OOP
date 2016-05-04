@@ -51,7 +51,7 @@ private:
 };
 
 //operators
-CMyString operator +(CMyString const &str1, CMyString const &str2);
+CMyString operator +(CMyString str1, CMyString const &str2);
 CMyString operator +(std::string const &str1, CMyString const &str2);
 CMyString operator +(const char* str1, CMyString const &str2);
 
