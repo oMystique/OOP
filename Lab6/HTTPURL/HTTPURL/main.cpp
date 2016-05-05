@@ -15,6 +15,7 @@ vector<string> ParseArgs(string const &inputStr)
 	string arg;
 	istringstream strm(inputStr);
 	vector<string> args;
+
 	while (strm >> arg)
 	{
 		args.push_back(arg);

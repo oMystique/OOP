@@ -8,6 +8,12 @@ const char* CMyString::m_nullTerminated = "\0";
 
 using namespace std;
 
+CMyString::CMyString(size_t length)
+	: m_length(length)
+	, m_pChars(new char[m_length + 1])
+{
+}
+
 CMyString::CMyString()
 	: m_length(0)
 	, m_pChars(nullptr)
@@ -200,19 +206,31 @@ bool operator >=(const CMyString &str1, const CMyString &str2)
 
 const char & CMyString::operator [](size_t index)const
 {
-	if (index >= m_length)
+	if (index > m_length)
 	{
 		throw out_of_range("Index out of range.");
 	}
+	else if (!m_pChars)
+	{
+		return m_nullTerminated[0];
+	}
+
 	return m_pChars[index];
 }
 
 char & CMyString::operator [](size_t index)
 {
-	if (index >= m_length)
+	if (index >= m_length && index != 0)
 	{
 		throw out_of_range("Index out of range.");
 	}
+	else if (!m_pChars)
+	{
+		m_pChars = new char[2];
+		//m_pChars[0] = '\0';
+		m_pChars[1] = '\0';
+	}
+	
 	return m_pChars[index];
 }
 

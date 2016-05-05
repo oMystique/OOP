@@ -123,9 +123,7 @@ string CHttpUrl::ParseDomain(boost::string_ref & str)const
 {
 	auto domainEnd = str.find('/');
 
-	auto domain = str.substr(0, domainEnd);
-
-	return domain.to_string();
+	return str.substr(0, domainEnd).to_string();
 }
 
 string CHttpUrl::ParseProtocol(boost::string_ref & str)const

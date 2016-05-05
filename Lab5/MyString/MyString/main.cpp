@@ -10,7 +10,15 @@ int main()
 	auto a = "asd" + str;
 	auto b = string("123") + str;
 	cout << a << endl << b << endl;
-	cout << string("asdasd").substr(7, 10) << endl;;
+
+	auto strr = string();
+	strr[0] = '1';
+	cout << strr[0] << endl;
+
+	auto mSt = CMyString();
+//	mSt[0] = 'a';
+	cout << mSt << endl;
+
 	return 0;
 }
 

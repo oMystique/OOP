@@ -42,6 +42,7 @@ public:
 	const char &operator [](size_t index) const;
 	char &operator [](size_t index);
 private:
+	CMyString(size_t length);
 	void StrCpy(const char* str);
 
 private:
