@@ -608,7 +608,7 @@ BOOST_FIXTURE_TEST_SUITE(before_declare_mystring_for_iterator_tests, declare_mys
 	BOOST_AUTO_TEST_CASE(can_iterate_over_constant_string_in_opposite_direction)
 	{
 		size_t i = constMyStr.GetLength() - 1;
-		for (CMyString::ConstIterator it = constMyStr.rbegin(); it != constMyStr.rend(); --it)
+		for (CMyString::ConstIterator it = constMyStr.rbegin(); it != constMyStr.rend(); ++it)
 		{
 			BOOST_CHECK_EQUAL(*it, constMyStr[i]);
 			--i;
@@ -628,7 +628,7 @@ BOOST_FIXTURE_TEST_SUITE(before_declare_mystring_for_iterator_tests, declare_mys
 	BOOST_AUTO_TEST_CASE(can_iterate_over_non_constant_string_in_opposite_direction)
 	{
 		size_t i = myStr.GetLength() - 1;
-		for (CMyString::Iterator it = myStr.rbegin(); it != myStr.rend(); --it)
+		for (CMyString::Iterator it = myStr.rbegin(); it != myStr.rend(); ++it)
 		{
 			BOOST_CHECK_EQUAL(*it, myStr[i]);
 			--i;
@@ -658,15 +658,6 @@ BOOST_FIXTURE_TEST_SUITE(before_declare_mystring_for_iterator_tests, declare_mys
 	{
 		auto it = constMyStr.begin();
 		BOOST_CHECK_EQUAL(it[3], 'r');
-	}
-
-	BOOST_AUTO_TEST_CASE(has_indexed_access_for_read_and_write_to_elements_of_line_relative_to_iterator)
-	{
-		auto it = myStr.begin();
-		BOOST_CHECK_EQUAL(it[3], 'r');
-
-		BOOST_REQUIRE(it[3] = '0');
-		BOOST_CHECK_EQUAL(it[3], '0');
 	}
 
 	BOOST_AUTO_TEST_CASE(supports_iteration_over_the_elements_by_means_of_range_based_for)

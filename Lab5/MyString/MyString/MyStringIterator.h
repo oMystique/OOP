@@ -8,7 +8,7 @@ class MyStrIterator : public std::iterator<std::random_access_iterator_tag, Valu
 {
 	friend class CMyString;
 private:
-	MyStrIterator(ValueType* value);
+	MyStrIterator(ValueType* value, bool isReverse = false);
 public:
 	MyStrIterator(const MyStrIterator &it);
 
@@ -18,15 +18,16 @@ public:
 	MyStrIterator& operator++();
 	MyStrIterator& operator--();
 	MyStrIterator& operator+=(size_t value);
-	ValueType const operator[](size_t index)const;
-	ValueType &operator[](size_t index);
+	ValueType operator[](size_t index)const;
 private:
 	ValueType* m_pValue;
+	bool m_isReverse = false;
 };
 
 template<typename ValueType>
-MyStrIterator<ValueType>::MyStrIterator(ValueType *value)
+MyStrIterator<ValueType>::MyStrIterator(ValueType *value, bool isReverse = false)
 	: m_pValue(value)
+	, m_isReverse(isReverse)
 {
 }
 
@@ -37,13 +38,7 @@ MyStrIterator<ValueType>::MyStrIterator(const MyStrIterator<ValueType>& it) :
 }
 
 template<typename ValueType>
-ValueType const MyStrIterator<ValueType>::operator[](size_t index)const
-{
-	return m_pValue[index];
-}
-
-template<typename ValueType>
-ValueType &MyStrIterator<ValueType>::operator[](size_t index)
+ValueType MyStrIterator<ValueType>::operator[](size_t index)const
 {
 	return m_pValue[index];
 }
@@ -69,14 +64,16 @@ typename MyStrIterator<ValueType>::reference MyStrIterator<ValueType>::operator*
 template<typename ValueType>
 MyStrIterator<ValueType> &MyStrIterator<ValueType>::operator++()
 {
-	++m_pValue;
+	m_isReverse ? --m_pValue : ++m_pValue;
+
 	return *this;
 }
 
 template<typename ValueType>
 MyStrIterator<ValueType> &MyStrIterator<ValueType>::operator--()
 {
-	--m_pValue;
+	m_isReverse ? ++m_pValue : --m_pValue;
+
 	return *this;
 }
 
@@ -94,17 +91,15 @@ MyStrIterator<ValueType>& MyStrIterator<ValueType>::operator+=(size_t value)
 }
 
 template<typename ValueType>
-MyStrIterator<ValueType> const operator +(MyStrIterator<ValueType> &&iter, size_t value)
+MyStrIterator<ValueType> operator +(MyStrIterator<ValueType> iter, size_t value)
 {
-	iter += value;
-	return iter;
+	return iter += value;
 }
 
 template<typename ValueType>
-MyStrIterator<ValueType> const operator +(size_t value, MyStrIterator<ValueType> &&iter)
+MyStrIterator<ValueType> operator +(size_t value, MyStrIterator<ValueType> iter)
 {
-	iter += value;
-	return iter;
+	return iter += value;
 }
 
 template<typename ValueType>

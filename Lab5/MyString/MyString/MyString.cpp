@@ -74,11 +74,11 @@ const char * CMyString::GetStringData() const
 
 CMyString CMyString::SubString(size_t start, size_t length)const
 {
-	if (start >= m_length || start >= length)
+	if (start >= m_length || start > length)
 	{
 		throw out_of_range("Out of range");
 	}
-	else if (!m_pChars)
+	else if ((!m_pChars) || (start == length))
 	{
 		return m_nullTerminated;
 	}
@@ -109,7 +109,7 @@ void CMyString::StrCpy(const char* str)
 int CMyString::StrCmp(CMyString const &str)const
 {
 	auto cmp = (memcmp(m_pChars, str.GetStringData(), min(m_length, str.m_length)));
-	return cmp != 0 ? cmp : (m_length - str.m_length);
+	return cmp != 0 ? cmp : static_cast<int>(m_length - str.m_length);
 }
 
 
@@ -150,7 +150,6 @@ CMyString & CMyString::operator +=(const CMyString & str)
 		memcpy(&tempStr[m_length], str.m_pChars, str.m_length);
 
 		m_length = m_length + str.m_length;
-		tempStr[m_length] = '\0';
 
 		delete[] m_pChars;
 		m_pChars = tempStr;
@@ -159,19 +158,9 @@ CMyString & CMyString::operator +=(const CMyString & str)
 	return *this;
 }
 
-CMyString operator +(CMyString str1, CMyString const &str2) //TODO
+CMyString operator +(CMyString str1, CMyString const &str2) 
 {
-	return (str1 += str2);
-}
-
-CMyString operator +(string const &str1, CMyString const &str2) //TODO
-{
-	return (CMyString(str1) += str2);
-}
-
-CMyString operator +(const char* str1, CMyString const &str2) //TODO
-{
-	return (CMyString(str1) += str2);
+	return str1 += str2;
 }
 
 bool operator ==(const CMyString &str1, const CMyString &str2)
@@ -180,6 +169,7 @@ bool operator ==(const CMyString &str1, const CMyString &str2)
 	{
 		return false;
 	}
+
 	return (str1.StrCmp(str2) == 0);
 }
 
@@ -198,12 +188,12 @@ bool operator >(const CMyString &str1, const CMyString &str2)
 	return (str1.StrCmp(str2) > 0);
 }
 
-bool operator <=(const CMyString &str1, const CMyString &str2) //TODO
+bool operator <=(const CMyString &str1, const CMyString &str2) 
 {
 	return (str1.StrCmp(str2) <= 0);
 }
 
-bool operator >=(const CMyString &str1, const CMyString &str2) //TODO
+bool operator >=(const CMyString &str1, const CMyString &str2)
 {
 	return (str1.StrCmp(str2) >= 0);
 }
@@ -264,20 +254,20 @@ CMyString::ConstIterator CMyString::end()const
 
 CMyString::Iterator CMyString::rbegin()
 {
-	return Iterator(m_pChars + m_length - 1);
+	return Iterator(m_pChars + m_length - 1, true);
 }
 
 CMyString::Iterator CMyString::rend()
 {
-	return Iterator(m_pChars - 1);
+	return Iterator(m_pChars - 1, true);
 }
 
 CMyString::ConstIterator CMyString::rbegin()const
 {
-	return ConstIterator(m_pChars + m_length - 1);
+	return ConstIterator(m_pChars + m_length - 1, true);
 }
 
 CMyString::ConstIterator CMyString::rend()const
 {
-	return ConstIterator(m_pChars - 1);
+	return ConstIterator(m_pChars - 1, true);
 }

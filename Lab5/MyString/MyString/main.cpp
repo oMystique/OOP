@@ -6,8 +6,11 @@ using namespace std;
 
 int main()
 {
-	//std::cout << CMyString(nullptr) << endl;
-	//std::cout << string(nullptr) << endl;
+	CMyString str("asd");
+	auto a = "asd" + str;
+	auto b = string("123") + str;
+	cout << a << endl << b << endl;
+	cout << string("asdasd").substr(7, 10) << endl;;
 	return 0;
 }
 

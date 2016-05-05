@@ -52,8 +52,6 @@ private:
 
 //operators
 CMyString operator +(CMyString str1, CMyString const &str2);
-CMyString operator +(std::string const &str1, CMyString const &str2);
-CMyString operator +(const char* str1, CMyString const &str2);
 
 bool operator ==(const CMyString &str1, const CMyString &str2);
 bool operator !=(const CMyString &str1, const CMyString &str2);
