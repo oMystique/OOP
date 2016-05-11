@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include <memory>
+#include <boost/lexical_cast.hpp>
 
 using namespace std;
 
@@ -38,6 +39,9 @@ unique_ptr<CHttpUrl> MakePtrToUrl(vector<string> &args)
 		break;
 	case (3):
 		url = make_unique<CHttpUrl>(args[0], args[1], url->ToProtocolType(args[2]));
+		break;
+	case (4):
+		url = make_unique<CHttpUrl>(args[0], args[1], url->ToProtocolType(args[2]), boost::lexical_cast<unsigned short>(args[3]));
 		break;
 	}
 

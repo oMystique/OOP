@@ -18,6 +18,7 @@ public:
 	MyStrIterator& operator++();
 	MyStrIterator& operator--();
 	MyStrIterator& operator+=(size_t value);
+	MyStrIterator& operator-=(size_t value);
 	ValueType operator[](size_t index)const;
 private:
 	ValueType* m_pValue;
@@ -86,7 +87,16 @@ ptrdiff_t const operator -(MyStrIterator<ValueType> const &iter1, MyStrIterator<
 template<typename ValueType>
 MyStrIterator<ValueType>& MyStrIterator<ValueType>::operator+=(size_t value)
 {
-	m_pValue += value;
+	m_isReverse ? m_pValue -= value : m_pValue += value;
+
+	return *this;
+}
+
+template<typename ValueType>
+MyStrIterator<ValueType>& MyStrIterator<ValueType>::operator-=(size_t value)
+{
+	m_isReverse ? m_pValue += value : m_pValue -= value;
+
 	return *this;
 }
 
@@ -105,13 +115,11 @@ MyStrIterator<ValueType> operator +(size_t value, MyStrIterator<ValueType> iter)
 template<typename ValueType>
 MyStrIterator<ValueType> const operator++(MyStrIterator<ValueType> & iter, int)
 {
-	++iter;
-	return iter;
+	return iter++;
 }
 
 template<typename ValueType>
 MyStrIterator<ValueType> const operator--(MyStrIterator<ValueType> & iter, int)
 {
-	--iter;
-	return iter;
+	return iter--;
 }

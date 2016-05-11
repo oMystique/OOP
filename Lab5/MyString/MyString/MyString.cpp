@@ -227,7 +227,6 @@ char & CMyString::operator [](size_t index)
 	else if (!m_pChars)
 	{
 		m_pChars = new char[2];
-		//m_pChars[0] = '\0';
 		m_pChars[1] = '\0';
 	}
 	

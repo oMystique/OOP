@@ -19,6 +19,11 @@ int main()
 //	mSt[0] = 'a';
 	cout << mSt << endl;
 
+	auto mmmStr = CMyString("asd", 3);
+	auto mmmstr2 = CMyString("zc", 2);
+	mmmStr.Clear();
+	mmmstr2 = std::move(mmmStr);
+	cout << mmmstr2 <<endl;
 	return 0;
 }
 
