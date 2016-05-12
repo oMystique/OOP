@@ -68,7 +68,7 @@ void InteractWithUser()
 		{
 			if (inputStr.empty())
 			{
-				throw invalid_argument("Input string is empty.");
+				throw invalid_argument("Input string+ is empty.");
 			}
 
 			auto args = ParseArgs(inputStr);

@@ -115,11 +115,11 @@ MyStrIterator<ValueType> operator +(size_t value, MyStrIterator<ValueType> iter)
 template<typename ValueType>
 MyStrIterator<ValueType> const operator++(MyStrIterator<ValueType> & iter, int)
 {
-	return iter++;
+	return ++iter;
 }
 
 template<typename ValueType>
 MyStrIterator<ValueType> const operator--(MyStrIterator<ValueType> & iter, int)
 {
-	return iter--;
+	return --iter;
 }

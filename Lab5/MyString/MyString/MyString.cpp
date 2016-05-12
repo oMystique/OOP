@@ -58,10 +58,7 @@ CMyString::CMyString(string const & stlString)
 
 CMyString::~CMyString()
 {
-	if (m_pChars)
-	{
-		delete[] m_pChars;
-	}
+	delete[] m_pChars;
 }
 
 size_t CMyString::GetLength() const
@@ -210,12 +207,8 @@ const char & CMyString::operator [](size_t index)const
 	{
 		throw out_of_range("Index out of range.");
 	}
-	else if (!m_pChars)
-	{
-		return m_nullTerminated[0];
-	}
 
-	return m_pChars[index];
+	return GetStringData()[index];
 }
 
 char & CMyString::operator [](size_t index)

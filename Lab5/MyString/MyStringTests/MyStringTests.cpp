@@ -389,6 +389,11 @@ BOOST_AUTO_TEST_SUITE(inequality_operator)
 		BOOST_CHECK(CMyString("Test") != CMyString("Test\0 String", 12u));
 	}
 
+	BOOST_AUTO_TEST_CASE(different_strings_with_equal_prefixs_is_not_equal)
+	{
+		BOOST_CHECK(CMyString("ab") != CMyString("abcd", 12u));
+	}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 

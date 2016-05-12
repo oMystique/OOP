@@ -92,7 +92,7 @@ CHttpUrl::UrlComponents CHttpUrl::ParseUrl(string const & url)
 	return make_tuple(protocol, ValidateDomainName(domain), port, ValidateDocument(document));
 }
 
-string CHttpUrl::ValidateDomainName(string const & domain)
+const string & CHttpUrl::ValidateDomainName(string const & domain)
 {
 	if (domain.empty())
 	{

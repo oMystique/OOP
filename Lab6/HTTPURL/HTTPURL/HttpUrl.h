@@ -23,7 +23,7 @@ public:
 	std::string ToStringProtocol()const;
 	static Protocol ToProtocolType(std::string const &scheme);
 private:
-	static std::string ValidateDomainName(std::string const &domain);
+	static const std::string & ValidateDomainName(std::string const &domain);
 	static std::string ValidateDocument(std::string const &document);
 	static std::string ParseDomain(boost::string_ref &str);
 	static std::string ParseProtocol(boost::string_ref &str);
