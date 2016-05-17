@@ -41,27 +41,42 @@ int main()
 	//	//}
 	//	//lst.Clear();
 	//}
-
 	//{
-	//	CStringList lst_;
-	//	lst_.AddToFront("4");
-	//	cout << lst_.GetBackElement() << endl;
-	//	lst_.Append("123");
-	//	auto end1 = lst_.end();
-	//	lst_.Append("123123123");
-	//	cout << (lst_.end() == end1) << endl;
+	//	CStringList<std::string> list;
+	//	list.Append("123");
+	////	cout << *(list.end()) << endl;
+	//	cout << *(list.begin()) << endl;
+	//}
 
-	//	auto begin_ = lst_.begin();
-	//	cout << *begin_ << endl;
-	//	cout << *(++begin_) << endl;
-	//	lst_.Insert(lst_.begin(), "WOW");
-	//	cout << lst_.GetFrontElement() << endl;
+	{
+		std::list<std::string> lst = { "1" };
+		//lst.push_back("2");
+
+		lst.erase(lst.begin());
+	}
+
+		CStringList<std::string> lst_;
+		lst_.Append("1");
+		lst_.Append("2");
+		lst_.Append("3");
+		lst_.Append("4");
+		lst_.Append("5");
+		for (auto &it : lst_)
+		{
+			cout << it << endl;
+		}
+
 
 	//	auto bb = ++lst_.begin();
- //   	lst_.Insert(bb, "WOW22");
+	//	lst_.Insert(bb, "WOW22");
 
-	//	cout << *(++lst_.begin()) << endl;
-	//}
+	//	cout << lst_.GetFrontElement() << endl;
+
+	//	auto end = lst_.end();
+	//	lst_.Append("aaa");
+		
+		//cout << endl << (end == lst_.end()) << endl;
+
 	return 0;
 }
 
