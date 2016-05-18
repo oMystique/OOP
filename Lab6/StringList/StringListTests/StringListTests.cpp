@@ -1,20 +1,30 @@
 #include "stdafx.h"
 #include "../StringList/StringList.h"
 
-BOOST_AUTO_TEST_CASE(asd)
-{
-
-}
-
 using namespace std;
+
+//struct MockObjWithExceptions : public NoExceptMockObj
+//{
+//	//MockObjWithExceptions& operator=(...) override
+//	//{
+//	//	//throw ...
+//	//}
+//};
+//
+//struct NoExceptMockObj
+//{
+//
+//};
 
 struct EmptyStringList
 {
-	CStringList<std::string> list;
+	CMyList<std::string> list;
 };
 
 BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
-	BOOST_AUTO_TEST_SUITE(when_created)
+// проверить отсутствие исключений при создании пустого списка
+// проверить валидность данных после вызова перемещающего оператора, который выбросит исключение
+BOOST_AUTO_TEST_SUITE(when_created)
 		BOOST_AUTO_TEST_CASE(is_empty)
 		{
 			BOOST_CHECK_EQUAL(list.GetSize(), 0u);
@@ -68,6 +78,12 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 			BOOST_CHECK_EQUAL(addressof(*it), addressof(list.GetFrontElement()));
 			BOOST_CHECK_EQUAL(addressof(*it), addressof(list.GetBackElement()));
 		}
+		BOOST_AUTO_TEST_CASE(after_decrement_saved_end_pos_iter_it_return_added_element)
+		{
+			auto end = list.end();
+			list.Append("sample");
+			BOOST_CHECK_EQUAL(*--list.end(), "sample");
+		}
 	BOOST_AUTO_TEST_SUITE_END()
 
 	struct FilledStringList
@@ -86,7 +102,7 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 
 		struct IteratorEndTests : FilledStringList
 		{
-			CStringList<std::string>::CIterator end = list.end();
+			CMyList<std::string>::CIterator end = list.end();
 		};
 
 		BOOST_FIXTURE_TEST_SUITE(can_take_an_iterator_to_next_of_the_last_item, IteratorEndTests)
@@ -169,14 +185,14 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 			}
 			BOOST_AUTO_TEST_CASE(can_insert_to_empty_list)
 			{
-				CStringList<std::string> emptyList;
+				CMyList<std::string> emptyList;
 				BOOST_CHECK_NO_THROW(emptyList.Insert(emptyList.begin(), "123"));
 				BOOST_CHECK_EQUAL(emptyList.GetFrontElement(), "123");
 				BOOST_CHECK_EQUAL(emptyList.GetBackElement(), "123");
 			}
 			BOOST_AUTO_TEST_CASE(cant_insert_to_nullptr)
 			{
-				BOOST_REQUIRE_THROW(list.Insert(CStringList<std::string>::CIterator(), "crash!"), std::invalid_argument);
+				BOOST_REQUIRE_THROW(list.Insert(CMyList<std::string>::CIterator(), "crash!"), std::invalid_argument);
 			}
 		BOOST_AUTO_TEST_SUITE_END()
 		BOOST_FIXTURE_TEST_SUITE(can_erase_data_in_iterator_pos, FilledStringList)
@@ -216,7 +232,7 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 			}
 			BOOST_AUTO_TEST_CASE(dont_erase_it_from_empty_list)
 			{
-				CStringList<std::string> emptyList;
+				CMyList<std::string> emptyList;
 				BOOST_REQUIRE_THROW(emptyList.Erase(emptyList.begin()), std::runtime_error);
 				BOOST_REQUIRE_THROW(emptyList.Erase(emptyList.end()), std::runtime_error);
 			}
@@ -230,7 +246,7 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 			}
 			BOOST_AUTO_TEST_CASE(erase_of_a_single_element_in_begin_does_not_make_list_of_invalid)
 			{
-				CStringList<double> list2;
+				CMyList<double> list2;
 				list2.Append(1.1);
 				BOOST_REQUIRE_NO_THROW(list2.Erase(list2.begin()));
 				list2.Append(2.2);
@@ -240,13 +256,51 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 			}
 			BOOST_AUTO_TEST_CASE(erase_of_a_single_element_in_end_does_not_make_list_of_invalid)
 			{
-				CStringList<double> list2;
+				CMyList<double> list2;
 				list2.Append(1.1);
 				BOOST_REQUIRE_NO_THROW(list2.Erase(--list2.end()));
 				list2.Append(2.2);
 				BOOST_CHECK_EQUAL(list2.GetBackElement(), 2.2);
 				BOOST_CHECK_EQUAL(*list2.begin(), 2.2);
 				BOOST_CHECK_EQUAL(list2.GetSize(), 1);
+			}
+		BOOST_AUTO_TEST_SUITE_END()
+		BOOST_AUTO_TEST_SUITE(assignment_operator)
+			BOOST_AUTO_TEST_CASE(can_assign_other_list_to_current_list)
+			{
+				CMyList<std::string> copy;
+				copy = list;
+				BOOST_CHECK_EQUAL(*copy.begin(), *list.begin());
+				BOOST_CHECK_EQUAL(*--copy.end(), *--list.end());
+				BOOST_CHECK_EQUAL(copy.GetSize(), list.GetSize());
+			}
+			BOOST_AUTO_TEST_CASE(can_assign_empty_list)
+			{
+				CMyList<std::string> copy;
+				list = copy;
+				BOOST_CHECK_EQUAL(*copy.begin(), *list.begin());
+				BOOST_CHECK_EQUAL(*--copy.end(), *--list.end());
+				BOOST_CHECK_EQUAL(copy.GetSize(), list.GetSize());
+				BOOST_CHECK(copy.IsEmpty());
+			}
+			BOOST_AUTO_TEST_CASE(can_assign_list_with_single_element)
+			{
+				CMyList<std::string> copy;
+				copy.Append("hi");
+				list = copy;
+				BOOST_CHECK_EQUAL(*copy.begin(), *list.begin());
+				BOOST_CHECK_EQUAL(*--copy.end(), *--list.end());
+				BOOST_CHECK_EQUAL(copy.GetSize(), list.GetSize());
+			}
+			BOOST_AUTO_TEST_CASE(can_assign_list_after_clean_it)
+			{
+				CMyList<std::string> copy;
+				copy.Append("1");
+				copy.Clear();
+				list = copy;
+				BOOST_CHECK_EQUAL(*copy.begin(), *list.begin());
+				BOOST_CHECK_EQUAL(*--copy.end(), *--list.end());
+				BOOST_CHECK_EQUAL(copy.GetSize(), list.GetSize());
 			}
 		BOOST_AUTO_TEST_SUITE_END()
 	BOOST_AUTO_TEST_SUITE_END()

@@ -34,7 +34,7 @@ int main()
 	//}
 
 	//{
-	//	//CStringList lst;
+	//	//CMyList lst;
 	//	//for (size_t i = 0; i < 99999; ++i)
 	//	//{
 	//	//	lst.Append("asd");
@@ -42,12 +42,11 @@ int main()
 	//	//lst.Clear();
 	//}
 	//{
-	//	CStringList<std::string> list;
+	//	CMyList<std::string> list;
 	//	list.Append("123");
 	////	cout << *(list.end()) << endl;
 	//	cout << *(list.begin()) << endl;
 	//}
-
 	{
 		std::list<std::string> lst = { "1" };
 		//lst.push_back("2");
@@ -60,7 +59,8 @@ int main()
 
 	ptr2 = move(ptr1);
 	{
-		CStringList<std::string> lst_;
+		CMyList<std::string> lst_;
+		cout << *lst_.begin() << endl;
 		lst_.Append("1");
 		lst_.Append("2");
 		lst_.Append("3");
@@ -73,7 +73,7 @@ int main()
 	}
 
 	{
-		CStringList<std::string> lst_;
+		CMyList<std::string> lst_;
 		lst_.AddToFront("1");
 		lst_.AddToFront("2");
 		lst_.AddToFront("3");
@@ -90,7 +90,7 @@ int main()
 	}
 
 	{
-		CStringList<double> lst;
+		CMyList<double> lst;
 		auto end = lst.begin();
 		auto end1 = lst.end();
 	}
@@ -104,6 +104,14 @@ int main()
 	//	lst_.Append("aaa");
 		
 		//cout << endl << (end == lst_.end()) << endl;
+
+	CMyList<std::string> lst1;
+	lst1.Append("1");
+	lst1.Append("2");
+	lst1.Append("3");
+	
+	CMyList<std::string> lst2;
+	lst2 = lst1;
 
 	return 0;
 }

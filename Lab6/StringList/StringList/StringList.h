@@ -4,7 +4,7 @@
 #include <memory>
 
 template <typename ValueType>
-class CStringList
+class CMyList
 {
 	struct Node
 	{
@@ -17,23 +17,24 @@ class CStringList
 		std::unique_ptr<Node> next;
 	};
 public:
-	CStringList();
+	CMyList();
 	size_t GetSize()const;
 	void Append(const ValueType &data);
 	void AddToFront(const ValueType &data);
 	bool IsEmpty()const;
 	void Clear();
 	
+	CMyList & operator=(const CMyList &other);
 	class CIterator : public std::iterator<std::bidirectional_iterator_tag, Node, ptrdiff_t>
 	{
-		friend CStringList<ValueType>;
+		friend CMyList<ValueType>;
 		CIterator(Node *node, bool isReverse = false);
 	public:
-		friend bool const operator==(typename CStringList<ValueType>::CIterator const &it1, typename CStringList<ValueType>::CIterator const &it2)
+		friend bool const operator==(typename CMyList<ValueType>::CIterator const &it1, typename CMyList<ValueType>::CIterator const &it2)
 		{
 			return it1.m_node == it2.m_node;
 		}
-		friend bool const operator!=(typename CStringList<ValueType>::CIterator const &it1, typename CStringList<ValueType>::CIterator const &it2)
+		friend bool const operator!=(typename CMyList<ValueType>::CIterator const &it1, typename CMyList<ValueType>::CIterator const &it2)
 		{
 			return (it1.m_node != it2.m_node);
 		}
@@ -58,15 +59,22 @@ public:
 	ValueType const& GetBackElement()const;
 	ValueType const& GetFrontElement()const;
 
-	~CStringList();
+	~CMyList() = default;
 private:
+	void ResetList();
 	size_t m_size = 0;
 	std::unique_ptr<Node> m_firstNode = nullptr;
 	Node *m_lastNode = nullptr;
 };
 
 template <typename ValueType>
-CStringList<ValueType>::CStringList()
+CMyList<ValueType>::CMyList()
+{
+	ResetList();
+}
+
+template<typename ValueType>
+inline void CMyList<ValueType>::ResetList()
 {
 	m_firstNode = make_unique<Node>(ValueType(), nullptr, nullptr);
 	m_lastNode = m_firstNode.get();
@@ -74,28 +82,15 @@ CStringList<ValueType>::CStringList()
 	m_lastNode->next = move(imaginaryItem);
 }
 
-template <typename ValueType>
-CStringList<ValueType>::~CStringList()
-{
-	while (m_firstNode)
-	{
-		auto tmp = move(m_firstNode->next);
-		m_firstNode.reset();
-		m_firstNode = move(tmp);
-	}
-	m_size = 0;
-	m_lastNode = nullptr;
-}
-
 
 template <typename ValueType>
-size_t CStringList<ValueType>::GetSize() const
+size_t CMyList<ValueType>::GetSize() const
 {
 	return m_size;
 }
 
 template <typename ValueType>
-void CStringList<ValueType>::Append(const ValueType & data)
+void CMyList<ValueType>::Append(const ValueType & data)
 {
 	auto newNode = make_unique<Node>(data, m_lastNode, nullptr);
 	Node *newLastNode = newNode.get();
@@ -116,7 +111,7 @@ void CStringList<ValueType>::Append(const ValueType & data)
 }
 
 template <typename ValueType>
-void CStringList<ValueType>::AddToFront(const ValueType & data)
+void CMyList<ValueType>::AddToFront(const ValueType & data)
 {
 	auto newNode = make_unique<Node>(data, nullptr, nullptr);
 	if (m_size != 0)
@@ -136,28 +131,24 @@ void CStringList<ValueType>::AddToFront(const ValueType & data)
 }
 
 template <typename ValueType>
-bool CStringList<ValueType>::IsEmpty()const
+bool CMyList<ValueType>::IsEmpty()const
 {
 	return m_size == 0;
 }
 
 template <typename ValueType>
-void CStringList<ValueType>::Clear()
+void CMyList<ValueType>::Clear()
 {
-	while (m_firstNode)
-	{
-		auto tmp = move(m_firstNode->next);
-		m_firstNode.reset();
-		m_firstNode = move(tmp);
-	}
-	m_size = 0;
+	m_firstNode = nullptr;
 	m_lastNode = nullptr;
+	m_size = 0;
+	ResetList();
 }
 
 template <typename ValueType>
-ValueType & CStringList<ValueType>::GetBackElement()
+ValueType & CMyList<ValueType>::GetBackElement()
 {
-	if (!m_lastNode)
+	if (IsEmpty())
 	{
 		throw runtime_error("List is empty.");
 	}
@@ -166,9 +157,9 @@ ValueType & CStringList<ValueType>::GetBackElement()
 }
 
 template <typename ValueType>
-ValueType & CStringList<ValueType>::GetFrontElement()
+ValueType & CMyList<ValueType>::GetFrontElement()
 {
-	if (!m_firstNode)
+	if (IsEmpty())
 	{
 		throw runtime_error("List is empty.");
 	}
@@ -177,9 +168,9 @@ ValueType & CStringList<ValueType>::GetFrontElement()
 }
 
 template <typename ValueType>
-ValueType const & CStringList<ValueType>::GetBackElement()const
+ValueType const & CMyList<ValueType>::GetBackElement()const
 {
-	if (!m_lastNode)
+	if (IsEmpty())
 	{
 		throw runtime_error("List is empty.");
 	}
@@ -188,9 +179,9 @@ ValueType const & CStringList<ValueType>::GetBackElement()const
 }
 
 template <typename ValueType>
-ValueType const & CStringList<ValueType>::GetFrontElement()const
+ValueType const & CMyList<ValueType>::GetFrontElement()const
 {
-	if (!m_firstNode)
+	if (IsEmpty())
 	{
 		throw runtime_error("List is empty.");
 	}
@@ -199,14 +190,40 @@ ValueType const & CStringList<ValueType>::GetFrontElement()const
 }
 
 template <typename ValueType>
-CStringList<ValueType>::CIterator::CIterator(Node * node, bool isReverse)
+CMyList<ValueType>::CIterator::CIterator(Node * node, bool isReverse)
 	: m_node(node)
 	, m_isReverse(isReverse)
 {
 }
 
+template<typename ValueType>
+CMyList<ValueType> & CMyList<ValueType>::operator=(const CMyList & other)
+{
+	if (!other.m_firstNode || !other.m_lastNode)
+	{
+		throw (std::invalid_argument("Invalid argument."));
+	}
+	Clear();
+	auto imaginaryItem = move(m_lastNode->next);
+	auto tempPtr = other.m_firstNode.get();
+	m_firstNode->data = tempPtr->data;
+	auto current = m_firstNode.get();
+	while (tempPtr->next->next)
+	{
+		tempPtr = tempPtr->next.get();
+		current->next = make_unique<Node>(tempPtr->data, current, nullptr);
+		current = current->next.get();
+	}
+	imaginaryItem->prev = current;
+	current->next = move(imaginaryItem);
+	m_lastNode = current;
+	m_size = other.m_size;
+
+	return *this;
+}
+
 template <typename ValueType>
-ValueType & CStringList<ValueType>::CIterator::operator*()const
+ValueType & CMyList<ValueType>::CIterator::operator*()const
 {
 	if (!m_node || (!m_node->next))
 	{
@@ -217,7 +234,7 @@ ValueType & CStringList<ValueType>::CIterator::operator*()const
 }
 
 template <typename ValueType>
-typename CStringList<ValueType>::CIterator & CStringList<ValueType>::CIterator::operator++()
+typename CMyList<ValueType>::CIterator & CMyList<ValueType>::CIterator::operator++()
 {
 	if (!m_node->next || !m_node)
 	{
@@ -229,39 +246,43 @@ typename CStringList<ValueType>::CIterator & CStringList<ValueType>::CIterator::
 }
 
 template <typename ValueType>
-typename CStringList<ValueType>::CIterator & CStringList<ValueType>::CIterator::operator--()
+typename CMyList<ValueType>::CIterator & CMyList<ValueType>::CIterator::operator--()
 {
+	if (!m_node->prev || !m_node)
+	{
+		throw (std::runtime_error("Iterator has not icrementable."));
+	}
 	m_node = m_node->prev;
 
 	return *this;
 }
 
 template <typename ValueType>
-typename CStringList<ValueType>::CIterator CStringList<ValueType>::begin()
+typename CMyList<ValueType>::CIterator CMyList<ValueType>::begin()
 {
 	return CIterator(m_firstNode.get());
 }
 
 template <typename ValueType>
-typename CStringList<ValueType>::CIterator CStringList<ValueType>::end()
+typename CMyList<ValueType>::CIterator CMyList<ValueType>::end()
 {
 	return CIterator(m_lastNode->next.get());
 }
 
 template <typename ValueType>
-typename const CStringList<ValueType>::CIterator CStringList<ValueType>::begin()const
+typename const CMyList<ValueType>::CIterator CMyList<ValueType>::begin()const
 {
 	return CIterator(m_firstNode.get());
 }
 
 template <typename ValueType>
-typename const CStringList<ValueType>::CIterator CStringList<ValueType>::end()const
+typename const CMyList<ValueType>::CIterator CMyList<ValueType>::end()const
 {
 	return CIterator(m_lastNode->next.get());
 }
 
 template <typename ValueType>
-typename CStringList<ValueType>::CIterator CStringList<ValueType>::Insert(CIterator &iter, ValueType const &data)
+typename CMyList<ValueType>::CIterator CMyList<ValueType>::Insert(CIterator &iter, ValueType const &data)
 {
 	auto iterNode = iter.m_node;
 	if (iterNode == m_firstNode.get())
@@ -289,7 +310,7 @@ typename CStringList<ValueType>::CIterator CStringList<ValueType>::Insert(CItera
 }
 
 template <typename ValueType>
-typename CStringList<ValueType>::CIterator CStringList<ValueType>::Erase(CIterator & iter)
+typename CMyList<ValueType>::CIterator CMyList<ValueType>::Erase(CIterator & iter)
 {
 	if (!(iter.m_node) || (m_size == 0) || (iter.m_node == m_lastNode->next.get()))
 	{
