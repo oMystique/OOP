@@ -139,8 +139,12 @@ bool CMyList<ValueType>::IsEmpty()const
 template <typename ValueType>
 void CMyList<ValueType>::Clear()
 {
-	m_firstNode = nullptr;
-	m_lastNode = nullptr;
+	while (m_firstNode)
+	{
+		auto tmp = move(m_firstNode->next);
+		m_firstNode.reset();
+		m_firstNode = move(tmp);
+	}
 	m_size = 0;
 	ResetList();
 }
