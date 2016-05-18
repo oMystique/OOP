@@ -228,7 +228,7 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 				BOOST_REQUIRE_NO_THROW(list.Erase(it));
 				BOOST_CHECK_EQUAL(*it, "Lack of sleep.");
 			}
-			BOOST_AUTO_TEST_CASE(erase_of_a_single_element_does_not_make_list_of_invalid)
+			BOOST_AUTO_TEST_CASE(erase_of_a_single_element_in_begin_does_not_make_list_of_invalid)
 			{
 				CStringList<double> list2;
 				list2.Append(1.1);
@@ -238,7 +238,7 @@ BOOST_FIXTURE_TEST_SUITE(String_list, EmptyStringList)
 				BOOST_CHECK_EQUAL(*list2.begin(), 2.2);
 				BOOST_CHECK_EQUAL(list2.GetSize(), 1);
 			}
-			BOOST_AUTO_TEST_CASE(erase_of_a_single_element_does_not_make_list_of_invalid_2)
+			BOOST_AUTO_TEST_CASE(erase_of_a_single_element_in_end_does_not_make_list_of_invalid)
 			{
 				CStringList<double> list2;
 				list2.Append(1.1);

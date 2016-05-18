@@ -59,9 +59,7 @@ int main()
 	unique_ptr<int> ptr2;
 
 	ptr2 = move(ptr1);
-	cout << *ptr1 << endl;
-
-
+	{
 		CStringList<std::string> lst_;
 		lst_.Append("1");
 		lst_.Append("2");
@@ -72,7 +70,30 @@ int main()
 		{
 			cout << *it << endl;
 		}
+	}
 
+	{
+		CStringList<std::string> lst_;
+		lst_.AddToFront("1");
+		lst_.AddToFront("2");
+		lst_.AddToFront("3");
+		lst_.AddToFront("4");
+		lst_.AddToFront("5");
+		for (auto it = lst_.begin(); it != lst_.end(); ++it)
+		{
+			cout << *it << endl;
+		}
+		for (auto &it : lst_)
+		{
+			cout << it << " Range-based-for" << endl;
+		}
+	}
+
+	{
+		CStringList<double> lst;
+		auto end = lst.begin();
+		auto end1 = lst.end();
+	}
 
 	//	auto bb = ++lst_.begin();
 	//	lst_.Insert(bb, "WOW22");

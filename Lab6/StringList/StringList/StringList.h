@@ -9,17 +9,12 @@ class CStringList
 	struct Node
 	{
 		Node(const ValueType & data, Node * prev, std::unique_ptr<Node> && next)
-			: data(data), prev(prev), next(std::move(next)), isEnd(false)
-		{
-		}
-		Node(const ValueType & data, Node * prev, std::unique_ptr<Node> && next, bool isEnd)
-			: data(data), prev(prev), next(std::move(next)), isEnd(isEnd)
+			: data(data), prev(prev), next(std::move(next))
 		{
 		}
 		ValueType data;
 		Node *prev;
 		std::unique_ptr<Node> next;
-		const bool isEnd;
 	};
 public:
 	CStringList();
@@ -66,21 +61,30 @@ public:
 	~CStringList();
 private:
 	size_t m_size = 0;
-	std::unique_ptr<Node> m_firstNode;
+	std::unique_ptr<Node> m_firstNode = nullptr;
 	Node *m_lastNode = nullptr;
-	CIterator m_end;
 };
 
 template <typename ValueType>
 CStringList<ValueType>::CStringList()
-	: m_end(CIterator((new Node(ValueType(), nullptr, nullptr, true))))
 {
+	m_firstNode = make_unique<Node>(ValueType(), nullptr, nullptr);
+	m_lastNode = m_firstNode.get();
+	auto imaginaryItem = make_unique<Node>(ValueType(), m_lastNode, nullptr);
+	m_lastNode->next = move(imaginaryItem);
 }
 
 template <typename ValueType>
 CStringList<ValueType>::~CStringList()
 {
-	delete m_end.m_node;
+	while (m_firstNode)
+	{
+		auto tmp = move(m_firstNode->next);
+		m_firstNode.reset();
+		m_firstNode = move(tmp);
+	}
+	m_size = 0;
+	m_lastNode = nullptr;
 }
 
 
@@ -95,16 +99,19 @@ void CStringList<ValueType>::Append(const ValueType & data)
 {
 	auto newNode = make_unique<Node>(data, m_lastNode, nullptr);
 	Node *newLastNode = newNode.get();
-	if (m_lastNode)
+	auto imaginaryItem = move(m_lastNode->next);
+	imaginaryItem->prev = newLastNode;
+	if (m_lastNode->prev)
 	{
+		newNode->next = move(imaginaryItem);
 		m_lastNode->next = move(newNode);
 	}
 	else
 	{
+		newNode->next = move(imaginaryItem);
 		m_firstNode = move(newNode);
 	}
 	m_lastNode = newLastNode;
-	m_end.m_node->prev = m_lastNode;
 	++m_size;
 }
 
@@ -112,17 +119,19 @@ template <typename ValueType>
 void CStringList<ValueType>::AddToFront(const ValueType & data)
 {
 	auto newNode = make_unique<Node>(data, nullptr, nullptr);
-	if (m_firstNode)
+	if (m_size != 0)
 	{
 		m_firstNode->prev = newNode.get();
 		newNode->next = move(m_firstNode);
 	}
 	else
 	{
+		auto imaginaryItem = move(m_lastNode->next);
 		m_lastNode = newNode.get();
+		imaginaryItem->prev = m_lastNode;
+		m_lastNode->next = move(imaginaryItem);
 	}
 	m_firstNode = move(newNode);
-	m_end.m_node->prev = m_lastNode;
 	++m_size;
 }
 
@@ -143,7 +152,6 @@ void CStringList<ValueType>::Clear()
 	}
 	m_size = 0;
 	m_lastNode = nullptr;
-	m_end.m_node->prev = nullptr;
 }
 
 template <typename ValueType>
@@ -200,7 +208,7 @@ CStringList<ValueType>::CIterator::CIterator(Node * node, bool isReverse)
 template <typename ValueType>
 ValueType & CStringList<ValueType>::CIterator::operator*()const
 {
-	if (!m_node || (m_node->isEnd))
+	if (!m_node || (!m_node->next))
 	{
 		throw std::runtime_error("Iterator as invalid.");
 	}
@@ -237,7 +245,7 @@ typename CStringList<ValueType>::CIterator CStringList<ValueType>::begin()
 template <typename ValueType>
 typename CStringList<ValueType>::CIterator CStringList<ValueType>::end()
 {
-	return m_end;
+	return CIterator(m_lastNode->next.get());
 }
 
 template <typename ValueType>
@@ -249,18 +257,18 @@ typename const CStringList<ValueType>::CIterator CStringList<ValueType>::begin()
 template <typename ValueType>
 typename const CStringList<ValueType>::CIterator CStringList<ValueType>::end()const
 {
-	return m_end;
+	return CIterator(m_lastNode->next.get());
 }
 
 template <typename ValueType>
 typename CStringList<ValueType>::CIterator CStringList<ValueType>::Insert(CIterator &iter, ValueType const &data)
 {
 	auto iterNode = iter.m_node;
-	if (iterNode == m_firstNode.get() && iter.m_node != m_end.m_node)
+	if (iterNode == m_firstNode.get())
 	{
 		AddToFront(data);
 	}
-	else if ((iterNode == m_lastNode) || (iterNode == m_end.m_node))
+	else if ((iterNode == m_lastNode->next.get()))
 	{
 		Append(data);
 	}
@@ -283,30 +291,32 @@ typename CStringList<ValueType>::CIterator CStringList<ValueType>::Insert(CItera
 template <typename ValueType>
 typename CStringList<ValueType>::CIterator CStringList<ValueType>::Erase(CIterator & iter)
 {
-	if (!iter.m_node || iter.m_node->isEnd)
+	if (!(iter.m_node) || (m_size == 0) || (iter.m_node == m_lastNode->next.get()))
 	{
 		throw runtime_error("Dont erase it, because iter is null.");
 	}
 	if (iter.m_node == m_firstNode.get())
 	{
-		if (m_firstNode->next)
+		if (m_size > 1)
 		{
 			m_firstNode = move(m_firstNode->next);
 			m_firstNode->prev = nullptr;
-			iter = m_firstNode.get();
+			iter = begin();
 		}
 		else
 		{
-			m_firstNode = nullptr;
-			m_lastNode = nullptr;
-			m_end.m_node->prev = nullptr;
+			auto imaginaryItem = move(m_lastNode->next);
+			m_firstNode.reset();
+			m_firstNode = make_unique<Node>(ValueType(), nullptr, move(imaginaryItem));
+			m_lastNode = m_firstNode.get();
+			iter = end();
 		}
 	}
 	else if (iter.m_node == m_lastNode)
 	{
+		auto imaginaryItem = move(m_lastNode->next);
 		m_lastNode = m_lastNode->prev;
-		m_lastNode->next = nullptr;
-		m_end.m_node->prev = m_lastNode;
+		m_lastNode->next = move(imaginaryItem);
 		iter = m_lastNode->next.get();
 	}
 	else
