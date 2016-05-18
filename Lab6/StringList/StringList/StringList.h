@@ -59,7 +59,7 @@ public:
 	ValueType const& GetBackElement()const;
 	ValueType const& GetFrontElement()const;
 
-	~CMyList() = default;
+	~CMyList();
 private:
 	void ResetList();
 	size_t m_size = 0;
@@ -71,6 +71,18 @@ template <typename ValueType>
 CMyList<ValueType>::CMyList()
 {
 	ResetList();
+}
+
+template <typename ValueType>
+CMyList<ValueType>::~CMyList()
+{
+	while (m_firstNode)
+	{
+		auto tmp = move(m_firstNode->next);
+		m_firstNode.reset();
+		m_firstNode = move(tmp);
+	}
+	m_lastNode = nullptr;
 }
 
 template<typename ValueType>
