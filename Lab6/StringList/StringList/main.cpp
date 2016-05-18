@@ -55,15 +55,22 @@ int main()
 		lst.erase(lst.begin());
 	}
 
+	unique_ptr<int> ptr1 = make_unique<int>(1);
+	unique_ptr<int> ptr2;
+
+	ptr2 = move(ptr1);
+	cout << *ptr1 << endl;
+
+
 		CStringList<std::string> lst_;
 		lst_.Append("1");
 		lst_.Append("2");
 		lst_.Append("3");
 		lst_.Append("4");
 		lst_.Append("5");
-		for (auto &it : lst_)
+		for (auto it = lst_.begin(); it != lst_.end(); ++it)
 		{
-			cout << it << endl;
+			cout << *it << endl;
 		}
 
 

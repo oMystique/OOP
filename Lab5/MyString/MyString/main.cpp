@@ -24,6 +24,12 @@ int main()
 	mmmStr.Clear();
 	mmmstr2 = std::move(mmmStr);
 	cout << mmmstr2 <<endl;
+
+	{
+		CMyString str5;
+		cout << *str5.begin() << endl;
+	}
+
 	return 0;
 }
 

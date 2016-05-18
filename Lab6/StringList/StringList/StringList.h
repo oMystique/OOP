@@ -40,7 +40,7 @@ public:
 		}
 		friend bool const operator!=(typename CStringList<ValueType>::CIterator const &it1, typename CStringList<ValueType>::CIterator const &it2)
 		{
-			return it1.m_node != it2.m_node;
+			return (it1.m_node != it2.m_node);
 		}
 		CIterator() = default;
 		ValueType &operator*()const;
