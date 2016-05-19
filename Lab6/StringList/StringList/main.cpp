@@ -47,20 +47,12 @@ int main()
 	////	cout << *(list.end()) << endl;
 	//	cout << *(list.begin()) << endl;
 	//}
+
+
 	{
-		std::list<std::string> lst = { "1" };
-		//lst.push_back("2");
-
-		lst.erase(lst.begin());
-	}
-
-	unique_ptr<int> ptr1 = make_unique<int>(1);
-	unique_ptr<int> ptr2;
-
-	ptr2 = move(ptr1);
-	{
+		cout << "123" << endl;
 		CMyList<std::string> lst_;
-		cout << *lst_.begin() << endl;
+//		cout << *lst_.begin() << endl;
 		lst_.Append("1");
 		lst_.Append("2");
 		lst_.Append("3");
@@ -112,6 +104,27 @@ int main()
 	
 	CMyList<std::string> lst2;
 	lst2 = lst1;
+
+
+	struct MockObjWithDefaultExceptedConstruct
+	{
+		MockObjWithDefaultExceptedConstruct()
+		{
+			throw std::runtime_error("Test except");
+		}
+		MockObjWithDefaultExceptedConstruct(int num)
+			: num(num)
+		{
+		};
+		int num;
+	};
+	CMyList<MockObjWithDefaultExceptedConstruct> lst;
+
+	struct Node
+	{
+		Node* m_node;
+		std::function<void()> a = [this]() {m_node = m_node->m_node; };
+	};
 
 	return 0;
 }

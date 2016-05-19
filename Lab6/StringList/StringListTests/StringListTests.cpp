@@ -3,18 +3,19 @@
 
 using namespace std;
 
-//struct MockObjWithExceptions : public NoExceptMockObj
-//{
-//	//MockObjWithExceptions& operator=(...) override
-//	//{
-//	//	//throw ...
-//	//}
-//};
-//
-//struct NoExceptMockObj
-//{
-//
-//};
+struct NoExceptMockObj
+{
+
+};
+
+
+struct MockObjWithExceptions : public NoExceptMockObj
+{
+	MockObjWithExceptions& operator=(std::string && str)
+	{
+		throw std::invalid_argument("Test Exception");
+	}
+};
 
 struct EmptyStringList
 {
@@ -278,8 +279,8 @@ BOOST_AUTO_TEST_SUITE(when_created)
 			{
 				CMyList<std::string> copy;
 				list = copy;
-				BOOST_CHECK_EQUAL(*copy.begin(), *list.begin());
-				BOOST_CHECK_EQUAL(*--copy.end(), *--list.end());
+				BOOST_CHECK_THROW(*copy.begin(), std::runtime_error);
+				BOOST_CHECK_THROW(*--copy.end(), std::runtime_error);
 				BOOST_CHECK_EQUAL(copy.GetSize(), list.GetSize());
 				BOOST_CHECK(copy.IsEmpty());
 			}
@@ -302,6 +303,35 @@ BOOST_AUTO_TEST_SUITE(when_created)
 				BOOST_CHECK_EQUAL(*--copy.end(), *--list.end());
 				BOOST_CHECK_EQUAL(copy.GetSize(), list.GetSize());
 			}
+		BOOST_AUTO_TEST_SUITE_END()
+		BOOST_AUTO_TEST_SUITE(my_list_construction_tests)
+			struct MockObjWithDeletedBoolArgConstruct
+			{
+				MockObjWithDeletedBoolArgConstruct() = default;
+
+				MockObjWithDeletedBoolArgConstruct(int num)
+					: num(num)
+				{
+				};
+
+				MockObjWithDeletedBoolArgConstruct(bool err)
+				{
+					throw std::out_of_range("Test Except.");
+				}
+
+				int num;
+			};
+			BOOST_FIXTURE_TEST_SUITE(tests_with_mock_obj_with_deleted_excepted_and_normal_construct, MockObjWithDeletedBoolArgConstruct)
+				BOOST_AUTO_TEST_CASE(can_construct_my_list_with_deleted_default_constructor)
+				{
+					struct MockObjWithDefaultDeletedConstruct
+					{
+						MockObjWithDefaultDeletedConstruct() = delete;
+					};
+					BOOST_CHECK_NO_THROW(std::list<MockObjWithDefaultDeletedConstruct> lst);
+					BOOST_CHECK_NO_THROW(CMyList<MockObjWithDefaultDeletedConstruct> lst);
+				}
+			BOOST_AUTO_TEST_SUITE_END()
 		BOOST_AUTO_TEST_SUITE_END()
 	BOOST_AUTO_TEST_SUITE_END()
 BOOST_AUTO_TEST_SUITE_END()
