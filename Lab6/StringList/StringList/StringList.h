@@ -26,6 +26,7 @@ public:
 	void Clear();
 	
 	CMyList & operator=(const CMyList &other);
+	CMyList & operator=(CMyList && other);
 	class CIterator : public std::iterator<std::bidirectional_iterator_tag, Node, ptrdiff_t>
 	{
 		 friend CMyList<ValueType>;
@@ -250,27 +251,53 @@ CMyList<ValueType>::CIterator::CIterator(Node *node, bool isReverse)
 {
 };
 
+template<typename ValueType>
+CMyList<ValueType> & CMyList<ValueType>::operator=(CMyList && other)
+{
+
+}
 
 template<typename ValueType>
 CMyList<ValueType> & CMyList<ValueType>::operator=(const CMyList & other)
 {
-	Clear();
 	if (!other.IsEmpty())
 	{
-		m_imaginaryLastItem = move(m_lastNode->next);
-		auto tempPtr = other.m_firstNode;
-		m_firstNode->data = tempPtr->data;
-		auto current = m_firstNode;
-		while (tempPtr->next->next)
+		CMyList<ValueType> lst;
+		try
 		{
-			tempPtr = tempPtr->next.get();
-			current->next = make_unique<Node>(tempPtr->data, current, nullptr);
-			current = current->next.get();
+			lst.ResetList();
+			lst.m_imaginaryLastItem = move(lst.m_lastNode->next);
+			auto tempPtr = other.m_firstNode;
+			lst.m_firstNode->data = tempPtr->data;
+			auto current = lst.m_firstNode;
+			while (tempPtr->next->next)
+			{
+				tempPtr = tempPtr->next.get();
+				current->next = make_unique<Node>(tempPtr->data, current, nullptr);
+				current = current->next.get();
+			}
+			lst.m_imaginaryLastItem->prev = current;
+			current->next = move(lst.m_imaginaryLastItem);
+			lst.m_lastNode = current;
+			lst.m_size = other.m_size;
 		}
-		m_imaginaryLastItem->prev = current;
-		current->next = move(m_imaginaryLastItem);
-		m_lastNode = current;
-		m_size = other.m_size;
+		catch (...)
+		{
+			throw;
+		}
+		Clear();
+		ResetList();
+		m_imaginaryLastItem = move(m_lastNode->next);
+		m_imaginaryFirstItem->next = std::move(lst.m_imaginaryFirstItem->next);
+		m_firstNode = m_imaginaryFirstItem->next.get();
+		m_lastNode = lst.m_lastNode;
+		m_imaginaryLastItem->prev = m_lastNode;
+		m_lastNode->next = move(m_imaginaryLastItem);
+		m_size = lst.m_size;
+	}
+	else
+	{
+		Clear();
 	}
 	return *this;
 }

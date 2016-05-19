@@ -63,6 +63,9 @@ int main()
 			cout << *it << endl;
 		}
 		cout << "123" << endl;
+
+		CMyList<std::string> lst2;
+		lst2 = lst_;
 	}
 	{
 		CMyList<std::string> lst_;

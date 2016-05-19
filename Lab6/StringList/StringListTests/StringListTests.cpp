@@ -87,7 +87,8 @@ BOOST_AUTO_TEST_SUITE(when_created)
 		}
 		BOOST_AUTO_TEST_CASE(derefference_incremented_rend_iterator_returns_last_element)
 		{
-			BOOST_CHECK_EQUAL(*(list.rbegin()), "Lack of sleep.");
+			list.Append("sample");
+			BOOST_CHECK_EQUAL(*(list.rbegin()), "sample");
 		}
 	BOOST_AUTO_TEST_SUITE_END()
 
@@ -306,6 +307,7 @@ BOOST_AUTO_TEST_SUITE(when_created)
 				BOOST_CHECK_EQUAL(*copy.begin(), *list.begin());
 				BOOST_CHECK_EQUAL(*--copy.end(), *--list.end());
 				BOOST_CHECK_EQUAL(copy.GetSize(), list.GetSize());
+				BOOST_CHECK_EQUAL(*--copy.rend(), *--list.rend());
 			}
 		BOOST_AUTO_TEST_SUITE_END()
 		BOOST_AUTO_TEST_SUITE(my_list_construction_tests)
