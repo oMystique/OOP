@@ -72,7 +72,7 @@ private:
 	size_t m_size = 0;
 	std::unique_ptr<Node> m_imaginaryLastItem = nullptr;
 	std::unique_ptr<Node> m_imaginaryFirstItem = nullptr;
-	std::unique_ptr<Node> m_firstNode = nullptr;
+	Node *m_firstNode = nullptr;
 	Node *m_lastNode = nullptr;
 };
 
@@ -84,11 +84,11 @@ CMyList<ValueType>::CMyList()
 template <typename ValueType>
 CMyList<ValueType>::~CMyList()
 {
-	while (m_firstNode)
+	while (m_imaginaryFirstItem)
 	{
-		auto tmp = move(m_firstNode->next);
-		m_firstNode.reset();
-		m_firstNode = move(tmp);
+		auto tmp = move(m_imaginaryFirstItem->next);
+		m_imaginaryFirstItem.reset();
+		m_imaginaryFirstItem = move(tmp);
 	}
 	m_lastNode = nullptr;
 }
@@ -96,8 +96,9 @@ CMyList<ValueType>::~CMyList()
 template<typename ValueType>
 inline void CMyList<ValueType>::ResetList()
 {
-	m_firstNode = make_unique<Node>(ValueType(), nullptr, nullptr);
-	m_lastNode = m_firstNode.get();
+	m_imaginaryFirstItem = make_unique<Node>(ValueType(), nullptr, make_unique<Node>(ValueType(), nullptr, nullptr));
+	m_firstNode = m_imaginaryFirstItem->next.get();
+	m_lastNode = m_firstNode;
 	m_imaginaryLastItem = make_unique<Node>(ValueType(), m_lastNode, nullptr);
 	m_lastNode->next = move(m_imaginaryLastItem);
 }
@@ -136,7 +137,9 @@ void CMyList<ValueType>::Append(const ValueType & data)
 	else
 	{
 		newNode->next = move(m_imaginaryLastItem);
-		m_firstNode = move(newNode);
+		m_imaginaryFirstItem->next = move(newNode);
+		m_firstNode = m_imaginaryFirstItem->next.get();
+		m_firstNode->prev = m_imaginaryFirstItem.get();
 	}
 	m_lastNode = newLastNode;
 	++m_size;
@@ -161,7 +164,7 @@ void CMyList<ValueType>::AddToFront(const ValueType & data)
 	if (m_size != 0)
 	{
 		m_firstNode->prev = newNode.get();
-		newNode->next = move(m_firstNode);
+		newNode->next = move(m_imaginaryFirstItem->next);
 	}
 	else
 	{
@@ -170,7 +173,9 @@ void CMyList<ValueType>::AddToFront(const ValueType & data)
 		m_imaginaryLastItem->prev = m_lastNode;
 		m_lastNode->next = move(m_imaginaryLastItem);
 	}
-	m_firstNode = move(newNode);
+	newNode->prev = m_imaginaryFirstItem.get();
+	m_imaginaryFirstItem->next = move(newNode);
+	m_firstNode = m_imaginaryFirstItem->next.get();
 	++m_size;
 }
 
@@ -183,11 +188,11 @@ bool CMyList<ValueType>::IsEmpty()const
 template <typename ValueType>
 void CMyList<ValueType>::Clear()
 {
-	while (m_firstNode)
+	while (m_imaginaryFirstItem)
 	{
-		auto tmp = move(m_firstNode->next);
-		m_firstNode.reset();
-		m_firstNode = move(tmp);
+		auto tmp = move(m_imaginaryFirstItem->next);
+		m_imaginaryFirstItem.reset();
+		m_imaginaryFirstItem = move(tmp);
 	}
 	m_size = 0;
 	ResetList();
@@ -253,9 +258,9 @@ CMyList<ValueType> & CMyList<ValueType>::operator=(const CMyList & other)
 	if (!other.IsEmpty())
 	{
 		m_imaginaryLastItem = move(m_lastNode->next);
-		auto tempPtr = other.m_firstNode.get();
+		auto tempPtr = other.m_firstNode;
 		m_firstNode->data = tempPtr->data;
-		auto current = m_firstNode.get();
+		auto current = m_firstNode;
 		while (tempPtr->next->next)
 		{
 			tempPtr = tempPtr->next.get();
@@ -308,7 +313,7 @@ typename CMyList<ValueType>::CIterator & CMyList<ValueType>::CIterator::operator
 template <typename ValueType>
 typename CMyList<ValueType>::CIterator CMyList<ValueType>::begin()
 {
-	return CIterator(m_firstNode.get());
+	return CIterator(m_firstNode);
 }
 
 template <typename ValueType>
@@ -320,7 +325,7 @@ typename CMyList<ValueType>::CIterator CMyList<ValueType>::end()
 template <typename ValueType>
 typename const CMyList<ValueType>::CIterator CMyList<ValueType>::cbegin()const
 {
-	return CIterator(m_firstNode.get());
+	return CIterator(m_firstNode);
 }
 
 template <typename ValueType>
@@ -332,32 +337,32 @@ typename const CMyList<ValueType>::CIterator CMyList<ValueType>::cend()const
 template <typename ValueType>
 typename CMyList<ValueType>::CIterator CMyList<ValueType>::rbegin()
 {
-	return m_firstNode ? CIterator(m_firstNode->prev) : CIterator(m_imaginaryFirstItem);
+	return CIterator(m_lastNode, true);
 }
 
 template <typename ValueType>
 typename CMyList<ValueType>::CIterator CMyList<ValueType>::rend()
 {
-	return m_lastNode;
+	return CIterator(m_imaginaryFirstItem.get(), true);
 }
 
 template <typename ValueType>
 typename const CMyList<ValueType>::CIterator CMyList<ValueType>::crbegin()const
 {
-	return m_firstNode ? CIterator(m_firstNode->prev) : CIterator(m_imaginaryFirstItem);
+	return CIterator(m_lastNode, true);
 }
 
 template <typename ValueType>
 typename const CMyList<ValueType>::CIterator CMyList<ValueType>::crend()const
 {
-	return m_lastNode;
+	return CIterator(m_imaginaryFirstItem.get(), true);
 }
 
 template <typename ValueType>
 typename CMyList<ValueType>::CIterator CMyList<ValueType>::Insert(CIterator &iter, ValueType const &data)
 {
 	auto iterNode = iter.m_node;
-	if (iterNode == m_firstNode.get())
+	if (iterNode == m_firstNode)
 	{
 		AddToFront(data);
 	}
@@ -404,12 +409,13 @@ typename CMyList<ValueType>::CIterator CMyList<ValueType>::Erase(CIterator & ite
 	{
 		throw runtime_error("Dont erase it, because iter is null.");
 	}
-	if (iter.m_node == m_firstNode.get())
+	if (iter.m_node == m_firstNode)
 	{
 		if (m_size > 1)
 		{
-			m_firstNode = move(m_firstNode->next);
-			m_firstNode->prev = nullptr;
+			m_imaginaryFirstItem->next = move(m_firstNode->next);
+			m_firstNode = m_imaginaryFirstItem->next.get();
+			m_firstNode->prev = m_imaginaryFirstItem.get();
 			iter = begin();
 		}
 		else

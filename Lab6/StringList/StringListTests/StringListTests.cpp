@@ -85,6 +85,10 @@ BOOST_AUTO_TEST_SUITE(when_created)
 			list.Append("sample");
 			BOOST_CHECK_EQUAL(*--list.end(), "sample");
 		}
+		BOOST_AUTO_TEST_CASE(derefference_incremented_rend_iterator_returns_last_element)
+		{
+			BOOST_CHECK_EQUAL(*(list.rbegin()), "Lack of sleep.");
+		}
 	BOOST_AUTO_TEST_SUITE_END()
 
 	struct FilledStringList

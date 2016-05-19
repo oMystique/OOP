@@ -62,8 +62,8 @@ int main()
 		{
 			cout << *it << endl;
 		}
+		cout << "123" << endl;
 	}
-
 	{
 		CMyList<std::string> lst_;
 		lst_.AddToFront("1");
@@ -75,9 +75,9 @@ int main()
 		{
 			cout << *it << endl;
 		}
-		for (auto &it : lst_)
+		for (auto it = lst_.rbegin(); it != lst_.rend(); ++it)
 		{
-			cout << it << " Range-based-for" << endl;
+			cout << *it << " Range-based-for" << endl;
 		}
 	}
 
