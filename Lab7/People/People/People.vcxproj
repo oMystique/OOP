@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{20B21357-BFB6-4780-98CD-ED9D93E79EE7}</ProjectGuid>
+    <ProjectGuid>{44C1A3FC-5EC3-4B66-8D16-218E9CBD44C7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>FIndMaxEx</RootNamespace>
+    <RootNamespace>People</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -145,13 +145,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FindMaxEx.h" />
-    <ClInclude Include="SportsMan.h" />
+    <ClInclude Include="People.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FIndMaxEx.cpp" />
+    <ClCompile Include="People.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
